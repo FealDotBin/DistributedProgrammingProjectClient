@@ -34,7 +34,7 @@ public class LogInController {
     private JButton logInBtn;
     private JButton signUpBtn;
     private RetrofitBuilder retroBuild;
-    private ServiceApi providerApi;
+    private ServiceApi serviceApi;
     private Navigator navigator;
     
     public LogInController() {
@@ -48,9 +48,9 @@ public class LogInController {
         logInBtn = logInView.getLogInBtn();
         signUpBtn = logInView.getSignUpBtn();
         
-        // initialize retrofitBuilder and providerApi
+        // initialize retrofitBuilder and serviceApi
         retroBuild = new RetrofitBuilder();
-        providerApi = retroBuild.getRetrofit().create(ServiceApi.class);
+        serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
         // get navigator
         navigator = Navigator.getInstance();
@@ -77,7 +77,7 @@ public class LogInController {
             Credentials credentials = new Credentials(username, password);
             
             // send call to API
-            Call<Long> loginCall = providerApi.login(credentials);
+            Call<Long> loginCall = serviceApi.login(credentials);
             loginCall.enqueue(new Callback<Long>(){
                 
                 @Override
