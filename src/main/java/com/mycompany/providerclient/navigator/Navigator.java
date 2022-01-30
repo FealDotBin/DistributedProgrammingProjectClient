@@ -30,7 +30,8 @@ public class Navigator {
         
         public void fromLogInToHome(LogInController c){
             c.disposeView();
-            new HomeController();
+            Long providerId = c.getProviderId();
+            new HomeController(providerId);
         }
         
         public void fromLogInToSignUp(LogInController c){
@@ -38,8 +39,14 @@ public class Navigator {
             new SignUpController();
         }
         
+        public void fromSignUpToLogIn(SignUpController c){
+            c.disposeView();
+            new LogInController();
+        }
+        
         public void fromHomeToLogIn(HomeController c){
             c.disposeView();
             new LogInController();
         }
+        
 }

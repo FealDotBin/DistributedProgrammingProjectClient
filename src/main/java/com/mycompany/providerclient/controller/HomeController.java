@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateCompleted;
 import com.mycompany.common.components.NoEditableTableModel;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderState;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateAccepted;
@@ -13,8 +14,8 @@ import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderS
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateRefused;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateSemiAccepted;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateShipped;
+import com.mycompany.providerclient.navigator.Navigator;
 import com.mycompany.providerclient.view.HomeView;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JButton;
@@ -30,32 +31,28 @@ import javax.swing.event.ListSelectionListener;
  */
 public class HomeController {
 
-    HomeView homeView;
-    LinkedList<Order> orderList;
-    JButton acceptBtn;
-    JButton shipBtn;
-    JButton completeBtn;
-    JButton refuseBtn;
-    JButton refreshBtn;
-    JButton logOutBtn;
-    JButton availableBtn;
-    JTable allOrdersTable;
-    JTable selectedOrderTable;
-    SelectedOrderState selectedOrderState;
-    Order selectedOrder;
+    private HomeView homeView;
+    private JButton acceptBtn;
+    private JButton shipBtn;
+    private JButton completeBtn;
+    private JButton refuseBtn;
+    private JButton refreshBtn;
+    private JButton logOutBtn;
+    private JButton availableBtn;
+    private JTable allOrdersTable;
+    private JTable selectedOrderTable;
+    private Long providerId;
+    private LinkedList<Order> orderList;
+    private SelectedOrderState selectedOrderState;
+    private Order selectedOrder;
+    private Navigator navigator;
 
-    public HomeController() {
+    public HomeController(Long providerId) {
+        this.providerId = providerId;
+        
         // initialize view
         homeView = new HomeView();
         homeView.setVisible(true);
-        
-        // initialize orderList
-        orderList = new LinkedList<>();
-        initOrderList();
-        
-        // initialize selectedOrderState and selectedOrder
-        selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        selectedOrder = null;
         
         // get view components
         acceptBtn = homeView.getAcceptBtn();
@@ -74,6 +71,14 @@ public class HomeController {
         completeBtn.setEnabled(false);
         refuseBtn.setEnabled(false);
         
+        // initialize orderList
+        orderList = new LinkedList<>();
+        initOrderList();
+        
+        // initialize selectedOrderState and selectedOrder
+        selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        selectedOrder = null;
+        
         // show orders on allOrdersTable
         NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
         for(Order order : orderList){
@@ -86,10 +91,14 @@ public class HomeController {
             allOrdersTableModel.addRow(orderRow);
         }
         
+        // get navigator
+        navigator = Navigator.getInstance();
+        
         // attach listener on allOrdersTable to update selectedOrderTable and
         // all associated buttons
         allOrdersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             
+            @Override
             public void valueChanged(ListSelectionEvent event) {
                 
                 int selectedOrderIndex = allOrdersTable.getSelectedRow();
@@ -196,9 +205,7 @@ public class HomeController {
         
         // attach listener to log out button
         logOutBtn.addActionListener((event) -> {
-            // <- qua ci va il codice per tornare
-            // al login, quindi devo passare il controllo
-            // al controller di login
+            navigator.fromHomeToLogIn(HomeController.this);
         });
         
         // attach listener to refresh button
@@ -209,6 +216,10 @@ public class HomeController {
             // <- qua ci va il codice per ricaricare 
             // gli ordini dal backend
         });
+    }
+    
+    public void disposeView(){
+        homeView.dispose();
     }
 
     public void initOrderList(){
@@ -283,8 +294,7 @@ public class HomeController {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                HomeController c = null;
-                c = new HomeController();
+                HomeController c = new HomeController(1L);
             }
         });
     }

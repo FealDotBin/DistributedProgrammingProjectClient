@@ -35,6 +35,7 @@ public class LogInController {
     private JButton signUpBtn;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
+    private Long providerId;
     private Navigator navigator;
     
     public LogInController() {
@@ -84,6 +85,7 @@ public class LogInController {
                 public void onResponse(Call<Long> call, Response<Long> response) {
 
                     if(response.isSuccessful()){ // status code tra 200-299
+                        providerId = response.body();
                         navigator.fromLogInToHome(LogInController.this);
                     }
                     else{ // in caso di errori
@@ -113,6 +115,10 @@ public class LogInController {
         });
     }
 
+    public Long getProviderId(){
+        return providerId;
+    }
+    
     public void disposeView(){
         logInView.dispose();
     }
