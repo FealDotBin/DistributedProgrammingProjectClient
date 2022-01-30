@@ -5,8 +5,8 @@
  */
 package com.mycompany.customerclient.controller;
 
+import com.mycompany.customerclient.navigator.Navigator;
 import com.mycompany.customerclient.view.customerLogIn;
-import com.mycompany.navigator.Navigator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -18,17 +18,17 @@ import javax.swing.SwingUtilities;
  */
 public class CustomerLogInController {
     private customerLogIn view;
-    private JButton loginButton;
+    private JButton signUpButton;
     private Navigator nav;
 
     public CustomerLogInController(){
         view = new customerLogIn();
         nav = Navigator.getInstance();
-        loginButton = view.getLogInButton();
-        loginButton.addActionListener(new ActionListener(){
+        signUpButton = view.getSignUpButton();
+        signUpButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                nav.fromLogInToOrderCreation(CustomerLogInController.this);
+                nav.fromLogInToSingUp(CustomerLogInController.this);
             }
             
         });

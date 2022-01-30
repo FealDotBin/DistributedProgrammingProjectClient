@@ -75,7 +75,7 @@
                       </Group>
                       <Component id="usernameTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="singInBtn" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="signInBtn" min="-2" pref="124" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -120,7 +120,7 @@
                   <Component id="telephoneTextField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="singInBtn" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
+                      <Component id="signInBtn" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                       <Component id="logInBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -155,6 +155,18 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="birthDateChooser">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="dateFormatString" type="java.lang.String" value="yyyy MM dd"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="11" style="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="JTextFieldDateEditor birthField = (JTextFieldDateEditor)birthDateChooser.getDateEditor();&#xa;birthField.setEditable(false);&#xa;birthField.setFont(new java.awt.Font(&quot;Segoe UI&quot;, 0, 11));&#xa;&#xa;birthField.addPropertyChangeListener(&quot;foreground&quot;, event -&gt; {&#xa;    if(Color.BLACK.equals(event.getNewValue()))&#xa;        birthField.setForeground(new Color(200,200,200));&#xa;});&#xa;JYearChooser year = birthDateChooser.getJCalendar().getYearChooser();&#xa;year.addPropertyChangeListener(&quot;foreground&quot;, event -&gt;{ &#xa;        year.setForeground(new Color(200,200,200));&#xa;});&#xa;birthDateChooser.getJCalendar().setSundayForeground(new Color(255,0,0));"/>
+          </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="usernameTextField">
           <Properties>
@@ -233,7 +245,7 @@
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Telephone Number&quot;)"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="singInBtn">
+        <Component class="javax.swing.JButton" name="signInBtn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="81" green="49" red="2c" type="rgb"/>
@@ -244,7 +256,7 @@
             <Property name="text" type="java.lang.String" value="Sign Up"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="singInBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="signInBtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="logInBtn">

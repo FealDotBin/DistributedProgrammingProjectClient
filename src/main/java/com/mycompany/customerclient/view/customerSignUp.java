@@ -7,8 +7,14 @@ package com.mycompany.customerclient.view;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+import com.toedter.calendar.JYearChooser;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -31,6 +37,52 @@ public class customerSignUp extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JTextFieldPlaceholder getAddressTextField() {
+        return addressTextField;
+    }
+
+    public JDateChooser getBirthDateChooser() {
+        return birthDateChooser;
+    }
+
+    public JTextFieldPlaceholder getIbanTextField() {
+        return ibanTextField;
+    }
+
+    public JButton getLogInBtn() {
+        return logInBtn;
+    }
+
+    public JTextFieldPlaceholder getNameTextField() {
+        return nameTextField;
+    }
+
+    public JPanel getNewSingup() {
+        return newSingup;
+    }
+
+    public JTextFieldPlaceholder getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JButton getSignInBtn() {
+        return signInBtn;
+    }
+
+    public JTextFieldPlaceholder getSurnameTextField() {
+        return surnameTextField;
+    }
+
+    public JTextFieldPlaceholder getTelephoneTextField() {
+        return telephoneTextField;
+    }
+
+    public JTextFieldPlaceholder getUsernameTextField() {
+        return usernameTextField;
+    }
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,7 +104,7 @@ public class customerSignUp extends javax.swing.JFrame {
         addressTextField = new JTextFieldPlaceholder("Address");
         surnameTextField = new JTextFieldPlaceholder("Surname");
         telephoneTextField = new JTextFieldPlaceholder("Telephone Number");
-        singInBtn = new javax.swing.JButton();
+        signInBtn = new javax.swing.JButton();
         logInBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -65,6 +117,23 @@ public class customerSignUp extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel3.setText("Already have an account?");
+
+        birthDateChooser.setForeground(new java.awt.Color(255, 255, 255));
+        birthDateChooser.setDateFormatString("yyyy MM dd");
+        birthDateChooser.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        JTextFieldDateEditor birthField = (JTextFieldDateEditor)birthDateChooser.getDateEditor();
+        birthField.setEditable(false);
+        birthField.setFont(new java.awt.Font("Segoe UI", 0, 11));
+
+        birthField.addPropertyChangeListener("foreground", event -> {
+            if(Color.BLACK.equals(event.getNewValue()))
+            birthField.setForeground(new Color(200,200,200));
+        });
+        JYearChooser year = birthDateChooser.getJCalendar().getYearChooser();
+        year.addPropertyChangeListener("foreground", event ->{
+            year.setForeground(new Color(200,200,200));
+        });
+        birthDateChooser.getJCalendar().setSundayForeground(new Color(255,0,0));
 
         usernameTextField.setText("Username");
         usernameTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -115,12 +184,12 @@ public class customerSignUp extends javax.swing.JFrame {
             }
         });
 
-        singInBtn.setBackground(new java.awt.Color(44, 73, 129));
-        singInBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        singInBtn.setText("Sign Up");
-        singInBtn.addActionListener(new java.awt.event.ActionListener() {
+        signInBtn.setBackground(new java.awt.Color(44, 73, 129));
+        signInBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        signInBtn.setText("Sign Up");
+        signInBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                singInBtnActionPerformed(evt);
+                signInBtnActionPerformed(evt);
             }
         });
 
@@ -154,7 +223,7 @@ public class customerSignUp extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(newSingupLayout.createSequentialGroup()
-                        .addComponent(singInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(signInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -191,7 +260,7 @@ public class customerSignUp extends javax.swing.JFrame {
                 .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(singInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(signInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(logInBtn)
                     .addComponent(jLabel3))
                 .addContainerGap(34, Short.MAX_VALUE))
@@ -237,9 +306,9 @@ public class customerSignUp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ibanTextFieldActionPerformed
 
-    private void singInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singInBtnActionPerformed
+    private void signInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_singInBtnActionPerformed
+    }//GEN-LAST:event_signInBtnActionPerformed
 
     private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
         // TODO add your handling code here:
@@ -260,37 +329,7 @@ public class customerSignUp extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(customerSignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(customerSignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(customerSignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(customerSignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new customerSignUp().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.common.components.JTextFieldPlaceholder addressTextField;
@@ -302,7 +341,7 @@ public class customerSignUp extends javax.swing.JFrame {
     private com.mycompany.common.components.JTextFieldPlaceholder nameTextField;
     private javax.swing.JPanel newSingup;
     private com.mycompany.common.components.JTextFieldPlaceholder passwordTextField;
-    private javax.swing.JButton singInBtn;
+    private javax.swing.JButton signInBtn;
     private com.mycompany.common.components.JTextFieldPlaceholder surnameTextField;
     private com.mycompany.common.components.JTextFieldPlaceholder telephoneTextField;
     private javax.swing.JLabel titleLabel;

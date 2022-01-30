@@ -196,8 +196,8 @@ public class customerLogIn extends javax.swing.JFrame {
         });
     }
     
-    public JButton getLogInButton(){
-        return this.logInBtn;
+    public JButton getSignUpButton(){
+        return this.signUpBtn;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
