@@ -13,7 +13,7 @@ import com.mycompany.common.model.dao.order.MenuEntity;
  */
 public class ProviderDto {
     
-    private String id;
+    private Long id;
     private String telephoneNumber;
     private String providerName;
     private String cuisine;
