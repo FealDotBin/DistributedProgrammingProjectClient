@@ -191,103 +191,103 @@
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="usernameTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Username"/>
+            <Property name="text" type="java.lang.String" value="Username (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernameTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Username&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Username (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="birthDateChooser">
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="nameTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Name"/>
+            <Property name="text" type="java.lang.String" value="Name (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Name&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Name (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="passwordTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Password"/>
+            <Property name="text" type="java.lang.String" value="Password (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Password&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Password (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="ibanTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="IBAN"/>
+            <Property name="text" type="java.lang.String" value="IBAN (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ibanTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;IBAN&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;IBAN (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="addressTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Address"/>
+            <Property name="text" type="java.lang.String" value="Address (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addressTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Address&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Address (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="surnameTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Surname"/>
+            <Property name="text" type="java.lang.String" value="Surname (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="surnameTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Surname&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Surname (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="telephoneTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Telephone Number"/>
+            <Property name="text" type="java.lang.String" value="Telephone Number (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="telephoneTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Telephone Number&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Telephone Number (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="providerNameTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Provider Name"/>
+            <Property name="text" type="java.lang.String" value="Provider Name (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="providerNameTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;IBAN&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Provider Name (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="cuisineTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cuisine"/>
+            <Property name="text" type="java.lang.String" value="Cuisine (required)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cuisineTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;IBAN&quot;)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Cuisine (required)&quot;)"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JCheckBox" name="deliveringCheckBox">
