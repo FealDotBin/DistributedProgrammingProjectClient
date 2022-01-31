@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +52,7 @@ public class MenuManagerController {
     private Navigator navigator;
     private MenuEntity menu;
     private DishEntity selectedDish;
+    private int selectedDishIndex;
     
     public MenuManagerController(Long providerId){
         this.providerId = providerId;
@@ -100,7 +103,9 @@ public class MenuManagerController {
             }
             else{
                 String ingredientsArray[] = ingredientsString.split(",");
-                ingredientsList.addAll(Arrays.asList(ingredientsArray));
+                for (String ingredient : ingredientsArray){
+                    ingredientsList.add(ingredient.trim());
+                }
             }
             
             String priceString = priceTextField.getText(true).trim();
@@ -152,6 +157,33 @@ public class MenuManagerController {
                       System.out.println("failed");
                 }
             });
+        });
+        
+        // attach listener on allOrdersTable to update selectedOrderTable and
+        // all associated buttons
+        menuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                
+                selectedDishIndex = menuTable.getSelectedRow();
+                if(!event.getValueIsAdjusting() && selectedDishIndex >= 0){
+                    
+                    // get selectedDish's fields
+                    selectedDish = menu.getDishEntities().get(selectedDishIndex);
+                    String dishName = selectedDish.getName();
+                    String description = selectedDish.getDescription();
+                    String ingredientsWithBrackets = selectedDish.getIngredients().toString();
+                    String ingredientsWithoutBrackets = ingredientsWithBrackets.substring(1, ingredientsWithBrackets.length() - 1);
+                    Double price = selectedDish.getPrice();
+                    
+                    // show fields on bottom components
+                    dishNameTextField.setText(dishName);
+                    descriptionTextArea.setText(description);
+                    ingredientsTextArea.setText(ingredientsWithoutBrackets);
+                    priceTextField.setText(price.toString());
+                }
+            }
         });
     }
     
