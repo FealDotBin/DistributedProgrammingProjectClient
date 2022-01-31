@@ -6,9 +6,17 @@
 package com.mycompany.providerclient.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.components.NoEditableTableModel;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -30,6 +38,68 @@ public class MenuManagerView extends javax.swing.JFrame {
         }
         initComponents();
     }
+
+    public JButton getAddBtn() {
+        return addBtn;
+    }
+
+    public JButton getDeleteBtn() {
+        return deleteBtn;
+    }
+
+    public JTextArea getDescriptionTextArea() {
+        return descriptionTextArea;
+    }
+
+    public JLabel getDishInfoLabel() {
+        return dishInfoLabel;
+    }
+
+    public JTextFieldPlaceholder getDishNameTextField() {
+        return dishNameTextField;
+    }
+
+    public JTextArea getIngredientsTextArea() {
+        return ingredientsTextArea;
+    }
+
+    public JPanel getjPanel1() {
+        return jPanel1;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public JScrollPane getjScrollPane2() {
+        return jScrollPane2;
+    }
+
+    public JScrollPane getjScrollPane3() {
+        return jScrollPane3;
+    }
+
+    public JScrollPane getjScrollPane4() {
+        return jScrollPane4;
+    }
+
+    public JLabel getMenuLabel() {
+        return menuLabel;
+    }
+
+    public JTable getMenuTable() {
+        return menuTable;
+    }
+
+    public JTextFieldPlaceholder getPriceTextField() {
+        return priceTextField;
+    }
+
+    public JButton getUpdateBtn() {
+        return updateBtn;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,8 +134,8 @@ public class MenuManagerView extends javax.swing.JFrame {
             }
         };
         dishInfoLabel = new javax.swing.JLabel();
-        dishNameTextFieldPlaceholder = new com.mycompany.common.components.JTextFieldPlaceholder("Dish name");
-        priceTextFieldPlaceholder = new com.mycompany.common.components.JTextFieldPlaceholder("Price");
+        dishNameTextField = new com.mycompany.common.components.JTextFieldPlaceholder("Dish name");
+        priceTextField = new com.mycompany.common.components.JTextFieldPlaceholder("Price");
         jScrollPane3 = new javax.swing.JScrollPane();
         descriptionTextArea = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -82,24 +152,13 @@ public class MenuManagerView extends javax.swing.JFrame {
         menuLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
         menuLabel.setText("MENU");
 
+        Vector menuTableHeader = new Vector();
+        menuTableHeader.addElement("Dish");
+        menuTableHeader.addElement("Description");
+        menuTableHeader.addElement("Ingredients");
+        menuTableHeader.addElement("Price");
         menuTable.setModel(new NoEditableTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Dish", "Description", "Ingredients", "Price"
-            },
+            menuTableHeader,
             -1
         ));
         jScrollPane2.setViewportView(menuTable);
@@ -107,18 +166,18 @@ public class MenuManagerView extends javax.swing.JFrame {
         dishInfoLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
         dishInfoLabel.setText("dish info");
 
-        dishNameTextFieldPlaceholder.setText("Dish name");
-        dishNameTextFieldPlaceholder.addActionListener(new java.awt.event.ActionListener() {
+        dishNameTextField.setText("Dish name");
+        dishNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dishNameTextFieldPlaceholderActionPerformed(evt);
+                dishNameTextFieldActionPerformed(evt);
             }
         });
 
-        priceTextFieldPlaceholder.setText("Price");
-        priceTextFieldPlaceholder.setPreferredSize(new java.awt.Dimension(73, 22));
-        priceTextFieldPlaceholder.addActionListener(new java.awt.event.ActionListener() {
+        priceTextField.setText("Price");
+        priceTextField.setPreferredSize(new java.awt.Dimension(73, 22));
+        priceTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceTextFieldPlaceholderActionPerformed(evt);
+                priceTextFieldActionPerformed(evt);
             }
         });
 
@@ -178,8 +237,8 @@ public class MenuManagerView extends javax.swing.JFrame {
                                 .addGap(58, 58, 58)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dishNameTextFieldPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(priceTextFieldPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dishNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,9 +267,9 @@ public class MenuManagerView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(dishNameTextFieldPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dishNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(priceTextFieldPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
@@ -237,13 +296,13 @@ public class MenuManagerView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void dishNameTextFieldPlaceholderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dishNameTextFieldPlaceholderActionPerformed
+    private void dishNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dishNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_dishNameTextFieldPlaceholderActionPerformed
+    }//GEN-LAST:event_dishNameTextFieldActionPerformed
 
-    private void priceTextFieldPlaceholderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldPlaceholderActionPerformed
+    private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_priceTextFieldPlaceholderActionPerformed
+    }//GEN-LAST:event_priceTextFieldActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
@@ -286,6 +345,7 @@ public class MenuManagerView extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MenuManagerView().setVisible(true);
             }
@@ -297,7 +357,7 @@ public class MenuManagerView extends javax.swing.JFrame {
     private javax.swing.JButton deleteBtn;
     private javax.swing.JTextArea descriptionTextArea;
     private javax.swing.JLabel dishInfoLabel;
-    private com.mycompany.common.components.JTextFieldPlaceholder dishNameTextFieldPlaceholder;
+    private com.mycompany.common.components.JTextFieldPlaceholder dishNameTextField;
     private javax.swing.JTextArea ingredientsTextArea;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -306,7 +366,7 @@ public class MenuManagerView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel menuLabel;
     private javax.swing.JTable menuTable;
-    private com.mycompany.common.components.JTextFieldPlaceholder priceTextFieldPlaceholder;
+    private com.mycompany.common.components.JTextFieldPlaceholder priceTextField;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
