@@ -55,12 +55,20 @@ public class CustomerProviderSelectionController {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = providerTable.getSelectedRow();
                 providerId = providerList.get(selectedRow).getId();
-                nav.fromProviderSelectionOrderCreation(CustomerProviderSelectionController.this);
+                nav.fromProviderSelectionToOrderCreation(CustomerProviderSelectionController.this);
             }
             
         });
         providerTable.setDefaultEditor(JButton.class, providerTableEditor);
         logOutButton = providerSelectionView.getLogoutBtn();
+        //action performed when log out is pressed: return to log out view
+        logOutButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectionToLogIn(CustomerProviderSelectionController.this);
+            }
+            
+        });
         
         // initialize retrofitBuilder and serviceApi
         retroBuild = new RetrofitBuilder();

@@ -102,7 +102,7 @@ public class ProviderSelection extends javax.swing.JFrame {
         providerTableHeader.addElement("");
         providerTable.setModel(new NoEditableTableModel(
             providerTableHeader,
-            -6
+            6
         ));
         providerTable.setDefaultRenderer(JButton.class,new JButtonRenderer(6, "Menù"));
         providerTable.setDefaultEditor(JButton.class,new JButtonEditor());

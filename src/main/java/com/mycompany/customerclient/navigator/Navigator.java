@@ -41,13 +41,19 @@ public class Navigator {
             new CustomerProviderSelectionController(customerId);
         }
         
-        public void fromProviderSelectionOrderCreation(CustomerProviderSelectionController c){
+        public void fromProviderSelectionToOrderCreation(CustomerProviderSelectionController c){
             c.disposeView();
             new OrderCreationController();
         }
         
+        public void fromProviderSelectionToLogIn(CustomerProviderSelectionController c){
+            c.disposeView();
+            new CustomerLogInController();
+        }
+        
         public void fromSignUpToLogIn(CustomerSignUpController c){
             c.disposeView();
+            customerId=null;
             new CustomerLogInController();
         }
         
