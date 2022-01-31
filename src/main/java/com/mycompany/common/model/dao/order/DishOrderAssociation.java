@@ -13,5 +13,13 @@ public class DishOrderAssociation {
     
     private DishEntity dish;
     private int quantity;
+
+    public DishEntity getDish() {
+        return dish;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
     
 }
