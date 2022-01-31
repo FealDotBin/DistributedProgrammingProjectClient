@@ -156,7 +156,10 @@ public class CustomerSignUpController {
                     @Override
                     public void onFailure(Call<CustomerEntity> call, Throwable t) {
                         // Log error here since request failed
-                        System.out.println("failed");
+                        JOptionPane.showMessageDialog(signUpView,
+                                "Contact you system administrator",
+                                "CRITICAL ERROR",
+                                JOptionPane.ERROR_MESSAGE);
 
                     }
 

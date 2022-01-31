@@ -11,6 +11,7 @@ import com.mycompany.common.model.dto.user.ProviderDto;
 import com.mycompany.common.model.dto.user.RiderDto;
 import com.mycompany.common.model.enumerations.OrderState;
 import com.mycompany.common.model.enumerations.OrderType;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author aferr
  */
-public class OrderDto {
+public class OrderDto implements Serializable{
     
     private Long id;
     private List<DishOrderAssociation> dishOrderAssociations;
@@ -27,7 +28,7 @@ public class OrderDto {
     private RiderDto rider;
     private OrderType orderType;
     private OrderState orderState;
-    private LocalDateTime deliveryTime;
+    private String deliveryTime;
     private double price;
     
     

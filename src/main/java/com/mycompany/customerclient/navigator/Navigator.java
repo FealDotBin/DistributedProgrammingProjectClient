@@ -9,6 +9,7 @@ import com.mycompany.navigator.*;
 import com.mycompany.customerclient.controller.CustomerLogInController;
 import com.mycompany.customerclient.controller.CustomerProviderSelectionController;
 import com.mycompany.customerclient.controller.CustomerSignUpController;
+import com.mycompany.customerclient.controller.CustomerUpdateController;
 import com.mycompany.customerclient.controller.OrderCreationController;
 
 /**
@@ -60,6 +61,18 @@ public class Navigator {
         public void fromLogInToSingUp(CustomerLogInController c){
             c.disposeView();
             new CustomerSignUpController();
+        }
+        
+        public void fromUpdatetoProviderSelection(CustomerUpdateController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerProviderSelectionController(customerId);
+        }
+        
+        public void fromUpdatetoLogOut(CustomerUpdateController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
         }
         
 }
