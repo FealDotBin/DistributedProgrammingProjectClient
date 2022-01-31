@@ -5,6 +5,7 @@
  */
 package com.mycompany.customerclient.navigator;
     
+import com.mycompany.customerclient.controller.CustomerBalanceController;
 import com.mycompany.navigator.*;
 import com.mycompany.customerclient.controller.CustomerLogInController;
 import com.mycompany.customerclient.controller.CustomerProviderSelectionController;
@@ -74,5 +75,24 @@ public class Navigator {
            customerId=null;
            new CustomerLogInController();
         }
+        
+        public void fromBalancetoLogOut(CustomerBalanceController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
+        }
+        
+        public void fromBalancetoUpdate(CustomerBalanceController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerUpdateController(customerId);
+        }
+        
+        public void fromBalancetoProviderSelection(CustomerBalanceController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerProviderSelectionController(customerId);
+        }
+        
         
 }

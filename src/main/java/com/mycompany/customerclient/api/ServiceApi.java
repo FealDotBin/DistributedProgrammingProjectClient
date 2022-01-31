@@ -39,4 +39,8 @@ public interface ServiceApi {
     @GET("customer/{customer-id}/current-order")
     Call<OrderDto> getCurrentOrderDTO(@Path("customer-id") Long customerId);
     
+    @PUT("customer/{customer-id}/balance")
+    Call<Object> increaseBalance(@Path("customer-id") Long customerId, @Query ("value") double value);
+    
+    
 }

@@ -82,7 +82,7 @@ public class CustomerUpdateController {
         retroBuild = new RetrofitBuilder();
         apiService = retroBuild.getRetrofit().create(ServiceApi.class);
         
-        //Set home button text depend on the presence of current order
+         //Set home button text and his action listener based on the presence of current order
         Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
         currentOrderCall.enqueue(new Callback<OrderDto>(){
             @Override
@@ -112,6 +112,7 @@ public class CustomerUpdateController {
             
         });
 
+        // When logout button is pressed diplay logIn view
         logOutButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -163,7 +164,7 @@ public class CustomerUpdateController {
 
         });
 
-        //Action perfomed when update button is pressed: read all field from view, validate them, create a new CustomerEnity,
+        //Action perfomed when update confitm button is pressed: read increment from view, validate it, calculate new balance,
         //send it to server and wait for response.
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -218,7 +219,7 @@ public class CustomerUpdateController {
                     return;
                 }
 
-                //Request to server for creating a new Customer
+                //Request to server for update Customer with customerId
                 CustomerEntity newCustomer = new CustomerEntity(CustomerUpdateController.this.customerId,username, password, name, surname, formattedBirthDate, iban, telephoneNumber, address);
                 Call<CustomerEntity> call2 = apiService.updateCustomer(newCustomer);
 
