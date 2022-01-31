@@ -133,16 +133,16 @@ public class SignUpView extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         birthDateLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        usernameTextField = new JTextFieldPlaceholder("Username");
+        usernameTextField = new JTextFieldPlaceholder("Username (required)");
         birthDateChooser = new com.toedter.calendar.JDateChooser();
-        nameTextField = new JTextFieldPlaceholder("Name");
-        passwordTextField = new JTextFieldPlaceholder("Password");
-        ibanTextField = new JTextFieldPlaceholder("IBAN");
-        addressTextField = new JTextFieldPlaceholder("Address");
-        surnameTextField = new JTextFieldPlaceholder("Surname");
-        telephoneTextField = new JTextFieldPlaceholder("Telephone Number");
-        providerNameTextField = new JTextFieldPlaceholder("IBAN");
-        cuisineTextField = new JTextFieldPlaceholder("IBAN");
+        nameTextField = new JTextFieldPlaceholder("Name (required)");
+        passwordTextField = new JTextFieldPlaceholder("Password (required)");
+        ibanTextField = new JTextFieldPlaceholder("IBAN (required)");
+        addressTextField = new JTextFieldPlaceholder("Address (required)");
+        surnameTextField = new JTextFieldPlaceholder("Surname (required)");
+        telephoneTextField = new JTextFieldPlaceholder("Telephone Number (required)");
+        providerNameTextField = new JTextFieldPlaceholder("Provider Name (required)");
+        cuisineTextField = new JTextFieldPlaceholder("Cuisine (required)");
         deliveringCheckBox = new javax.swing.JCheckBox();
         takeAwayCheckBox = new javax.swing.JCheckBox();
         ownRiderCheckBox = new javax.swing.JCheckBox();
@@ -170,63 +170,63 @@ public class SignUpView extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel3.setText("Already have an account?");
 
-        usernameTextField.setText("Username");
+        usernameTextField.setText("Username (required)");
         usernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameTextFieldActionPerformed(evt);
             }
         });
 
-        nameTextField.setText("Name");
+        nameTextField.setText("Name (required)");
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameTextFieldActionPerformed(evt);
             }
         });
 
-        passwordTextField.setText("Password");
+        passwordTextField.setText("Password (required)");
         passwordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordTextFieldActionPerformed(evt);
             }
         });
 
-        ibanTextField.setText("IBAN");
+        ibanTextField.setText("IBAN (required)");
         ibanTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ibanTextFieldActionPerformed(evt);
             }
         });
 
-        addressTextField.setText("Address");
+        addressTextField.setText("Address (required)");
         addressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addressTextFieldActionPerformed(evt);
             }
         });
 
-        surnameTextField.setText("Surname");
+        surnameTextField.setText("Surname (required)");
         surnameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 surnameTextFieldActionPerformed(evt);
             }
         });
 
-        telephoneTextField.setText("Telephone Number");
+        telephoneTextField.setText("Telephone Number (required)");
         telephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 telephoneTextFieldActionPerformed(evt);
             }
         });
 
-        providerNameTextField.setText("Provider Name");
+        providerNameTextField.setText("Provider Name (required)");
         providerNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 providerNameTextFieldActionPerformed(evt);
             }
         });
 
-        cuisineTextField.setText("Cuisine");
+        cuisineTextField.setText("Cuisine (required)");
         cuisineTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cuisineTextFieldActionPerformed(evt);
