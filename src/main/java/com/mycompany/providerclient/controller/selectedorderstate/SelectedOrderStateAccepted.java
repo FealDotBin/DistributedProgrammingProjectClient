@@ -5,9 +5,10 @@
  */
 package com.mycompany.providerclient.controller.selectedorderstate;
 
-import com.mycompany.providerclient.controller.HomeController;
+import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
+import com.mycompany.common.model.enumerations.OrderType;
 import com.mycompany.providerclient.view.HomeView;
-import javax.swing.JButton;
 
 /**
  *
@@ -15,27 +16,27 @@ import javax.swing.JButton;
  */
 public class SelectedOrderStateAccepted extends SelectedOrderState {
     
-    public SelectedOrderStateAccepted(HomeView homeView, HomeController.Order selectedOrder, int selectedOrderIndex){
+    public SelectedOrderStateAccepted(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
     @Override
     public void updateButton(){
-        String orderType = selectedOrder.getOrderType();
+        OrderType orderType = selectedOrder.getOrderType();
         
-        if(orderType.equals("TAKE_AWAY")){
+        if(orderType.equals(OrderType.TAKE_AWAY)){
             acceptBtn.setEnabled(false);
             shipBtn.setEnabled(false);
             completeBtn.setEnabled(true);
             refuseBtn.setEnabled(false);
         }
-        else if(orderType.equals("DELIVERY_NO_RIDER")){
+        else if(orderType.equals(OrderType.DELIVERY_NORIDER)){
             acceptBtn.setEnabled(false);
             shipBtn.setEnabled(true);
             completeBtn.setEnabled(false);
             refuseBtn.setEnabled(false);
         }
-        else if(orderType.equals("DELIVERY_RIDERS")){
+        else if(orderType.equals(OrderType.DELIVERY_RIDERS)){
             acceptBtn.setEnabled(false);
             shipBtn.setEnabled(false);
             completeBtn.setEnabled(false);
@@ -45,18 +46,18 @@ public class SelectedOrderStateAccepted extends SelectedOrderState {
     
     @Override
     public void ship(){
-        String orderType = selectedOrder.getOrderType();
-        if(orderType.equals("DELIVERY_NO_RIDER")){
-            selectedOrder.setOrderState("SHIPPED");
+        OrderType orderType = selectedOrder.getOrderType();
+        if(orderType.equals(OrderType.DELIVERY_NORIDER)){
+            selectedOrder.setOrderState(OrderState.SHIPPED);
         }
         updateView();
     }
     
     @Override
     public void complete(){
-        String orderType = selectedOrder.getOrderType();
-        if(orderType.equals("TAKE_AWAY")){
-            selectedOrder.setOrderState("COMPLETED");
+        OrderType orderType = selectedOrder.getOrderType();
+        if(orderType.equals(OrderType.TAKE_AWAY)){
+            selectedOrder.setOrderState(OrderState.COMPLETED);
         }
         updateView();
     }

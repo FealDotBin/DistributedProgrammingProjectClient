@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller.selectedorderstate;
 
+import com.mycompany.common.model.dto.order.OrderDto;
 import com.mycompany.providerclient.controller.HomeController;
 import com.mycompany.providerclient.view.HomeView;
 import javax.swing.JButton;
@@ -15,7 +16,7 @@ import javax.swing.JButton;
  */
 public class SelectedOrderStateSemiAccepted extends SelectedOrderState{
     
-    public SelectedOrderStateSemiAccepted(HomeView homeView, HomeController.Order selectedOrder, int selectedOrderIndex){
+    public SelectedOrderStateSemiAccepted(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
