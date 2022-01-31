@@ -19,6 +19,13 @@ public class DishEntity {
     private List<String> ingredients;
     private double price;
 
+    public DishEntity(String name, String description, List<String> ingredients, double price){
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.price = price;
+    }
+    
     public Long getId() {
         return id;
     }
