@@ -15,5 +15,21 @@ public class RiderDto {
     private String name;
     private String telephoneNumber;
     private Long id;
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
     
 }
