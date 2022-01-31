@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.mycompany.common.model.dto.order.OrderDto;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderState;
 import com.mycompany.providerclient.view.HomeView;
 
@@ -14,7 +15,7 @@ import com.mycompany.providerclient.view.HomeView;
  */
 public class SelectedOrderStateCompleted extends SelectedOrderState {
 
-    public SelectedOrderStateCompleted(HomeView homeView, HomeController.Order selectedOrder, int selectedOrderIndex) {
+    public SelectedOrderStateCompleted(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex) {
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     

@@ -59,7 +59,7 @@ public class OrderDto implements Serializable{
         this.orderState = orderState;
     }
 
-    public void setDeliveryTime(LocalDateTime deliveryTime) {
+    public void setDeliveryTime(String deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 
@@ -95,7 +95,7 @@ public class OrderDto implements Serializable{
         return orderState;
     }
 
-    public LocalDateTime getDeliveryTime() {
+    public String getDeliveryTime() {
         return deliveryTime;
     }
 
