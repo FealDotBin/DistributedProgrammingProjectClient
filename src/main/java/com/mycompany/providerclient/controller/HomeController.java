@@ -5,8 +5,15 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateCompleted;
 import com.mycompany.common.components.NoEditableTableModel;
+import com.mycompany.common.model.dao.order.DishEntity;
+import com.mycompany.common.model.dao.order.DishOrderAssociation;
+import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
+import com.mycompany.common.model.enumerations.OrderType;
+import com.mycompany.providerclient.api.ServiceApi;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderState;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateAccepted;
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateNotSelected;
@@ -16,14 +23,21 @@ import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderS
 import com.mycompany.providerclient.controller.selectedorderstate.SelectedOrderStateShipped;
 import com.mycompany.providerclient.navigator.Navigator;
 import com.mycompany.providerclient.view.HomeView;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  *
@@ -41,10 +55,12 @@ public class HomeController {
     private JButton availableBtn;
     private JTable allOrdersTable;
     private JTable selectedOrderTable;
+    private RetrofitBuilder retroBuild;
+    private ServiceApi serviceApi;
     private Long providerId;
-    private LinkedList<Order> orderList;
+    private List<OrderDto> orderList;
     private SelectedOrderState selectedOrderState;
-    private Order selectedOrder;
+    private OrderDto selectedOrder;
     private Navigator navigator;
 
     public HomeController(Long providerId) {
@@ -71,23 +87,26 @@ public class HomeController {
         completeBtn.setEnabled(false);
         refuseBtn.setEnabled(false);
         
-        // initialize orderList
-        orderList = new LinkedList<>();
-        initOrderList();
-        
         // initialize selectedOrderState and selectedOrder
         selectedOrderState = new SelectedOrderStateNotSelected(homeView);
         selectedOrder = null;
         
+        // initialize retrofitBuilder and serviceApi
+        retroBuild = new RetrofitBuilder();
+        serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
+        
+        // fetch all orders from server
+        orderList = fetchAllOrders();
+        
         // show orders on allOrdersTable
         NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
-        for(Order order : orderList){
+        for(OrderDto order : orderList){
             Object[] orderRow = new Object[5];
-            orderRow[0] = order.customerName;
-            orderRow[1] = order.riderName;
-            orderRow[2] = order.orderType;
-            orderRow[3] = order.orderState;
-            orderRow[4] = order.deliveryTime;
+            orderRow[0] = order.getCustomer().getName();
+            orderRow[1] = order.getRider().getName();
+            orderRow[2] = order.getOrderType();
+            orderRow[3] = order.getOrderState();
+            orderRow[4] = order.getDeliveryTime();
             allOrdersTableModel.addRow(orderRow);
         }
         
@@ -108,35 +127,36 @@ public class HomeController {
                     
                     // get selected Order
                     selectedOrder = orderList.get(selectedOrderIndex);
-                    List<Dish> dishList = selectedOrder.getDishList();
+                    List<DishOrderAssociation> dishOrderAssociationList = selectedOrder.getDishOrderAssociations();
                     
                     // put order's info in selectedOrderTable
-                    for(Dish dish : dishList){
+                    for(DishOrderAssociation dishOrderAssociation : dishOrderAssociationList){
+                        DishEntity dish = dishOrderAssociation.getDish();
                         Object[] orderRow = new Object[2];
                         orderRow[0] = dish.getName();
-                        orderRow[1] = dish.getQuantity();
+                        orderRow[1] = dishOrderAssociation.getQuantity();
                         selectedOrderTableModel.addRow(orderRow);
                     }
                     
                     // change current state based on selected order
-                    String orderState = selectedOrder.getOrderState();
+                    OrderState orderState = selectedOrder.getOrderState();
                     switch(orderState){
-                        case "PENDING":
+                        case PENDING:
                             selectedOrderState = new SelectedOrderStatePending(homeView, selectedOrder, selectedOrderIndex);
                             break;
-                        case "SEMI_ACCEPTED":
+                        case SEMI_ACCEPTED:
                             selectedOrderState = new SelectedOrderStateSemiAccepted(homeView, selectedOrder, selectedOrderIndex);
                             break;
-                        case "ACCEPTED":
+                        case ACCEPTED:
                             selectedOrderState = new SelectedOrderStateAccepted(homeView, selectedOrder, selectedOrderIndex);
                             break;
-                        case "SHIPPED":
+                        case SHIPPED:
                             selectedOrderState = new SelectedOrderStateShipped(homeView, selectedOrder, selectedOrderIndex);
                             break;
-                        case "COMPLETED":
+                        case COMPLETED:
                             selectedOrderState = new SelectedOrderStateCompleted(homeView, selectedOrder, selectedOrderIndex);
                             break;
-                        case "REFUSED":
+                        case REFUSED:
                             selectedOrderState = new SelectedOrderStateRefused(homeView, selectedOrder, selectedOrderIndex);
                             break;
                         default:
@@ -152,9 +172,9 @@ public class HomeController {
             // <- qua ci va il codice della richiesta al server
             // se va bene mi cambio lo stato
             // se va male non faccio niente
-            String orderType = selectedOrder.getOrderType();
+            OrderType orderType = selectedOrder.getOrderType();
             
-            if(!orderType.equals("TAKE_AWAY")){
+            if(!orderType.equals(OrderType.TAKE_AWAY)){
                 // ask user if he wants to use riders
                 int wantRiders = JOptionPane.showConfirmDialog(homeView,
                     "Do you want to use our riders?", 
@@ -163,10 +183,10 @@ public class HomeController {
                 
                 // update order's type according to user response
                 if(wantRiders == JOptionPane.YES_OPTION){
-                    selectedOrder.setOrderType("DELIVERY_RIDERS");
+                    selectedOrder.setOrderType(OrderType.DELIVERY_RIDERS);
                 }
                 else if(wantRiders == JOptionPane.NO_OPTION) {
-                    selectedOrder.setOrderType("DELIVERY_NO_RIDER");
+                    selectedOrder.setOrderType(OrderType.DELIVERY_NORIDER);
                 }
                 else {
                     return;
@@ -218,78 +238,166 @@ public class HomeController {
         });
     }
     
+    private List<OrderDto> fetchAllOrders(){
+        LinkedList<OrderDto> allOrders = new LinkedList<>();
+        
+        // fetch all pending orders
+        Call<List<OrderDto>> getPendingOrdersCall = serviceApi.getPendingOrders(providerId);
+        getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                    if(response.isSuccessful()){ // status code tra 200-299
+                        LinkedList<OrderDto> pendingOrders = (LinkedList<OrderDto>) response.body();
+                        allOrders.addAll(pendingOrders);
+                    }
+                    else{ // in caso di errori
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JOptionPane.showMessageDialog(homeView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                    // Log error here since request failed
+                      System.out.println("failed");
+                }
+        });
+        
+        // fetch all accepted orders
+        Call<List<OrderDto>> getAcceptedOrdersCall = serviceApi.getAcceptedOrders(providerId);
+        getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                    if(response.isSuccessful()){ // status code tra 200-299
+                        LinkedList<OrderDto> acceptedOrders = (LinkedList<OrderDto>) response.body();
+                        allOrders.addAll(acceptedOrders);
+                    }
+                    else{ // in caso di errori
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JOptionPane.showMessageDialog(homeView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                    // Log error here since request failed
+                      System.out.println("failed");
+                }
+        });
+        
+        // fetch all semi-accepted orders
+        Call<List<OrderDto>> getSemiAcceptedOrdersCall = serviceApi.getSemiAcceptedOrders(providerId);
+        getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                    if(response.isSuccessful()){ // status code tra 200-299
+                        LinkedList<OrderDto> semiAcceptedOrders = (LinkedList<OrderDto>) response.body();
+                        allOrders.addAll(semiAcceptedOrders);
+                    }
+                    else{ // in caso di errori
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JOptionPane.showMessageDialog(homeView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                    // Log error here since request failed
+                      System.out.println("failed");
+                }
+        });
+        
+        // fetch all shipped orders
+        Call<List<OrderDto>> getShippedOrdersCall = serviceApi.getShippedOrders(providerId);
+        getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                    if(response.isSuccessful()){ // status code tra 200-299
+                        LinkedList<OrderDto> shippedOrders = (LinkedList<OrderDto>) response.body();
+                        allOrders.addAll(shippedOrders);
+                    }
+                    else{ // in caso di errori
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JOptionPane.showMessageDialog(homeView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                    // Log error here since request failed
+                      System.out.println("failed");
+                }
+        });
+        
+        // fetch all completed orders
+        Call<List<OrderDto>> getCompletedOrdersCall = serviceApi.getCompletedOrders(providerId);
+        getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                    if(response.isSuccessful()){ // status code tra 200-299
+                        LinkedList<OrderDto> completedOrders = (LinkedList<OrderDto>) response.body();
+                        allOrders.addAll(completedOrders);
+                    }
+                    else{ // in caso di errori
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JOptionPane.showMessageDialog(homeView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                    // Log error here since request failed
+                      System.out.println("failed");
+                }
+        });
+        
+        return allOrders;
+    }
+    
     public void disposeView(){
         homeView.dispose();
     }
 
-    public void initOrderList(){
-        // ORDER 1 - DISH 1
-        LinkedList<String> ingredients11 = new LinkedList<>();
-        ingredients11.add("in11");
-        ingredients11.add("in11+");
-        ingredients11.add("in11++");
-        Dish dish11 = new Dish(11, "dish11", "dish11", ingredients11, 1);
-        
-        // ORDER 1 - DISH 2
-        LinkedList<String> ingredients12 = new LinkedList<>();
-        ingredients12.add("in12");
-        ingredients12.add("in12+");
-        ingredients12.add("in12++");
-        Dish dish12 = new Dish(12, "dish12", "dish12", ingredients12, 2);
-        
-        // ORDER 1 - ADD DISHES
-        LinkedList<Dish> dishList1 = new LinkedList<>();
-        dishList1.add(dish11);
-        dishList1.add(dish12);
-        Order order1 = new Order("customer1", "", "TAKE_AWAY", "PENDING",
-                "29-01-22-13:30", dishList1);
-        orderList.add(order1);
-        
-        // ORDER 2 - DISH 1
-        LinkedList<String> ingredients21 = new LinkedList<>();
-        ingredients11.add("in21");
-        ingredients11.add("in21+");
-        ingredients11.add("in21++");
-        Dish dish22 = new Dish(21, "dish21", "dish21", ingredients21, 1);
-        
-        // ORDER 2 - DISH 2
-        LinkedList<String> ingredients22 = new LinkedList<>();
-        ingredients12.add("in22");
-        ingredients12.add("in22+");
-        ingredients12.add("in22++");
-        Dish dish21 = new Dish(22, "dish22", "dish22", ingredients12, 2);
-        
-        // ORDER 2 - ADD DISHES
-        LinkedList<Dish> dishList2 = new LinkedList<>();
-        dishList2.add(dish21);
-        dishList2.add(dish22);
-        Order order2 = new Order("customer2", "", "DELIVERY", "PENDING", 
-                "29-01-22-13:30", dishList2);
-        orderList.add(order2);
-        
-        // ORDER 3 - DISH 1
-        LinkedList<String> ingredients31 = new LinkedList<>();
-        ingredients31.add("in31");
-        ingredients31.add("in31+");
-        ingredients31.add("in31++");
-        Dish dish31 = new Dish(31, "dish31", "dish31", ingredients31, 1);
-        
-        // ORDER 3 - DISH 2
-        LinkedList<String> ingredients32 = new LinkedList<>();
-        ingredients32.add("in32");
-        ingredients32.add("in32+");
-        ingredients32.add("in32++");
-        Dish dish32 = new Dish(32, "dish32", "dish32", ingredients32, 2);
-        
-        // ORDER 3 - ADD DISHES
-        LinkedList<Dish> dishList3 = new LinkedList<>();
-        dishList3.add(dish31);
-        dishList3.add(dish32);
-        Order order3 = new Order("customer3", "", "DELIVERY", "PENDING",
-                "29-01-22-13:30", dishList3);
-        orderList.add(order3);
-    }
-    
     public static void main(String args[]) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -297,106 +405,6 @@ public class HomeController {
                 HomeController c = new HomeController(1L);
             }
         });
-    }
-
-    /**
-     * DISH
-     */
-    private class Dish{
-        
-        private int id;
-        private String name;
-        private String description;
-        private List<String> ingredients;
-        private int quantity;
-        
-        public Dish(int id, String name, String description, List<String> ingriedients, int quantity){
-            this.id = id;
-            this.name = name;
-            this.description = description;
-            this.ingredients = ingriedients;
-            this.quantity = quantity;
-        }
-
-        public int getId() {
-            return id;
-        }
-        
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public List<String> getIngredients() {
-            return ingredients;
-        }
-        
-        public int getQuantity(){
-            return quantity;
-        }
-    }
-    
-    /**
-     * ORDER 
-     */
-    public class Order{
-        
-        private String customerName;
-        private String riderName;
-        private String orderType;
-        private String orderState;
-        private String deliveryTime;
-        private List<Dish> dishList;
-        
-        public Order(String customerName, String riderName, String orderType,
-                String orderState, String deliveryTime, List<Dish> dishList){
-            this.customerName = customerName;
-            this.riderName = riderName;
-            this.orderType = orderType;
-            this.orderState = orderState;
-            this.deliveryTime = deliveryTime;
-            this.dishList = dishList;
-        }
-
-        public String getCustomerName() {
-            return customerName;
-        }
-
-        public String getRiderName() {
-            return riderName;
-        }
-
-        public String getOrderType() {
-            return orderType;
-        }
-
-        public String getOrderState() {
-            return orderState;
-        }
-
-        public String getDeliveryTime() {
-            return deliveryTime;
-        }
-
-        public List<Dish> getDishList() {
-            return dishList;
-        }
-
-        public void setRiderName(String riderName) {
-            this.riderName = riderName;
-        }
-
-        public void setOrderType(String orderType) {
-            this.orderType = orderType;
-        }
-
-        public void setOrderState(String orderState) {
-            this.orderState = orderState;
-        }
-        
     }
     
 }
