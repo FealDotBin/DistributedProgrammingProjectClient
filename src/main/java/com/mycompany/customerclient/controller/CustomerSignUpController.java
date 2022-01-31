@@ -44,6 +44,8 @@ public class CustomerSignUpController {
     private JButton signUpButton;
     private JButton logInButton;
     private customerSignUp signUpView;
+    private RetrofitBuilder retroBuild;
+    private ServiceApi apiService;
     private Navigator nav;
 
     public CustomerSignUpController() {
@@ -62,6 +64,10 @@ public class CustomerSignUpController {
         logInButton = signUpView.getLogInBtn();
         //View navigator creation
         nav = Navigator.getInstance();
+        
+        // initialize retrofitBuilder and serviceApi
+        retroBuild = new RetrofitBuilder();
+        apiService = retroBuild.getRetrofit().create(ServiceApi.class);
 
         //Action perfomed when sign up button is pressed: read all field from view, validate them, create a new CustomerEnity,
         //send it to server and wait for response.
@@ -123,8 +129,7 @@ public class CustomerSignUpController {
                 }
                 
                 //Request to server for creating a new Customer
-                RetrofitBuilder retroBuild = new RetrofitBuilder();
-                ServiceApi apiService = retroBuild.getRetrofit().create(ServiceApi.class);
+                
                 CustomerEntity c2 = new CustomerEntity(username, password, name, surname, formattedBirthDate , iban, telephoneNumber, address);
                 Call<CustomerEntity> call2 = apiService.createCustomer(c2);
 

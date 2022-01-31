@@ -9,9 +9,11 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.mycompany.common.components.JButtonEditor;
 import com.mycompany.common.components.JButtonRenderer;
 import com.mycompany.common.components.NoEditableTableModel;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -33,6 +35,15 @@ public class ProviderSelection extends javax.swing.JFrame {
         }
         initComponents();
     }
+
+    public JButton getLogoutBtn() {
+        return logoutBtn;
+    }
+
+    public JTable getProviderTable() {
+        return providerTable;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,23 +92,17 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        Vector providerTableHeader = new Vector();
+        providerTableHeader.addElement("Provider Name");
+        providerTableHeader.addElement("Cuisine");
+        providerTableHeader.addElement("Home Delivery");
+        providerTableHeader.addElement("Take Away");
+        providerTableHeader.addElement("Address");
+        providerTableHeader.addElement("Telephone");
+        providerTableHeader.addElement("");
         providerTable.setModel(new NoEditableTableModel(
-            new Object [][] {
-                {null, null, true, false,null, null, new javax.swing.JButton()},
-                {null, null, false, true, null, null, new javax.swing.JButton()},
-                {null, null, true, true, null, null, new javax.swing.JButton()},
-                {null, null, false, false, null, null, new javax.swing.JButton()}
-            },
-            new String [] {
-                "<html><div style = 'text-align: center'>Provider Name</div></html>\"",
-                "<html><div style = 'text-align: center'>Cuisine</div></html>\"",
-                "<html><div style = 'text-align: center'>Do deliviring</div></html>\"",
-                "<html><div style = 'text-align: center'>Do Take away</div></html>\"",
-                "<html><div style = 'text-align: center'>Address</div></html>\"",
-                "<html><div style = 'text-align: center'>Telephone</div></html>\"",
-                ""
-            },
-            6
+            providerTableHeader,
+            -6
         ));
         providerTable.setDefaultRenderer(JButton.class,new JButtonRenderer(6, "Menù"));
         providerTable.setDefaultEditor(JButton.class,new JButtonEditor());
@@ -174,37 +179,7 @@ public class ProviderSelection extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProviderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProviderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProviderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProviderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ProviderSelection().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

@@ -13,7 +13,7 @@ import com.mycompany.common.model.dao.order.MenuEntity;
  */
 public class ProviderDto {
     
-    private String id;
+    private Long id;
     private String telephoneNumber;
     private String providerName;
     private String cuisine;
@@ -21,5 +21,39 @@ public class ProviderDto {
     private Boolean doDelivering;
     private Boolean doTakeAway;
     private MenuEntity menu;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public String getCuisine() {
+        return cuisine;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Boolean getDoDelivering() {
+        return doDelivering;
+    }
+
+    public Boolean getDoTakeAway() {
+        return doTakeAway;
+    }
+
+    public MenuEntity getMenu() {
+        return menu;
+    }
+    
+    
     
 }

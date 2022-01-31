@@ -7,6 +7,7 @@ package com.mycompany.customerclient.navigator;
     
 import com.mycompany.navigator.*;
 import com.mycompany.customerclient.controller.CustomerLogInController;
+import com.mycompany.customerclient.controller.CustomerProviderSelectionController;
 import com.mycompany.customerclient.controller.CustomerSignUpController;
 import com.mycompany.customerclient.controller.OrderCreationController;
 
@@ -17,7 +18,7 @@ import com.mycompany.customerclient.controller.OrderCreationController;
 public class Navigator {
         
         private static Navigator instance;
-        
+        private Long customerId;
         private Navigator(){
             
         }
@@ -30,6 +31,17 @@ public class Navigator {
         }
         
         public void fromLogInToOrderCreation(CustomerLogInController c){
+            c.disposeView();
+            new OrderCreationController();
+        }
+        
+        public void fromLogInToProviderSelection(CustomerLogInController c){
+            c.disposeView();
+            customerId=c.getCustomerId();
+            new CustomerProviderSelectionController(customerId);
+        }
+        
+        public void fromProviderSelectionOrderCreation(CustomerProviderSelectionController c){
             c.disposeView();
             new OrderCreationController();
         }
