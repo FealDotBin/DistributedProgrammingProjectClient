@@ -44,6 +44,7 @@ public class CustomerSignUpController {
     private JButton signUpButton;
     private JButton logInButton;
     private customerSignUp signUpView;
+    private Navigator nav;
 
     public CustomerSignUpController() {
         //View creation
@@ -59,6 +60,8 @@ public class CustomerSignUpController {
         telephoneField = signUpView.getTelephoneTextField();
         signUpButton = signUpView.getSignInBtn();
         logInButton = signUpView.getLogInBtn();
+        //View navigator creation
+        nav = Navigator.getInstance();
 
         //Action perfomed when sign up button is pressed: read all field from view, validate them, create a new CustomerEnity,
         //send it to server and wait for response.
@@ -119,6 +122,7 @@ public class CustomerSignUpController {
                     return;
                 }
                 
+                //Request to server for creating a new Customer
                 RetrofitBuilder retroBuild = new RetrofitBuilder();
                 ServiceApi apiService = retroBuild.getRetrofit().create(ServiceApi.class);
                 CustomerEntity c2 = new CustomerEntity(username, password, name, surname, formattedBirthDate , iban, telephoneNumber, address);
@@ -131,7 +135,10 @@ public class CustomerSignUpController {
 
                         if (response.isSuccessful()) { // status code tra 200-299
                            JOptionPane.showMessageDialog(signUpView, "NOW YOU ARE  A COSTUMER OF OUR SYSTEM", "Sign up success", JOptionPane.INFORMATION_MESSAGE);
-                        } else { // in caso di errori
+                           
+                           //If sign up procedure is correct change current view with log in one
+                           nav.fromSignUpToLogIn(CustomerSignUpController.this);
+                        } else { // if server error occurs
                             try {
                                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                                 JOptionPane.showMessageDialog(signUpView,jObjError.get("message") , "Server error", JOptionPane.ERROR_MESSAGE);
@@ -158,7 +165,7 @@ public class CustomerSignUpController {
         logInButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigator nav = Navigator.getInstance();
+                
                 nav.fromSignUpToLogIn(CustomerSignUpController.this);
             }
         
