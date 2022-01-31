@@ -30,6 +30,42 @@ public class OrderDto {
     private LocalDateTime deliveryTime;
     private double price;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDishOrderAssociations(List<DishOrderAssociation> dishOrderAssociations) {
+        this.dishOrderAssociations = dishOrderAssociations;
+    }
+
+    public void setCustomer(CustomerDto customer) {
+        this.customer = customer;
+    }
+
+    public void setProvider(ProviderDto provider) {
+        this.provider = provider;
+    }
+
+    public void setRider(RiderDto rider) {
+        this.rider = rider;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
+    }
+
+    public void setDeliveryTime(LocalDateTime deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public Long getId() {
         return id;
     }
@@ -65,7 +101,5 @@ public class OrderDto {
     public double getPrice() {
         return price;
     }
-    
-    
     
 }
