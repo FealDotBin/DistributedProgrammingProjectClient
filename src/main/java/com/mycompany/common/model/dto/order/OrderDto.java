@@ -29,6 +29,42 @@ public class OrderDto {
     private OrderState orderState;
     private LocalDateTime deliveryTime;
     private double price;
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<DishOrderAssociation> getDishOrderAssociations() {
+        return dishOrderAssociations;
+    }
+
+    public CustomerDto getCustomer() {
+        return customer;
+    }
+
+    public ProviderDto getProvider() {
+        return provider;
+    }
+
+    public RiderDto getRider() {
+        return rider;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public OrderState getOrderState() {
+        return orderState;
+    }
+
+    public LocalDateTime getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public double getPrice() {
+        return price;
+    }
     
     
     
