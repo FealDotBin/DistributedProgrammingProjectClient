@@ -15,5 +15,13 @@ public class MenuEntity {
     
     private Long id;
     private List<DishEntity> dishEntities;
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<DishEntity> getDishEntities() {
+        return dishEntities;
+    }
     
 }
