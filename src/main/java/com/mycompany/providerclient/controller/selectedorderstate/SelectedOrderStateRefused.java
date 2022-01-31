@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller.selectedorderstate;
 
+import com.mycompany.common.model.dto.order.OrderDto;
 import com.mycompany.providerclient.controller.HomeController;
 import com.mycompany.providerclient.view.HomeView;
 
@@ -14,7 +15,7 @@ import com.mycompany.providerclient.view.HomeView;
  */
 public class SelectedOrderStateRefused extends SelectedOrderState {
     
-    public SelectedOrderStateRefused(HomeView homeView, HomeController.Order selectedOrder, int selectedOrderIndex){
+    public SelectedOrderStateRefused(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     

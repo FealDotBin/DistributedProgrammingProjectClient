@@ -6,6 +6,9 @@
 package com.mycompany.providerclient.controller.selectedorderstate;
 
 import com.mycompany.common.components.NoEditableTableModel;
+import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
+import com.mycompany.common.model.enumerations.OrderType;
 import com.mycompany.providerclient.controller.HomeController;
 import com.mycompany.providerclient.view.HomeView;
 import javax.swing.JButton;
@@ -18,7 +21,7 @@ import javax.swing.JTable;
  */
 public class SelectedOrderStatePending extends SelectedOrderState {
     
-    public SelectedOrderStatePending(HomeView homeView, HomeController.Order selectedOrder, int selectedOrderIndex){
+    public SelectedOrderStatePending(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
@@ -36,19 +39,19 @@ public class SelectedOrderStatePending extends SelectedOrderState {
         // update order's state according to order's type
         // and choose next state
         SelectedOrderState nextState = null;
-        String orderType = selectedOrder.getOrderType();
-        if(orderType.equals("DELIVERY_RIDERS")){
-            selectedOrder.setOrderState("SEMI_ACCEPTED");
+        OrderType orderType = selectedOrder.getOrderType();
+        if(orderType.equals(OrderType.DELIVERY_RIDERS)){
+            selectedOrder.setOrderState(OrderState.SEMI_ACCEPTED);
         }
         else {
-            selectedOrder.setOrderState("ACCEPTED");
+            selectedOrder.setOrderState(OrderState.ACCEPTED);
         }
         updateView();
     }
     
     @Override
     public void refuse(){
-        selectedOrder.setOrderState("REFUSED");
+        selectedOrder.setOrderState(OrderState.REFUSED);
         updateView();
     }
 }

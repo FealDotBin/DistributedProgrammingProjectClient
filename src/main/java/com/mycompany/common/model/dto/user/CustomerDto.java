@@ -16,5 +16,26 @@ public class CustomerDto {
     private String name;
     private String surname;
     private String telephoneNumber;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+    
     
 }
