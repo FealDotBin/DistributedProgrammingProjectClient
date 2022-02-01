@@ -19,6 +19,16 @@ public class DishEntity {
     private List<String> ingredients;
     private double price;
 
+    // constructor with all fields
+    public DishEntity(Long id, String name, String description, List<String> ingredients, double price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.price = price;
+    }
+
+    // constructor without id
     public DishEntity(String name, String description, List<String> ingredients, double price){
         this.name = name;
         this.description = description;
