@@ -118,10 +118,10 @@ public class CustomerBalanceController {
                     fieldErrorPane("Increment balance cannot be negative");
                     return;
                 }
-                Call<Object> updateBalanceCall = apiService.increaseBalance(customerId, increment);
-                updateBalanceCall.enqueue(new Callback<Object>() {
+                Call<Void> updateBalanceCall = apiService.increaseBalance(customerId, increment);
+                updateBalanceCall.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) { // status code tra 200-299
 
                             Double newCurrentBalance = increment + currentBalance;
@@ -140,7 +140,7 @@ public class CustomerBalanceController {
                     }
 
                     @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         // Log error here since request failed
                         JOptionPane.showMessageDialog(balanceView,
                                 "Contact you system administrator",

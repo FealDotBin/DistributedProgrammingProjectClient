@@ -17,6 +17,16 @@ public class CustomerDto {
     private String surname;
     private String telephoneNumber;
 
+    public CustomerDto(Long id, String address, String name, String surname, String telephoneNumber) {
+        this.id = id;
+        this.address = address;
+        this.name = name;
+        this.surname = surname;
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    
+    
     public Long getId() {
         return id;
     }

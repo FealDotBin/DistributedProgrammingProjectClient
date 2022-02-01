@@ -40,6 +40,7 @@ public class CustomerProviderSelectionController {
     private ServiceApi serviceApi;
     private Navigator nav;
     private Long providerId;
+    private ProviderDto selectedProvider;
     private List<ProviderDto> providerList;
 
     public CustomerProviderSelectionController(Long customerId) {
@@ -54,7 +55,8 @@ public class CustomerProviderSelectionController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = providerTable.getSelectedRow();
-                providerId = providerList.get(selectedRow).getId();
+                selectedProvider = providerList.get(selectedRow);
+                providerId = selectedProvider.getId();
                 nav.fromProviderSelectionToOrderCreation(CustomerProviderSelectionController.this);
             }
             
@@ -132,6 +134,11 @@ public class CustomerProviderSelectionController {
     public Long getProviderId(){
         return providerId;
     }
+    
+    public ProviderDto getSelectedProvider(){
+        return selectedProvider;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

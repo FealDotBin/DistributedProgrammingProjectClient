@@ -21,5 +21,16 @@ public class DishOrderAssociation {
     public int getQuantity() {
         return quantity;
     }
+
+    public DishOrderAssociation(DishEntity dish) {
+        this.dish = dish;
+        this.quantity = 0;
+    }
+    
+    public void increaseQuantity(){
+        this.quantity++;
+    }
+    
+    
     
 }

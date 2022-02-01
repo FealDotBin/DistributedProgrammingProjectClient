@@ -32,10 +32,6 @@ public class Navigator {
             return instance;
         }
         
-        public void fromLogInToOrderCreation(CustomerLogInController c){
-            c.disposeView();
-            new OrderCreationController();
-        }
         
         public void fromLogInToProviderSelection(CustomerLogInController c){
             c.disposeView();
@@ -45,7 +41,8 @@ public class Navigator {
         
         public void fromProviderSelectionToOrderCreation(CustomerProviderSelectionController c){
             c.disposeView();
-            new OrderCreationController();
+            
+            new OrderCreationController(customerId, c.getSelectedProvider());
         }
         
         public void fromProviderSelectionToLogIn(CustomerProviderSelectionController c){
@@ -94,5 +91,27 @@ public class Navigator {
            new CustomerProviderSelectionController(customerId);
         }
         
+        public void fromOrderCreationToLogOut(OrderCreationController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
+        }
         
+        public void fromOrderCreationToUpdate(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerUpdateController(customerId);
+        }
+        
+        public void fromOrderCreationToBalance(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerBalanceController(customerId);
+        }
+        
+        public void fromOrderCreationToProviderSelection(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerProviderSelectionController(customerId);
+        }
 }

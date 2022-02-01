@@ -13,10 +13,16 @@ import com.mycompany.common.components.NoEditableTableModel;
 import com.mycompany.common.components.NoEditableTableModelWithDelete;
 import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.navigator.Navigator;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+import com.toedter.calendar.JYearChooser;
+import java.awt.Color;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -60,6 +66,50 @@ public class orderCreation extends javax.swing.JFrame {
 
     public JTextField getTotalField() {
         return totalField;
+    }
+
+    public JButton getBalanceBtn() {
+        return balanceBtn;
+    }
+
+    public JButton getConfirmOrderBtn() {
+        return confirmOrderBtn;
+    }
+
+    public JButton getGoBackBtn() {
+        return goBackBtn;
+    }
+
+    public JButton getHistoryBtn() {
+        return historyBtn;
+    }
+
+    public JButton getUpdateBtn() {
+        return updateBtn;
+    }
+
+    public JRadioButton getHomeDeliveryRadioButton() {
+        return homeDeliveryRadioButton;
+    }
+
+    public JButton getLogOutBtn() {
+        return logOutBtn;
+    }
+
+    public JRadioButton getTakeAwayRadioButton() {
+        return takeAwayRadioButton;
+    }
+
+    public JComboBox<String> getHourComboBox() {
+        return hourComboBox;
+    }
+
+    public JComboBox<String> getMinComboBox() {
+        return minComboBox;
+    }
+
+    public JDateChooser getDeliveryDateChooser() {
+        return deliveryDateChooser;
     }
 
 
@@ -122,6 +172,17 @@ public class orderCreation extends javax.swing.JFrame {
         dishLabel = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
         totalField = new javax.swing.JTextField();
+        navBar = new javax.swing.JPanel();
+        updateBtn = new javax.swing.JButton();
+        balanceBtn = new javax.swing.JButton();
+        logOutBtn = new javax.swing.JButton();
+        historyBtn = new javax.swing.JButton();
+        hourComboBox = new javax.swing.JComboBox<>();
+        minComboBox = new javax.swing.JComboBox<>();
+        hourLabel = new javax.swing.JLabel();
+        deliveryDateLabel = new javax.swing.JLabel();
+        minLabel = new javax.swing.JLabel();
+        deliveryDateChooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -210,40 +271,174 @@ public class orderCreation extends javax.swing.JFrame {
             }
         });
 
+        navBar.setBackground(new java.awt.Color(146, 43, 32));
+
+        updateBtn.setBackground(new java.awt.Color(255, 255, 255));
+        updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updateBtn.setForeground(new java.awt.Color(5, 5, 5));
+        updateBtn.setText("Update Account");
+        updateBtn.setBorderPainted(false);
+        updateBtn.setMaximumSize(new java.awt.Dimension(145, 29));
+        updateBtn.setMinimumSize(new java.awt.Dimension(145, 29));
+        updateBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        balanceBtn.setBackground(new java.awt.Color(255, 255, 255));
+        balanceBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        balanceBtn.setForeground(new java.awt.Color(5, 5, 5));
+        balanceBtn.setText("Update Balance");
+        balanceBtn.setBorderPainted(false);
+        balanceBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        balanceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                balanceBtnActionPerformed(evt);
+            }
+        });
+
+        logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
+        logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setForeground(new java.awt.Color(5, 5, 5));
+        logOutBtn.setText("Log out");
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutBtnActionPerformed(evt);
+            }
+        });
+
+        historyBtn.setBackground(new java.awt.Color(255, 255, 255));
+        historyBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        historyBtn.setForeground(new java.awt.Color(5, 5, 5));
+        historyBtn.setText("Order history");
+        historyBtn.setBorderPainted(false);
+        historyBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        historyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historyBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout navBarLayout = new javax.swing.GroupLayout(navBar);
+        navBar.setLayout(navBarLayout);
+        navBarLayout.setHorizontalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                .addComponent(balanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(124, 124, 124)
+                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136)
+                .addComponent(logOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
+        navBarLayout.setVerticalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(balanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(historyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
+        );
+
+        hourComboBox.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        hourComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", " " }));
+
+        minComboBox.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        minComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", " " }));
+
+        hourLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        hourLabel.setText("Hour");
+
+        deliveryDateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        deliveryDateLabel.setText("Delivery Date");
+
+        minLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        minLabel.setText("Min");
+
+        deliveryDateChooser.setForeground(new java.awt.Color(255, 255, 255));
+        deliveryDateChooser.setDateFormatString("yyyy MM dd");
+        deliveryDateChooser.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        JTextFieldDateEditor birthField = (JTextFieldDateEditor)deliveryDateChooser.getDateEditor();
+        birthField.setEditable(false);
+        birthField.setFont(new java.awt.Font("Segoe UI", 0, 11));
+
+        birthField.addPropertyChangeListener("foreground", event -> {
+            if(Color.BLACK.equals(event.getNewValue()))
+            birthField.setForeground(new Color(200,200,200));
+        });
+        JYearChooser year = deliveryDateChooser.getJCalendar().getYearChooser();
+        year.addPropertyChangeListener("foreground", event ->{
+            year.setForeground(new Color(200,200,200));
+        });
+        deliveryDateChooser.getJCalendar().setSundayForeground(new Color(255,0,0));
+
         javax.swing.GroupLayout newViewMenuLayout = new javax.swing.GroupLayout(newViewMenu);
         newViewMenu.setLayout(newViewMenuLayout);
         newViewMenuLayout.setHorizontalGroup(
             newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(newViewMenuLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
+            .addGroup(newViewMenuLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane9)
-                    .addComponent(cartLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dishLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane12)
+                    .addGroup(newViewMenuLayout.createSequentialGroup()
+                        .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cartLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dishLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(newViewMenuLayout.createSequentialGroup()
                         .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(confirmOrderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(newViewMenuLayout.createSequentialGroup()
-                                .addComponent(homeDeliveryRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(takeAwayRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(goBackBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                            .addGroup(newViewMenuLayout.createSequentialGroup()
-                                .addComponent(totalLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalField))))
-                    .addComponent(titleLabel)
-                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 913, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(confirmOrderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(newViewMenuLayout.createSequentialGroup()
+                                        .addComponent(homeDeliveryRadioButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(takeAwayRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(newViewMenuLayout.createSequentialGroup()
+                                        .addComponent(totalLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(totalField))
+                                    .addGroup(newViewMenuLayout.createSequentialGroup()
+                                        .addComponent(hourLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(minLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(minComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(goBackBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newViewMenuLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(deliveryDateLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)))))
                 .addContainerGap())
         );
         newViewMenuLayout.setVerticalGroup(
             newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(newViewMenuLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newViewMenuLayout.createSequentialGroup()
+                .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(titleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dishLabel)
@@ -254,10 +449,7 @@ public class orderCreation extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane11)
-                        .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(newViewMenuLayout.createSequentialGroup()
                         .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(homeDeliveryRadioButton)
@@ -267,10 +459,22 @@ public class orderCreation extends javax.swing.JFrame {
                             .addComponent(totalLabel)
                             .addComponent(totalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deliveryDateLabel)
+                            .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(newViewMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minLabel)
+                            .addComponent(hourLabel))
+                        .addGap(18, 18, 18)
                         .addComponent(confirmOrderBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(goBackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(goBackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane11)
+                    .addComponent(jScrollPane10))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,16 +482,12 @@ public class orderCreation extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(newViewMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(newViewMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(newViewMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -309,6 +509,22 @@ public class orderCreation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_homeDeliveryRadioButtonActionPerformed
 
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void balanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_balanceBtnActionPerformed
+
+    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutBtnActionPerformed
+
+    private void historyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historyBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -316,24 +532,35 @@ public class orderCreation extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton balanceBtn;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel cartLabel;
     private javax.swing.JTable cartTable;
     private javax.swing.JButton confirmOrderBtn;
+    private com.toedter.calendar.JDateChooser deliveryDateChooser;
+    private javax.swing.JLabel deliveryDateLabel;
     private javax.swing.JTextArea dishDescriptionTextArea;
     private javax.swing.JTextArea dishIngredientTextArea;
     private javax.swing.JLabel dishLabel;
     private javax.swing.JButton goBackBtn;
+    private javax.swing.JButton historyBtn;
     private javax.swing.JRadioButton homeDeliveryRadioButton;
+    private javax.swing.JComboBox<String> hourComboBox;
+    private javax.swing.JLabel hourLabel;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JButton logOutBtn;
     private javax.swing.JTable menuTable;
+    private javax.swing.JComboBox<String> minComboBox;
+    private javax.swing.JLabel minLabel;
+    private javax.swing.JPanel navBar;
     private javax.swing.JPanel newViewMenu;
     private javax.swing.JRadioButton takeAwayRadioButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JTextField totalField;
     private javax.swing.JLabel totalLabel;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
