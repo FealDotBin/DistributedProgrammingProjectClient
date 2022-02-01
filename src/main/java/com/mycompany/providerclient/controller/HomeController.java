@@ -52,10 +52,12 @@ public class HomeController {
     private JButton completeBtn;
     private JButton refuseBtn;
     private JButton refreshBtn;
-    private JButton logOutBtn;
     private JButton availableBtn;
     private JTable allOrdersTable;
     private JTable selectedOrderTable;
+    private JButton manageMenuBtn;
+    private JButton updateAccountBtn;
+    private JButton logOutBtn;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     private List<OrderDto> orderList;
@@ -76,10 +78,12 @@ public class HomeController {
         completeBtn = homeView.getCompleteBtn();
         refuseBtn = homeView.getRefuseBtn();
         refreshBtn = homeView.getRefreshBtn();
-        logOutBtn = homeView.getLogOutBtn();
         availableBtn = homeView.getAvailableBtn();
         allOrdersTable = homeView.getAllOrdersTable();
         selectedOrderTable = homeView.getSelectedOrderTable();
+        manageMenuBtn = homeView.getManageMenuBtn();
+        updateAccountBtn = homeView.getUpdateAccountBtn();
+        logOutBtn = homeView.getLogOutBtn();
         
         // disable all buttons
         acceptBtn.setEnabled(false);
@@ -96,8 +100,10 @@ public class HomeController {
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
         // fetch all orders from server and show them on allOrdersTable
-        fetchAllOrdersFromServer();
-        showAllOrdersOnTable();
+        // fetchAllOrdersFromServer();
+        // showAllOrdersOnTable();
+        // WE ATTENZIONE DECOMMENTA STA ROBA DOPO
+        // !!!!!!!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         
         // get navigator
         navigator = Navigator.getInstance();
@@ -156,75 +162,15 @@ public class HomeController {
             }
         });
         
-        // attach listener to accept button
-        acceptBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            OrderType orderType = selectedOrder.getOrderType();
-            
-            if(!orderType.equals(OrderType.TAKE_AWAY)){
-                // ask user if he wants to use riders
-                int wantRiders = JOptionPane.showConfirmDialog(homeView,
-                    "Do you want to use our riders?", 
-                    "Question", 
-                    JOptionPane.YES_NO_OPTION);
-                
-                // update order's type according to user response
-                if(wantRiders == JOptionPane.YES_OPTION){
-                    selectedOrder.setOrderType(OrderType.DELIVERY_RIDERS);
-                }
-                else if(wantRiders == JOptionPane.NO_OPTION) {
-                    selectedOrder.setOrderType(OrderType.DELIVERY_NORIDER);
-                }
-                else {
-                    return;
-                }
-            }
-            selectedOrderState.accept();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        });
-        
-        // attach listener to ship button
-        shipBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.ship();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        });
-        
-        // attach listener to complete button
-        completeBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.complete();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        });
-        
-        // attach listener to refuse button
-        refuseBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.refuse();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        });
-        
-        // attach listener to log out button
-        logOutBtn.addActionListener((event) -> {
-            navigator.fromHomeToLogIn(HomeController.this);
-        });
-        
-        // attach listener to refresh button
-        refreshBtn.addActionListener((event) -> {
-            // <- qua ci devo mettere il codice per resettare alcune
-            // robe, tipo tabelle
-            
-            // <- qua ci va il codice per ricaricare 
-            // gli ordini dal backend
-        });
+        // attach listeners
+        attachListenerToAcceptBtn();
+        attachListenerToShipBtn();
+        attachListenerToCompleteBtn();
+        attachListenerToRefuseBtn();
+        attachListenerToRefreshBtn();
+        attachListenerToManageMenuBtn();
+        attachListenerToUpdateAccountBtn();
+        attachListenerToLogOutBtn();
     }
     
     private void fetchAllOrdersFromServer(){
@@ -390,6 +336,98 @@ public class HomeController {
             orderRow[4] = order.getDeliveryTime();
             allOrdersTableModel.addRow(orderRow);
         }
+    }
+    
+    private void attachListenerToRefreshBtn(){
+        refreshBtn.addActionListener((event) -> {
+            // <- qua ci devo mettere il codice per resettare alcune
+            // robe, tipo tabelle
+            
+            // <- qua ci va il codice per ricaricare 
+            // gli ordini dal backend
+        });
+    }
+    
+    private void attachListenerToAcceptBtn(){
+        acceptBtn.addActionListener((event) -> {
+            // <- qua ci va il codice della richiesta al server
+            // se va bene mi cambio lo stato
+            // se va male non faccio niente
+            OrderType orderType = selectedOrder.getOrderType();
+            
+            if(!orderType.equals(OrderType.TAKE_AWAY)){
+                // ask user if he wants to use riders
+                int wantRiders = JOptionPane.showConfirmDialog(homeView,
+                    "Do you want to use our riders?", 
+                    "Question", 
+                    JOptionPane.YES_NO_OPTION);
+                
+                // update order's type according to user response
+                if(wantRiders == JOptionPane.YES_OPTION){
+                    selectedOrder.setOrderType(OrderType.DELIVERY_RIDERS);
+                }
+                else if(wantRiders == JOptionPane.NO_OPTION) {
+                    selectedOrder.setOrderType(OrderType.DELIVERY_NORIDER);
+                }
+                else {
+                    return;
+                }
+            }
+            selectedOrderState.accept();
+            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        });
+    }
+    
+    private void attachListenerToShipBtn(){
+        shipBtn.addActionListener((event) -> {
+            // <- qua ci va il codice della richiesta al server
+            // se va bene mi cambio lo stato
+            // se va male non faccio niente
+            selectedOrderState.ship();
+            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        });
+    }
+    
+    private void attachListenerToCompleteBtn(){
+        completeBtn.addActionListener((event) -> {
+            // <- qua ci va il codice della richiesta al server
+            // se va bene mi cambio lo stato
+            // se va male non faccio niente
+            selectedOrderState.complete();
+            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        });
+    }
+    
+    private void attachListenerToRefuseBtn(){
+        refuseBtn.addActionListener((event) -> {
+            // <- qua ci va il codice della richiesta al server
+            // se va bene mi cambio lo stato
+            // se va male non faccio niente
+            selectedOrderState.refuse();
+            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        });
+    }
+    
+    private void attachListenerToManageMenuBtn(){
+        manageMenuBtn.addActionListener(event -> {
+            navigator.fromHomeToMenuManager(HomeController.this);
+        });
+    }
+    
+    private void attachListenerToUpdateAccountBtn(){
+        updateAccountBtn.addActionListener(event -> {
+            navigator.fromHomeToUpdateAccount(HomeController.this);
+        });
+    }
+    
+    private void attachListenerToLogOutBtn(){
+        logOutBtn.addActionListener((event) -> {
+            navigator.fromHomeToLogIn(HomeController.this);
+        });
+    }
+    
+    public Long getProviderId(){
+        return providerId;
     }
     
     public void disposeView(){
