@@ -67,4 +67,10 @@ public class JTextFieldPlaceholder extends JTextField{
             return super.getText();
     }
     
+    public void clear(){
+        JTextFieldPlaceholder.this.setForeground(new Color(255,255,255,70));
+        JTextFieldPlaceholder.this.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 12));
+        JTextFieldPlaceholder.this.setText(JTextFieldPlaceholder.this.placeholder);
+    }
+    
 }

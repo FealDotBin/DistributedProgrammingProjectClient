@@ -6,10 +6,15 @@
 package com.mycompany.customerclient.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+import com.toedter.calendar.JYearChooser;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -32,6 +37,62 @@ public class customerUpdate extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JTextField getAddressTextField() {
+        return addressTextField;
+    }
+
+    public JDateChooser getBirthDateChooser() {
+        return birthDateChooser;
+    }
+
+    public JTextField getIbanTextField() {
+        return ibanTextField;
+    }
+
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+
+    public JTextField getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JTextField getSurnameTextField() {
+        return surnameTextField;
+    }
+
+    public JTextField getTelephoneTextField() {
+        return telephoneTextField;
+    }
+
+    public JButton getUpdateBtn() {
+        return updateBtn;
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JButton getBalanceBtn() {
+        return balanceBtn;
+    }
+
+    public JButton getHistoryBtn() {
+        return historyBtn;
+    }
+
+    public JButton getHomeBtn() {
+        return homeBtn;
+    }
+
+    public JButton getLogOutBtn() {
+        return logOutBtn;
+    }
+
+    
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,7 +113,6 @@ public class customerUpdate extends javax.swing.JFrame {
         ibanLabel = new javax.swing.JLabel();
         telephoneLabel = new javax.swing.JLabel();
         addressLabel = new javax.swing.JLabel();
-        birthDateChooser1 = new com.toedter.calendar.JDateChooser();
         usernameTextField = new javax.swing.JTextField();
         passwordTextField = new javax.swing.JTextField();
         nameTextField = new javax.swing.JTextField();
@@ -60,6 +120,12 @@ public class customerUpdate extends javax.swing.JFrame {
         ibanTextField = new javax.swing.JTextField();
         addressTextField = new javax.swing.JTextField();
         telephoneTextField = new javax.swing.JTextField();
+        birthDateChooser = new com.toedter.calendar.JDateChooser();
+        navBar = new javax.swing.JPanel();
+        homeBtn = new javax.swing.JButton();
+        balanceBtn = new javax.swing.JButton();
+        logOutBtn = new javax.swing.JButton();
+        historyBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +145,7 @@ public class customerUpdate extends javax.swing.JFrame {
         passwordLabel.setText("Password");
 
         titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("UPDATE PERSONAL INFORMATION");
 
         nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -155,60 +222,159 @@ public class customerUpdate extends javax.swing.JFrame {
             }
         });
 
+        birthDateChooser.setForeground(new java.awt.Color(255, 255, 255));
+        birthDateChooser.setDateFormatString("yyyy MM dd");
+        birthDateChooser.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        JTextFieldDateEditor birthField = (JTextFieldDateEditor)birthDateChooser.getDateEditor();
+        birthField.setEditable(false);
+        birthField.setFont(new java.awt.Font("Segoe UI", 0, 11));
+
+        birthField.addPropertyChangeListener("foreground", event -> {
+            if(Color.BLACK.equals(event.getNewValue()))
+            birthField.setForeground(new Color(200,200,200));
+        });
+        JYearChooser year = birthDateChooser.getJCalendar().getYearChooser();
+        year.addPropertyChangeListener("foreground", event ->{
+            year.setForeground(new Color(200,200,200));
+        });
+        birthDateChooser.getJCalendar().setSundayForeground(new Color(255,0,0));
+
+        navBar.setBackground(new java.awt.Color(146, 43, 32));
+
+        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
+        homeBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        homeBtn.setForeground(new java.awt.Color(5, 5, 5));
+        homeBtn.setText("Home");
+        homeBtn.setBorderPainted(false);
+        homeBtn.setMaximumSize(new java.awt.Dimension(145, 29));
+        homeBtn.setMinimumSize(new java.awt.Dimension(145, 29));
+        homeBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
+
+        balanceBtn.setBackground(new java.awt.Color(255, 255, 255));
+        balanceBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        balanceBtn.setForeground(new java.awt.Color(5, 5, 5));
+        balanceBtn.setText("Update Balance");
+        balanceBtn.setBorderPainted(false);
+        balanceBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        balanceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                balanceBtnActionPerformed(evt);
+            }
+        });
+
+        logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
+        logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setForeground(new java.awt.Color(5, 5, 5));
+        logOutBtn.setText("Log out");
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutBtnActionPerformed(evt);
+            }
+        });
+
+        historyBtn.setBackground(new java.awt.Color(255, 255, 255));
+        historyBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        historyBtn.setForeground(new java.awt.Color(5, 5, 5));
+        historyBtn.setText("Order history");
+        historyBtn.setBorderPainted(false);
+        historyBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        historyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historyBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout navBarLayout = new javax.swing.GroupLayout(navBar);
+        navBar.setLayout(navBarLayout);
+        navBarLayout.setHorizontalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
+                .addComponent(balanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
+                .addComponent(logOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
+        navBarLayout.setVerticalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(homeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(balanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(historyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
+        );
+
         javax.swing.GroupLayout updatePanelLayout = new javax.swing.GroupLayout(updatePanel);
         updatePanel.setLayout(updatePanelLayout);
         updatePanelLayout.setHorizontalGroup(
             updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(navBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(updatePanelLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(41, 41, 41)
                 .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(updatePanelLayout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(updateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(261, 261, 261))
+                    .addGroup(updatePanelLayout.createSequentialGroup()
+                        .addComponent(birthDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(589, 589, 589))
                     .addGroup(updatePanelLayout.createSequentialGroup()
                         .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(98, 98, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(surnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(372, 372, 372))
+                        .addGap(333, 333, 333))
                     .addGroup(updatePanelLayout.createSequentialGroup()
                         .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(birthDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ibanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(birthDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ibanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(telephoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(242, 242, 242))
+                        .addGap(203, 203, 203))
                     .addGroup(updatePanelLayout.createSequentialGroup()
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(372, 372, 372))
+                        .addGap(333, 333, 333))
                     .addGroup(updatePanelLayout.createSequentialGroup()
-                        .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(updatePanelLayout.createSequentialGroup()
-                                .addComponent(ibanTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(111, 111, 111)
-                                .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(updatePanelLayout.createSequentialGroup()
-                .addGap(219, 219, 219)
-                .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(updateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                        .addComponent(addressTextField)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(ibanTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111)
+                        .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         updatePanelLayout.setVerticalGroup(
             updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(updatePanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updatePanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
                 .addComponent(titleLabel)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(updatePanelLayout.createSequentialGroup()
                         .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,9 +394,9 @@ public class customerUpdate extends javax.swing.JFrame {
                     .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(birthDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(birthDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(birthDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addGroup(updatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ibanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(telephoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -244,7 +410,7 @@ public class customerUpdate extends javax.swing.JFrame {
                 .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -296,6 +462,22 @@ public class customerUpdate extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_telephoneTextFieldActionPerformed
 
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_homeBtnActionPerformed
+
+    private void balanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_balanceBtnActionPerformed
+
+    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutBtnActionPerformed
+
+    private void historyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historyBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -334,12 +516,17 @@ public class customerUpdate extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addressLabel;
     private javax.swing.JTextField addressTextField;
-    private com.toedter.calendar.JDateChooser birthDateChooser1;
+    private javax.swing.JButton balanceBtn;
+    private com.toedter.calendar.JDateChooser birthDateChooser;
     private javax.swing.JLabel birthDateLabel;
+    private javax.swing.JButton historyBtn;
+    private javax.swing.JButton homeBtn;
     private javax.swing.JLabel ibanLabel;
     private javax.swing.JTextField ibanTextField;
+    private javax.swing.JButton logOutBtn;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JPanel navBar;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JTextField passwordTextField;
     private javax.swing.JLabel surnameLabel;

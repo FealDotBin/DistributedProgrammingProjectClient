@@ -6,6 +6,7 @@ package com.mycompany.customerclient.api;
 
 
 import com.mycompany.common.model.Credentials;
+import com.mycompany.common.model.dto.order.OrderDto;
 import com.mycompany.common.model.dto.user.ProviderDto;
 import com.mycompany.customerclient.model.CustomerEntity;
 import java.util.List;
@@ -19,7 +20,7 @@ import retrofit2.http.*;
 public interface ServiceApi {
     
     @GET("customer/{customer-id}/myinfo")
-    Call<CustomerEntity> getCustomer(@Path("customer-id") int customerId);
+    Call<CustomerEntity> getCustomer(@Path("customer-id") Long customerId);
     
     
     @POST("customer/login")
@@ -34,5 +35,12 @@ public interface ServiceApi {
     
     @GET("customer/avail-providers")
     Call<List<ProviderDto>> getAvailableProviderDTO();
+    
+    @GET("customer/{customer-id}/current-order")
+    Call<OrderDto> getCurrentOrderDTO(@Path("customer-id") Long customerId);
+    
+    @PUT("customer/{customer-id}/balance")
+    Call<Object> increaseBalance(@Path("customer-id") Long customerId, @Query ("value") double value);
+    
     
 }

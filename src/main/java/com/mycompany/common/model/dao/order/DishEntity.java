@@ -19,6 +19,23 @@ public class DishEntity {
     private List<String> ingredients;
     private double price;
 
+    // constructor with all fields
+    public DishEntity(Long id, String name, String description, List<String> ingredients, double price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.price = price;
+    }
+
+    // constructor without id
+    public DishEntity(String name, String description, List<String> ingredients, double price){
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.price = price;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -37,6 +54,26 @@ public class DishEntity {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
     
 }

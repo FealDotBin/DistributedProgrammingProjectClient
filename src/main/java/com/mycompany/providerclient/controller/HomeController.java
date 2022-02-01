@@ -45,6 +45,7 @@ import retrofit2.Response;
  */
 public class HomeController {
 
+    private Long providerId;
     private HomeView homeView;
     private JButton acceptBtn;
     private JButton shipBtn;
@@ -57,7 +58,6 @@ public class HomeController {
     private JTable selectedOrderTable;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
-    private Long providerId;
     private List<OrderDto> orderList;
     private SelectedOrderState selectedOrderState;
     private OrderDto selectedOrder;
@@ -95,20 +95,9 @@ public class HomeController {
         retroBuild = new RetrofitBuilder();
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
-        // fetch all orders from server
-        orderList = fetchAllOrders();
-        
-        // show orders on allOrdersTable
-        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
-        for(OrderDto order : orderList){
-            Object[] orderRow = new Object[5];
-            orderRow[0] = order.getCustomer().getName();
-            orderRow[1] = order.getRider().getName();
-            orderRow[2] = order.getOrderType();
-            orderRow[3] = order.getOrderState();
-            orderRow[4] = order.getDeliveryTime();
-            allOrdersTableModel.addRow(orderRow);
-        }
+        // fetch all orders from server and show them on allOrdersTable
+        fetchAllOrdersFromServer();
+        showAllOrdersOnTable();
         
         // get navigator
         navigator = Navigator.getInstance();
@@ -238,37 +227,35 @@ public class HomeController {
         });
     }
     
-    private List<OrderDto> fetchAllOrders(){
-        LinkedList<OrderDto> allOrders = new LinkedList<>();
-        
+    private void fetchAllOrdersFromServer(){
         // fetch all pending orders
         Call<List<OrderDto>> getPendingOrdersCall = serviceApi.getPendingOrders(providerId);
         getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
-                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+            public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        LinkedList<OrderDto> pendingOrders = (LinkedList<OrderDto>) response.body();
-                        allOrders.addAll(pendingOrders);
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(homeView,
-                                jObjError.get("message"),
-                                "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                if(response.isSuccessful()){ // status code tra 200-299
+                    LinkedList<OrderDto> pendingOrders = (LinkedList<OrderDto>) response.body();
+                    orderList.addAll(pendingOrders);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
-                    // Log error here since request failed
-                      System.out.println("failed");
-                }
+            @Override
+            public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
         });
         
         // fetch all accepted orders
@@ -279,7 +266,7 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         LinkedList<OrderDto> acceptedOrders = (LinkedList<OrderDto>) response.body();
-                        allOrders.addAll(acceptedOrders);
+                        orderList.addAll(acceptedOrders);
                     }
                     else{ // in caso di errori
                         try {
@@ -309,7 +296,7 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         LinkedList<OrderDto> semiAcceptedOrders = (LinkedList<OrderDto>) response.body();
-                        allOrders.addAll(semiAcceptedOrders);
+                        orderList.addAll(semiAcceptedOrders);
                     }
                     else{ // in caso di errori
                         try {
@@ -339,7 +326,7 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         LinkedList<OrderDto> shippedOrders = (LinkedList<OrderDto>) response.body();
-                        allOrders.addAll(shippedOrders);
+                        orderList.addAll(shippedOrders);
                     }
                     else{ // in caso di errori
                         try {
@@ -369,7 +356,7 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         LinkedList<OrderDto> completedOrders = (LinkedList<OrderDto>) response.body();
-                        allOrders.addAll(completedOrders);
+                        orderList.addAll(completedOrders);
                     }
                     else{ // in caso di errori
                         try {
@@ -390,8 +377,19 @@ public class HomeController {
                       System.out.println("failed");
                 }
         });
-        
-        return allOrders;
+    }
+    
+    private void showAllOrdersOnTable(){
+        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
+        for(OrderDto order : orderList){
+            Object[] orderRow = new Object[5];
+            orderRow[0] = order.getCustomer().getName();
+            orderRow[1] = order.getRider().getName();
+            orderRow[2] = order.getOrderType();
+            orderRow[3] = order.getOrderState();
+            orderRow[4] = order.getDeliveryTime();
+            allOrdersTableModel.addRow(orderRow);
+        }
     }
     
     public void disposeView(){

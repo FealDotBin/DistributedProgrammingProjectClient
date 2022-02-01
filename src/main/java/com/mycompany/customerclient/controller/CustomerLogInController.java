@@ -103,7 +103,10 @@ public class CustomerLogInController {
                 @Override
                 public void onFailure(Call<Long> call, Throwable t) {
                     // Log error here since request failed
-                      System.out.println("failed");
+                      JOptionPane.showMessageDialog(logInView,
+                                "Contact you system administrator",
+                                "CRITICAL ERROR",
+                                JOptionPane.ERROR_MESSAGE);
                 }
             });
         });

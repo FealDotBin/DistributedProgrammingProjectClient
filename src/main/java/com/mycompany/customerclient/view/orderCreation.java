@@ -6,10 +6,13 @@
 package com.mycompany.customerclient.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JButtonEditor;
 import com.mycompany.common.components.JButtonRenderer;
 import com.mycompany.common.components.NoEditableTableModel;
 import com.mycompany.common.components.NoEditableTableModelWithDelete;
+import com.mycompany.customerclient.api.ServiceApi;
+import com.mycompany.customerclient.navigator.Navigator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +61,7 @@ public class orderCreation extends javax.swing.JFrame {
     public JTextField getTotalField() {
         return totalField;
     }
+
 
     
     /**

@@ -5,8 +5,11 @@
  */
 package com.mycompany.customerclient.controller;
 
+import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JButtonDeleteItemEditor;
 import com.mycompany.common.components.JButtonEditor;
+import com.mycompany.customerclient.api.ServiceApi;
+import com.mycompany.customerclient.navigator.Navigator;
 import com.mycompany.customerclient.view.orderCreation;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -47,6 +50,9 @@ public class OrderCreationController {
         private int id;
         private String description;
         private List<String> ingredients;
+        private RetrofitBuilder retroBuild;
+        private ServiceApi serviceApi;
+        private Navigator nav;
         
         public Order(int id, String description, List<String> ingriedients){
             this.id = id;
@@ -221,6 +227,9 @@ public class OrderCreationController {
         orderCreationView.setVisible(true);
     }
     
+    public void disposeView(){
+        this.orderCreationView.dispose();
+    }
 
     
     public static void main(String args[]){
