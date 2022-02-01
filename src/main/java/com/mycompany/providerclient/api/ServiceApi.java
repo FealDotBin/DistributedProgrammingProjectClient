@@ -46,4 +46,10 @@ public interface ServiceApi {
     
     @POST("provider/{provider-id}/addDish")
     Call<DishEntity> addDish(@Path("provider-id") Long providerId, @Body DishEntity dish);
+    
+    @DELETE("provider/{provider-id}/removeDish")
+    Call<Void> deleteDish(@Path("provider-id") Long providerId, @Query("dish_id") Long dishId);
+    
+    @PUT("provider/{provider-id}/updateDish")
+    Call<DishEntity> updateDish(@Path("provider-id") Long providerId, @Body DishEntity dish);
 }
