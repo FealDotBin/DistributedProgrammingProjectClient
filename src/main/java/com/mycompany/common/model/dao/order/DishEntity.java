@@ -55,5 +55,25 @@ public class DishEntity {
     public double getPrice() {
         return price;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
     
 }
