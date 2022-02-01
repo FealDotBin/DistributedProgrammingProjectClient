@@ -7,6 +7,7 @@ package com.mycompany.providerclient.controller.selectedorderstate;
 
 import com.mycompany.common.components.NoEditableTableModel;
 import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.dto.user.RiderDto;
 import com.mycompany.providerclient.view.HomeView;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -44,9 +45,10 @@ public abstract class SelectedOrderState {
         JTable allOrdersTable = homeView.getAllOrdersTable();
         NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
         allOrdersTableModel.removeRow(selectedOrderIndex);
+        RiderDto rider = null;
         Object[] orderRow = new Object[5];
         orderRow[0] = selectedOrder.getCustomer().getName();
-        orderRow[1] = selectedOrder.getRider().getName();
+        orderRow[1] = ((rider = selectedOrder.getRider()) == null ? "" : rider.getName());
         orderRow[2] = selectedOrder.getOrderType();
         orderRow[3] = selectedOrder.getOrderState();
         orderRow[4] = selectedOrder.getDeliveryTime();
