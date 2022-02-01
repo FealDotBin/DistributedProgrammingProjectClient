@@ -27,7 +27,7 @@ public class OrderDto {
     private RiderDto rider;
     private OrderType orderType;
     private OrderState orderState;
-    private LocalDateTime deliveryTime;
+    private String deliveryTime;
     private double price;
 
     public void setId(Long id) {
@@ -58,7 +58,7 @@ public class OrderDto {
         this.orderState = orderState;
     }
 
-    public void setDeliveryTime(LocalDateTime deliveryTime) {
+    public void setDeliveryTime(String deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 
@@ -94,12 +94,19 @@ public class OrderDto {
         return orderState;
     }
 
-    public LocalDateTime getDeliveryTime() {
+    public String getDeliveryTime() {
         return deliveryTime;
     }
 
     public double getPrice() {
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" + "id=" + id + ", dishOrderAssociations=" + dishOrderAssociations + ", customer=" + customer + ", provider=" + provider + ", rider=" + rider + ", orderType=" + orderType + ", orderState=" + orderState + ", deliveryTime=" + deliveryTime + ", price=" + price + '}';
+    }
+    
+    
     
 }

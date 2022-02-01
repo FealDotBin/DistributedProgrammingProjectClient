@@ -53,6 +53,14 @@ public class ProviderDto {
     public MenuEntity getMenu() {
         return menu;
     }
+
+    @Override
+    public String toString() {
+        return "ProviderDto{" + "id=" + id + ", telephoneNumber=" + telephoneNumber + ", providerName=" + providerName + ", cuisine=" + cuisine + ", address=" + address + ", doDelivering=" + doDelivering + ", doTakeAway=" + doTakeAway + ", menu=" + menu + '}';
+    }
+    
+    
+    
     
     
     
