@@ -5,13 +5,18 @@
  */
 package com.mycompany.customerclient.navigator;
     
+import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.dto.user.ProviderDto;
 import com.mycompany.customerclient.controller.CustomerBalanceController;
+import com.mycompany.customerclient.controller.CustomerCurrentOrderController;
 import com.mycompany.navigator.*;
 import com.mycompany.customerclient.controller.CustomerLogInController;
+import com.mycompany.customerclient.controller.CustomerOrderHistoryController;
 import com.mycompany.customerclient.controller.CustomerProviderSelectionController;
 import com.mycompany.customerclient.controller.CustomerSignUpController;
 import com.mycompany.customerclient.controller.CustomerUpdateController;
 import com.mycompany.customerclient.controller.OrderCreationController;
+import com.mycompany.customerclient.controller.OrderMoreInformationController;
 
 /**
  *
@@ -21,6 +26,7 @@ public class Navigator {
         
         private static Navigator instance;
         private Long customerId;
+        private OrderDto currentOrder;
         private Navigator(){
             
         }
@@ -50,6 +56,12 @@ public class Navigator {
             new CustomerLogInController();
         }
         
+        public void fromProviderSelectiontoHistory(CustomerProviderSelectionController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerOrderHistoryController(customerId);
+        }
+        
         public void fromSignUpToLogIn(CustomerSignUpController c){
             c.disposeView();
             customerId=null;
@@ -73,6 +85,12 @@ public class Navigator {
            new CustomerLogInController();
         }
         
+        public void fromUpdatetoHistory(CustomerUpdateController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerOrderHistoryController(customerId);
+        }
+        
         public void fromBalancetoLogOut(CustomerBalanceController c){
            c.disposeView();
            customerId=null;
@@ -89,6 +107,12 @@ public class Navigator {
            c.disposeView();
            customerId=c.getCustomerId();
            new CustomerProviderSelectionController(customerId);
+        }
+        
+        public void fromBalancetoHistory(CustomerBalanceController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerOrderHistoryController(customerId);
         }
         
         public void fromOrderCreationToLogOut(OrderCreationController c){
@@ -109,9 +133,121 @@ public class Navigator {
            new CustomerBalanceController(customerId);
         }
         
+        public void fromOrderCreationtoHistory(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerOrderHistoryController(customerId);
+        }
+        
         public void fromOrderCreationToProviderSelection(OrderCreationController c){
            c.disposeView();
            customerId=c.getCustomerId();
            new CustomerProviderSelectionController(customerId);
         }
+        
+        public void fromOrderViewertoLogIn(CustomerCurrentOrderController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
+        }
+        
+        public void fromOrderViewertoUpdate(CustomerCurrentOrderController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerUpdateController(customerId);
+        }
+        
+        public void fromOrderViewertoToBalance(CustomerCurrentOrderController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerBalanceController(customerId);
+        }
+        
+        public void fromOrderViewertoHistory(CustomerCurrentOrderController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerOrderHistoryController(customerId);
+        }
+        
+        public void fromLogInToOrderViewer(CustomerLogInController c){
+           customerId=c.getCustomerId();
+           currentOrder = c.getCurrentOrder();
+           c.disposeView();
+           System.out.println(currentOrder);
+           new CustomerCurrentOrderController(currentOrder, customerId);
+        }
+        
+        public void fromHistory1ToBalance(CustomerOrderHistoryController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerBalanceController(customerId);
+        }
+        
+        public void fromHistory1ToUpdate(CustomerOrderHistoryController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerUpdateController(customerId);
+        }
+        
+         public void fromHistory1ToLogIn(CustomerOrderHistoryController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
+        }
+        
+        public void fromHistory1ToOrderViewer(CustomerOrderHistoryController c){
+           customerId=c.getCustomerId();
+           currentOrder = c.getCurrentOrder();
+           c.disposeView();
+           System.out.println(currentOrder);
+           new CustomerCurrentOrderController(currentOrder, customerId);
+        }
+        
+        public void fromHistory1ToProviderSelection(CustomerOrderHistoryController c){
+           c.disposeView();
+            customerId=c.getCustomerId();
+            new CustomerProviderSelectionController(customerId);
+        }
+        
+        public void fromHistory1ToMoreInfo(CustomerOrderHistoryController c){
+           c.disposeView();
+            customerId=c.getCustomerId();
+            OrderDto selectedOrder = c.getSelectedOrder();
+            new OrderMoreInformationController(customerId, selectedOrder);
+        }
+        
+        public void fromMoreInfoToBalance(OrderMoreInformationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerBalanceController(customerId);
+        }
+        
+        public void fromMoreInfoToUpdate(OrderMoreInformationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerUpdateController(customerId);
+        }
+        
+         public void fromMoreInfoToLogIn(OrderMoreInformationController c){
+           c.disposeView();
+           customerId=null;
+           new CustomerLogInController();
+        }
+        
+        public void fromMoreInfoToOrderViewer(OrderMoreInformationController c){
+           customerId=c.getCustomerId();
+           currentOrder = c.getCurrentOrder();
+           c.disposeView();
+           System.out.println(currentOrder);
+           new CustomerCurrentOrderController(currentOrder, customerId);
+        }
+        
+        public void fromMoreInfoToProviderSelection(OrderMoreInformationController c){
+           c.disposeView();
+            customerId=c.getCustomerId();
+            new CustomerProviderSelectionController(customerId);
+        }
+        
+        
+        
 }

@@ -47,4 +47,7 @@ public interface ServiceApi {
     @POST("customer/postOrder")
     Call<OrderDto> createOrder(@Body OrderEntity customer);
     
+    @GET("customer/{customer-id}/myorders")
+    Call<List<OrderDto>> getCustomerHistory(@Path("customer-id") Long customerId);
+    
 }

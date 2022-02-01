@@ -47,6 +47,7 @@ public class CustomerBalanceController {
     private JButton homeButton;
     private JButton confirmButton;
     private JButton logOutButton;
+    private JButton historyButton;
 
     private Long customerId;
     private Double currentBalance;
@@ -69,6 +70,7 @@ public class CustomerBalanceController {
         homeButton = balanceView.getHomeBtn();
         logOutButton = balanceView.getLogOutBtn();
         accountButton = balanceView.getAccountBtn();
+        historyButton = balanceView.getHistoryBtn();
         
 
         //View navigator creation
@@ -169,6 +171,16 @@ public class CustomerBalanceController {
             }
             
         });
+        
+        // When logout history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromBalancetoHistory(CustomerBalanceController.this);
+            }
+            
+        });
+        
         //Set home button text and his action listener based on the presence of current order
         Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
         currentOrderCall.enqueue(new Callback<OrderDto>(){

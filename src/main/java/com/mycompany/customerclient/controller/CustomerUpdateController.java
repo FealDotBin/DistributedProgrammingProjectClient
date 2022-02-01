@@ -50,6 +50,7 @@ public class CustomerUpdateController {
     private JButton updateButton;
     private JButton homeButton;
     private JButton balanceButton;
+    private JButton historyButton;
     private JButton logOutButton;
     private customerUpdate updateView;
     private RetrofitBuilder retroBuild;
@@ -74,6 +75,7 @@ public class CustomerUpdateController {
         updateButton = updateView.getUpdateBtn();
         homeButton = updateView.getHomeBtn();
         logOutButton = updateView.getLogOutBtn();
+        historyButton = updateView.getHistoryBtn();
         
         //View navigator creation
         nav = Navigator.getInstance();
@@ -257,6 +259,15 @@ public class CustomerUpdateController {
 
         });
         updateView.setVisible(true);
+        
+        // When history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromUpdatetoHistory(CustomerUpdateController.this);
+            }
+            
+        });
     }
 
     private void fieldErrorPane(String errorMessage) {

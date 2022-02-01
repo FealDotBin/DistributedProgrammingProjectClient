@@ -35,6 +35,9 @@ public class CustomerProviderSelectionController {
     private ProviderSelection providerSelectionView;
     private JTable providerTable;
     private JButton logOutButton;
+    private JButton historyButton;
+    private JButton updateButton;
+    private JButton balanceButton;
     private Long customerId;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
@@ -63,6 +66,9 @@ public class CustomerProviderSelectionController {
         });
         providerTable.setDefaultEditor(JButton.class, providerTableEditor);
         logOutButton = providerSelectionView.getLogoutBtn();
+        historyButton = providerSelectionView.getHistoryBtn();
+        updateButton = providerSelectionView.getAccountBtn();
+        balanceButton = providerSelectionView.getBalanceBtn();
         //action performed when log out is pressed: return to log out view
         logOutButton.addActionListener(new ActionListener(){
             @Override
@@ -124,7 +130,14 @@ public class CustomerProviderSelectionController {
                 }
             });
         providerSelectionView.setVisible(true);
-        
+        // When history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoHistory(CustomerProviderSelectionController.this);
+            }
+            
+        });
         
     }
     
@@ -137,6 +150,10 @@ public class CustomerProviderSelectionController {
     
     public ProviderDto getSelectedProvider(){
         return selectedProvider;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
     }
     
     public static void main(String args[]) {

@@ -350,6 +350,15 @@ public class OrderCreationController {
             
         });
         
+        // When history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromOrderCreationtoHistory(OrderCreationController.this);
+            }
+            
+        });
+        
         orderCreationView.setVisible(
                 true);
     }

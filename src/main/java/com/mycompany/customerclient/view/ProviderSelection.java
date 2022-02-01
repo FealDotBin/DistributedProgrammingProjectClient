@@ -43,6 +43,18 @@ public class ProviderSelection extends javax.swing.JFrame {
     public JTable getProviderTable() {
         return providerTable;
     }
+
+    public JButton getAccountBtn() {
+        return accountBtn;
+    }
+
+    public JButton getBalanceBtn() {
+        return balanceBtn;
+    }
+
+    public JButton getHistoryBtn() {
+        return historyBtn;
+    }
     
 
     /**
