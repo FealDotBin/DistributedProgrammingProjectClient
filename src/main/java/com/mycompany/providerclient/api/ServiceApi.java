@@ -26,6 +26,12 @@ public interface ServiceApi {
     @POST("provider/postProvider")
     Call<ProviderEntity> createNewProvider(@Body ProviderEntity provider);
     
+    @GET("provider/{provider-id}/myinfo")
+    Call<ProviderEntity> getMyInfo(@Path("provider-id") Long providerId);
+    
+    @PUT("provider/{provider-id}/")
+    Call<Void> setAvail(@Path("provider-id") Long providerId, @Query("availability") Boolean isAvailable);
+    
     @GET("provider/{provider-id}/getPendingOrders")
     Call<List<OrderDto>> getPendingOrders(@Path("provider-id") Long providerId);
     
@@ -52,4 +58,13 @@ public interface ServiceApi {
     
     @PUT("provider/{provider-id}/updateDish")
     Call<DishEntity> updateDish(@Path("provider-id") Long providerId, @Body DishEntity dish);
+    
+    @PUT("provider/putTakeAwayOrder")
+    Call<Void> putTakeAwayOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putNoRiderDeliveringOrder")
+    Call<Void> putNoRiderDeliveringOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putRiderOrder")
+    Call<Void> putRiderOrder(@Query("id") Long orderId);
 }

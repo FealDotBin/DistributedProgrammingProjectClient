@@ -75,8 +75,66 @@ public class ProviderEntity {
         this.hasOwnRiders = hasOwnRiders;
         isAvailable = false;
     }
-    
-    
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public void setCuisine(String cuisine) {
+        this.cuisine = cuisine;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setDoDelivering(Boolean doDelivering) {
+        this.doDelivering = doDelivering;
+    }
+
+    public void setDoTakeAway(Boolean doTakeAway) {
+        this.doTakeAway = doTakeAway;
+    }
+
+    public void setHasOwnRiders(Boolean hasOwnRiders) {
+        this.hasOwnRiders = hasOwnRiders;
+    }
+
+    public void setIsAvailable(Boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
 
     public String getUsername() {
         return username;
