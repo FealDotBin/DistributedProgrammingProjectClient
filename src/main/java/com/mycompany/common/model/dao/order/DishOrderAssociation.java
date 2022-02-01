@@ -5,6 +5,8 @@
  */
 package com.mycompany.common.model.dao.order;
 
+import java.util.Objects;
+
 /**
  *
  * @author aferr
@@ -24,12 +26,43 @@ public class DishOrderAssociation {
 
     public DishOrderAssociation(DishEntity dish) {
         this.dish = dish;
-        this.quantity = 0;
+        this.quantity = 1;
     }
     
     public void increaseQuantity(){
         this.quantity++;
     }
+
+    @Override
+    public String toString() {
+        return "DishOrderAssociation{" + "dish=" + dish + ", quantity=" + quantity + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.dish);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DishOrderAssociation other = (DishOrderAssociation) obj;
+        if (!Objects.equals(this.dish, other.dish)) {
+            return false;
+        }
+        return true;
+    }
+    
     
     
     

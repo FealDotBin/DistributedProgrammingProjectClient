@@ -171,14 +171,14 @@ public class OrderCreationController {
                 button.setForeground(new Color(200, 200, 200));
                 int selectedRow = menuTable.getSelectedRow();
                 String dishName = (String) menuTable.getValueAt(selectedRow, 0);
-                String dishPrice = (String) menuTable.getValueAt(selectedRow, 1);
+                Double dishPrice = (Double)menuTable.getValueAt(selectedRow, 1);
                 DefaultTableModel cartTableModel = (DefaultTableModel) cartTable.getModel();
                 cartTableModel.addRow(new Object[]{dishName, dishPrice, new JButton()});
                 DishEntity selectedDish = providerDishList.get(selectedRow);
                 cart.add(selectedDish);
-                total += Double.parseDouble(cartTable.getValueAt(selectedRow, 1).toString());
+                total += Double.parseDouble(menuTable.getValueAt(selectedRow, 1).toString());
                 totalField.setText(total.toString());
-                System.out.println("Aggiunto\n" + cart);
+                System.out.println("SelecetedRow" + selectedRow);
             }
         });
         menuTable.setDefaultEditor(JButton.class, menuButtonEditor);
@@ -257,8 +257,7 @@ public class OrderCreationController {
                 }
                 String hour = hourComboBox.getSelectedItem().toString();
                 String min = minComboBox.getSelectedItem().toString();
-                formattedDeliveryDate+="T:"+hour+":"+min+":00.000";
-                
+                formattedDeliveryDate+="T"+hour+":"+min+":00.000";
                 
                 List<DishOrderAssociation> assList = new LinkedList<>();
                 DishOrderAssociation newAss;
@@ -267,13 +266,15 @@ public class OrderCreationController {
                 for (DishEntity selectedDish : cart) {
                     newAss = new DishOrderAssociation(selectedDish);
                     index = assList.indexOf(newAss);
-                    if (index > 0) {
+                    
+                    if (index >= 0) {
                         oldAss = assList.get(index);
                         oldAss.increaseQuantity();
                     } else {
                         assList.add(newAss);
                     }
                 }
+                System.out.println(assList);
 
                 OrderType orderType;
                 if (homeDeliveryButton.isSelected()) {
@@ -282,7 +283,7 @@ public class OrderCreationController {
                     orderType = OrderType.TAKE_AWAY;
                 }
                 
-                OrderEntity order = new OrderEntity(assList, customer, selectedProvider, orderType, OrderState.PENDING, "", total);
+                OrderEntity order = new OrderEntity(assList, customer, selectedProvider, orderType, OrderState.PENDING, formattedDeliveryDate, total);
                 
                 Call<OrderDto> orderCall = apiService.createOrder(order);
                 orderCall.enqueue(new Callback<OrderDto>() {

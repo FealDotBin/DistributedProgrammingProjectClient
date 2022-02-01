@@ -5,69 +5,21 @@
  */
 package com.mycompany.customerclient.view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.NoEditableTableModel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author CATELLO
  */
-public class OrderViewer extends javax.swing.JFrame {
+public class CurrentOrderView extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewJFrame
+     * Creates new form CurrentOrderView
      */
-    public OrderViewer() {
-        try {
-            //   UIManager.
-            UIManager.setLookAndFeel( new FlatDarkLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public CurrentOrderView() {
         initComponents();
     }
 
-    public JTextField getDeliveryTimeField() {
-        return deliveryTimeField;
-    }
-
-    public JTextArea getDishDescriptionTextArea() {
-        return dishDescriptionTextArea;
-    }
-
-    public JTextArea getDishIngredientTextArea() {
-        return dishIngredientTextArea;
-    }
-
-    public JTable getDishTable() {
-        return dishTable;
-    }
-
-    public JTextField getOrderStateField() {
-        return orderStateField;
-    }
-
-    public JTextField getProviderField() {
-        return providerField;
-    }
-
-    public JButton getRefreshBtn() {
-        return refreshBtn;
-    }
-
-    public JTextField getRiderField() {
-        return riderField;
-    }
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,14 +30,18 @@ public class OrderViewer extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        refreshBtn = new javax.swing.JButton();
-        titleLabel = new javax.swing.JLabel();
         providerLabel = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        dishIngredientTextArea = new javax.swing.JTextArea();
         deliviryTimeLabel = new javax.swing.JLabel();
         tableLabel = new javax.swing.JLabel();
+        providerField = new javax.swing.JTextField();
         totalLabel = new javax.swing.JLabel();
+        riderField = new javax.swing.JTextField();
         stateLabel = new javax.swing.JLabel();
+        orderStateField = new javax.swing.JTextField();
         riderNameLabel = new javax.swing.JLabel();
+        deliveryTimeField = new javax.swing.JTextField();
         totalField = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         dishTable = new javax.swing.JTable(){
@@ -102,32 +58,25 @@ public class OrderViewer extends javax.swing.JFrame {
                 }
             }
         };
+        refreshBtn = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         dishDescriptionTextArea = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        dishIngredientTextArea = new javax.swing.JTextArea();
-        providerField = new javax.swing.JTextField();
-        riderField = new javax.swing.JTextField();
-        orderStateField = new javax.swing.JTextField();
-        deliveryTimeField = new javax.swing.JTextField();
+        titleLabel = new javax.swing.JLabel();
+        navBar = new javax.swing.JPanel();
+        logoutBtn = new javax.swing.JButton();
+        balanceBtn = new javax.swing.JButton();
+        accountBtn = new javax.swing.JButton();
+        historyBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        refreshBtn.setBackground(new java.awt.Color(44, 73, 129));
-        refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        refreshBtn.setText("Refresh");
-        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtnActionPerformed(evt);
-            }
-        });
-
-        titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("YOUR ORDER IN PROGRESS");
-
         providerLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         providerLabel.setText("Provider: ");
+
+        dishIngredientTextArea.setColumns(20);
+        dishIngredientTextArea.setRows(5);
+        dishIngredientTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Ingredient", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+        jScrollPane5.setViewportView(dishIngredientTextArea);
 
         deliviryTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         deliviryTimeLabel.setText("Delivery time: ");
@@ -135,14 +84,38 @@ public class OrderViewer extends javax.swing.JFrame {
         tableLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tableLabel.setText("Your order");
 
+        providerField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                providerFieldActionPerformed(evt);
+            }
+        });
+
         totalLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         totalLabel.setText("Total");
+
+        riderField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                riderFieldActionPerformed(evt);
+            }
+        });
 
         stateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         stateLabel.setText("Order State:  ");
 
+        orderStateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderStateFieldActionPerformed(evt);
+            }
+        });
+
         riderNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         riderNameLabel.setText("Rider:");
+
+        deliveryTimeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deliveryTimeFieldActionPerformed(evt);
+            }
+        });
 
         totalField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,39 +138,99 @@ public class OrderViewer extends javax.swing.JFrame {
     );
     jScrollPane3.setViewportView(dishTable);
 
+    refreshBtn.setBackground(new java.awt.Color(44, 73, 129));
+    refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    refreshBtn.setText("Refresh");
+    refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            refreshBtnActionPerformed(evt);
+        }
+    });
+
     dishDescriptionTextArea.setColumns(20);
     dishDescriptionTextArea.setRows(5);
     dishDescriptionTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Description", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
     jScrollPane4.setViewportView(dishDescriptionTextArea);
 
-    dishIngredientTextArea.setColumns(20);
-    dishIngredientTextArea.setRows(5);
-    dishIngredientTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Ingredient", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
-    jScrollPane5.setViewportView(dishIngredientTextArea);
+    titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
+    titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    titleLabel.setText("YOUR ORDER IN PROGRESS");
 
-    providerField.addActionListener(new java.awt.event.ActionListener() {
+    navBar.setBackground(new java.awt.Color(146, 43, 32));
+
+    logoutBtn.setBackground(new java.awt.Color(255, 255, 255));
+    logoutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    logoutBtn.setForeground(new java.awt.Color(5, 5, 5));
+    logoutBtn.setText("Update Balance");
+    logoutBtn.setBorderPainted(false);
+    logoutBtn.setMaximumSize(new java.awt.Dimension(145, 29));
+    logoutBtn.setMinimumSize(new java.awt.Dimension(145, 29));
+    logoutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+    logoutBtn.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            providerFieldActionPerformed(evt);
+            logoutBtnActionPerformed(evt);
         }
     });
 
-    riderField.addActionListener(new java.awt.event.ActionListener() {
+    balanceBtn.setBackground(new java.awt.Color(255, 255, 255));
+    balanceBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    balanceBtn.setText("Update Account");
+    balanceBtn.setBorderPainted(false);
+    balanceBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+    balanceBtn.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            riderFieldActionPerformed(evt);
+            balanceBtnActionPerformed(evt);
         }
     });
 
-    orderStateField.addActionListener(new java.awt.event.ActionListener() {
+    accountBtn.setBackground(new java.awt.Color(255, 255, 255));
+    accountBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    accountBtn.setText("Log out");
+    accountBtn.setBorderPainted(false);
+    accountBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+    accountBtn.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            orderStateFieldActionPerformed(evt);
+            accountBtnActionPerformed(evt);
         }
     });
 
-    deliveryTimeField.addActionListener(new java.awt.event.ActionListener() {
+    historyBtn.setBackground(new java.awt.Color(255, 255, 255));
+    historyBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    historyBtn.setText("Order history");
+    historyBtn.setBorderPainted(false);
+    historyBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+    historyBtn.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            deliveryTimeFieldActionPerformed(evt);
+            historyBtnActionPerformed(evt);
         }
     });
+
+    javax.swing.GroupLayout navBarLayout = new javax.swing.GroupLayout(navBar);
+    navBar.setLayout(navBarLayout);
+    navBarLayout.setHorizontalGroup(
+        navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(navBarLayout.createSequentialGroup()
+            .addGap(24, 24, 24)
+            .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(108, 108, 108)
+            .addComponent(balanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(101, 101, 101)
+            .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(accountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18))
+    );
+    navBarLayout.setVerticalGroup(
+        navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(navBarLayout.createSequentialGroup()
+            .addGap(24, 24, 24)
+            .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(balanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(accountBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(historyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(24, 24, 24))
+    );
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -240,12 +273,14 @@ public class OrderViewer extends javax.swing.JFrame {
                                     .addGap(7, 7, 7)
                                     .addComponent(totalField))
                                 .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap(56, Short.MAX_VALUE))))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        .addComponent(navBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addContainerGap(105, Short.MAX_VALUE)
+            .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
             .addComponent(titleLabel)
             .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -280,25 +315,19 @@ public class OrderViewer extends javax.swing.JFrame {
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGap(0, 930, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 19, Short.MAX_VALUE))
+        .addGap(0, 502, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void totalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalFieldActionPerformed
-
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void providerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerFieldActionPerformed
         // TODO add your handling code here:
@@ -315,6 +344,30 @@ public class OrderViewer extends javax.swing.JFrame {
     private void deliveryTimeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryTimeFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deliveryTimeFieldActionPerformed
+
+    private void totalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totalFieldActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoutBtnActionPerformed
+
+    private void balanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_balanceBtnActionPerformed
+
+    private void accountBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_accountBtnActionPerformed
+
+    private void historyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historyBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,74 +386,39 @@ public class OrderViewer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OrderViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CurrentOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OrderViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CurrentOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OrderViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CurrentOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OrderViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CurrentOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OrderViewer().setVisible(true);
+                new CurrentOrderView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accountBtn;
-    private javax.swing.JButton accountBtn1;
-    private javax.swing.JButton accountBtn2;
-    private javax.swing.JButton accountBtn3;
-    private javax.swing.JButton accountBtn4;
-    private javax.swing.JButton accountBtn5;
-    private javax.swing.JButton accountBtn6;
     private javax.swing.JButton balanceBtn;
-    private javax.swing.JButton balanceBtn1;
-    private javax.swing.JButton balanceBtn2;
-    private javax.swing.JButton balanceBtn3;
-    private javax.swing.JButton balanceBtn4;
-    private javax.swing.JButton balanceBtn5;
-    private javax.swing.JButton balanceBtn6;
     private javax.swing.JTextField deliveryTimeField;
     private javax.swing.JLabel deliviryTimeLabel;
     private javax.swing.JTextArea dishDescriptionTextArea;
     private javax.swing.JTextArea dishIngredientTextArea;
     private javax.swing.JTable dishTable;
     private javax.swing.JButton historyBtn;
-    private javax.swing.JButton historyBtn1;
-    private javax.swing.JButton historyBtn2;
-    private javax.swing.JButton historyBtn3;
-    private javax.swing.JButton historyBtn4;
-    private javax.swing.JButton historyBtn5;
-    private javax.swing.JButton historyBtn6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JButton logoutBtn;
-    private javax.swing.JButton logoutBtn1;
-    private javax.swing.JButton logoutBtn2;
-    private javax.swing.JButton logoutBtn3;
-    private javax.swing.JButton logoutBtn4;
-    private javax.swing.JButton logoutBtn5;
-    private javax.swing.JButton logoutBtn6;
-    private javax.swing.JButton logoutBtn7;
-    private javax.swing.JButton logoutBtn8;
     private javax.swing.JPanel navBar;
-    private javax.swing.JPanel navBar1;
-    private javax.swing.JPanel navBar2;
-    private javax.swing.JPanel navBar3;
-    private javax.swing.JPanel navBar4;
-    private javax.swing.JPanel navBar5;
-    private javax.swing.JPanel navBar6;
-    private javax.swing.JPanel navBar7;
-    private javax.swing.JPanel navBar8;
     private javax.swing.JTextField orderStateField;
     private javax.swing.JTextField providerField;
     private javax.swing.JLabel providerLabel;

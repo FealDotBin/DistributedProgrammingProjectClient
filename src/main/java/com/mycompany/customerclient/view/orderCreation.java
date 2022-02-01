@@ -136,7 +136,7 @@ public class orderCreation extends javax.swing.JFrame {
                     case 0:
                     return String.class;
                     case 1:
-                    return String.class;
+                    return Double.class;
                     case 2:
                     return JButton.class;
                     default:
@@ -153,7 +153,7 @@ public class orderCreation extends javax.swing.JFrame {
                     case 0:
                     return String.class;
                     case 1:
-                    return String.class;
+                    return Double.class;
                     case 2:
                     return JButton.class;
                     default:
@@ -215,16 +215,12 @@ public class orderCreation extends javax.swing.JFrame {
         cartTable.setDefaultRenderer(JButton.class,new JButtonRenderer(2,"Remove from your order"));
         jScrollPane9.setViewportView(cartTable);
 
+        Vector menuHeader = new Vector();
+        menuHeader.addElement("Dish name");
+        menuHeader.addElement("Dish price");
+        menuHeader.addElement("");
         menuTable.setModel(new NoEditableTableModel(
-            new Object [][] {
-                {"A pizza ca pummarola ngoppa", "50", new javax.swing.JButton()},
-                {null, null, new javax.swing.JButton()},
-            },
-            new String [] {
-                "<html><div style = 'text-align: center'>Dish Name</div></html>\"",
-                "<html><div style = 'text-align: center'>Dish Price</div></html>\"",
-                ""
-            },
+            menuHeader,
             2
         ));
         menuTable.setDefaultRenderer(JButton.class,new JButtonRenderer(2,"Add to your order"));
@@ -270,6 +266,7 @@ public class orderCreation extends javax.swing.JFrame {
                 totalFieldActionPerformed(evt);
             }
         });
+        totalField.setEditable(false);
 
         navBar.setBackground(new java.awt.Color(146, 43, 32));
 

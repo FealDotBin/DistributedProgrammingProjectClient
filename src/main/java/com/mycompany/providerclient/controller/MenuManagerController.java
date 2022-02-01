@@ -255,7 +255,7 @@ public class MenuManagerController {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MenuManagerController c = new MenuManagerController(1L);
+                MenuManagerController c = new MenuManagerController(8L);
             }
         });
     }
