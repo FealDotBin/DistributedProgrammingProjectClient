@@ -52,7 +52,7 @@ public class CustomerLogInController {
     private JButton signUpBtn;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
-    private Long costumerId;
+    private Long customerId;
 
     private Navigator navigator;
 
@@ -97,17 +97,24 @@ public class CustomerLogInController {
                 public void onResponse(Call<Long> call, Response<Long> response) {
 
                     if (response.isSuccessful()) { // status code tra 200-299
-                        costumerId = response.body();
+                        customerId = response.body();
 
-                        Call<OrderDto> currentOrderCall = serviceApi.getCurrentOrderDTO(CustomerLogInController.this.costumerId);
+                        Call<OrderDto> currentOrderCall = serviceApi.getCurrentOrderDTO(CustomerLogInController.this.customerId);
                         currentOrderCall.enqueue(new Callback<OrderDto>() {
                             @Override
                             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                                 OrderDto newCurrentOrder = response.body();
                                 if (response.isSuccessful()) {
                                     ObjectOutputStream file = null;
+                                    File dir = null;
                                     try {
-                                        file = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("persistentOrder.txt")));
+                                        String path = "customer"+customerId;
+                                        dir = new File(path);
+                                        if(dir.mkdir())
+                                            System.out.println("Nuova cartella creata");
+                                        else
+                                            System.out.println("Impossibile creare la cartella");
+                                        file = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(path+"/persistentOrder.txt")));
                                         file.writeObject(newCurrentOrder);
                                     } catch (IOException ex) {
                                         Logger.getLogger(CustomerLogInController.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,7 +131,7 @@ public class CustomerLogInController {
 
                                     ObjectInputStream file = null;
                                     try {
-                                        file = new ObjectInputStream(new BufferedInputStream(new FileInputStream("persistentOrder.txt")));
+                                        file = new ObjectInputStream(new BufferedInputStream(new FileInputStream("customer"+customerId+"/persistentOrder.txt")));
                                         newCurrentOrder = (OrderDto) file.readObject();
                                         getOrderById(newCurrentOrder.getId());
 
@@ -192,7 +199,7 @@ public class CustomerLogInController {
     }
 
     public Long getCustomerId() {
-        return costumerId;
+        return customerId;
     }
 
     public void disposeView() {
@@ -211,7 +218,7 @@ public class CustomerLogInController {
                     } else {
                         JOptionPane.showMessageDialog(logInView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    File file = new File("persistentOrder.txt");
+                    File file = new File("customer"+customerId+"/persistentOrder.txt");
                     if(file.delete()){
                         System.out.println("File cancellato con successo");
                     }

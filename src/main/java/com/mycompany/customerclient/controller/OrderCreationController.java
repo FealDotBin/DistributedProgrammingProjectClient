@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -134,19 +135,19 @@ public class OrderCreationController {
             row[2] = new JButton();
             menuTableModel.addRow(row);
         }
-        
+
         //Auto setting delivery mode if provider does't support take away or home delivery
-        if(selectedProvider.getDoDelivering() && (!selectProvider.getDoTakeAway())){
+        if (selectedProvider.getDoDelivering() && (!selectProvider.getDoTakeAway())) {
             homeDeliveryButton.setSelected(true);
             homeDeliveryButton.setEnabled(false);
             takeAwayButton.setEnabled(false);
         }
-        if(selectedProvider.getDoTakeAway() && (!selectedProvider.getDoDelivering())){
+        if (selectedProvider.getDoTakeAway() && (!selectedProvider.getDoDelivering())) {
             takeAwayButton.setSelected(true);
             takeAwayButton.setEnabled(false);
             homeDeliveryButton.setEnabled(false);
         }
-        
+
         //Retrive costumer info from server
         Call<CustomerEntity> call = apiService.getCustomer(customerId);
         call.enqueue(new Callback<CustomerEntity>() {
@@ -309,8 +310,17 @@ public class OrderCreationController {
                         if (response.isSuccessful()) { // status code tra 200-299
                             JOptionPane.showMessageDialog(orderCreationView, "ORDER CREATED", "ORDER CREATE SUCCESS", JOptionPane.INFORMATION_MESSAGE);
                             ObjectOutputStream file = null;
+                            File dir;
                             try {
-                                file = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("persistentOrder.txt")));
+                                String path = "customer" + customerId;
+                                dir = new File(path);
+                                if (dir.mkdir()) {
+                                    System.out.println("Nuova cartella creata");
+                                } else {
+                                    System.out.println("Impossibile creare la cartella");
+                                }
+                                file = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(path + "/persistentOrder.txt")));
+     
                                 file.writeObject(response.body());
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(OrderCreationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -318,8 +328,10 @@ public class OrderCreationController {
                                 Logger.getLogger(OrderCreationController.class.getName()).log(Level.SEVERE, null, ex);
                             } finally {
                                 try {
-                                    if(file!=null)
-                                    file.close();
+                                    if (file != null) {
+                                        file.close();
+                                        
+                                    }
                                 } catch (IOException ex) {
                                     Logger.getLogger(CustomerLogInController.class.getName()).log(Level.SEVERE, null, ex);
                                 }

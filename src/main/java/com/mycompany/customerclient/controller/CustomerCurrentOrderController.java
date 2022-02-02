@@ -271,7 +271,7 @@ public class CustomerCurrentOrderController {
                     } else {
                         JOptionPane.showMessageDialog(orderView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    File file = new File("persistentOrder.txt");
+                    File file = new File("customer"+customerId+"/persistentOrder.txt");
                     if (file.delete()) {
                         System.out.println("File cancellato con successo");
                     } else {
