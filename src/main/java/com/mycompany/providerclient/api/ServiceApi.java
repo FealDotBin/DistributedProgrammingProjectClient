@@ -26,6 +26,9 @@ public interface ServiceApi {
     @POST("provider/postProvider")
     Call<ProviderEntity> createNewProvider(@Body ProviderEntity provider);
     
+    @PUT("provider/putProvider")
+    Call<ProviderEntity> putProvider(@Body ProviderEntity provider);
+    
     @GET("provider/{provider-id}/myinfo")
     Call<ProviderEntity> getMyInfo(@Path("provider-id") Long providerId);
     
