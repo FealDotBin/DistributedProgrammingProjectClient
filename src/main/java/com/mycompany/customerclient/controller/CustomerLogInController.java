@@ -42,7 +42,7 @@ public class CustomerLogInController {
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     private Long costumerId;
-    private OrderDto currentOrder;
+    
     private Navigator navigator;
 
     public CustomerLogInController() {
@@ -95,8 +95,7 @@ public class CustomerLogInController {
                             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                                 OrderDto newCurrentOrder = response.body();
                                 if (response.isSuccessful()){
-                                    currentOrder = newCurrentOrder;
-                                    System.out.println(currentOrder);
+                                    
                                     navigator.fromLogInToOrderViewer(CustomerLogInController.this);
                                 }
                                 else
@@ -150,10 +149,6 @@ public class CustomerLogInController {
 
     public Long getCustomerId() {
         return costumerId;
-    }
-    
-    public OrderDto getCurrentOrder() {
-        return currentOrder;
     }
 
     public void disposeView() {

@@ -188,9 +188,15 @@ public class CustomerBalanceController {
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()){
                     homeButton.setText("Current Order");
-                    
+                    homeButton.addActionListener(new ActionListener(){
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromBalancetoOrderViewer(CustomerBalanceController.this);
+                        }
+                        
+                    });
                 }
-                else
+                else{
                     homeButton.setText("Create Order");
                     homeButton.addActionListener(new ActionListener(){
                         @Override
@@ -199,6 +205,7 @@ public class CustomerBalanceController {
                         }
                         
                     });
+                }
             }
 
             @Override

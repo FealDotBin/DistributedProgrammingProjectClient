@@ -129,16 +129,40 @@ public class CustomerProviderSelectionController {
                                 JOptionPane.ERROR_MESSAGE);
                 }
             });
-        providerSelectionView.setVisible(true);
-        // When history button is pressed display customer order history view
-        historyButton.addActionListener(new ActionListener(){
+        
+        //When logout button is pressed logIn view is displayed
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectionToLogIn(CustomerProviderSelectionController.this);
+            }
+        });
+
+        //When update account button is pressed update customer information view is displayed
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoUpdate(CustomerProviderSelectionController.this);
+            }
+        });
+
+        //When balance button is pressed balance update view is displayed
+        balanceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoBalance(CustomerProviderSelectionController.this);
+            }
+        });
+
+        // When logout history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromProviderSelectiontoHistory(CustomerProviderSelectionController.this);
             }
-            
+
         });
-        
+        providerSelectionView.setVisible(true);
     }
     
     public void disposeView(){

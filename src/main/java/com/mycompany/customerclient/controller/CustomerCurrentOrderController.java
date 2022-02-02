@@ -14,9 +14,13 @@ import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.navigator.Navigator;
 import com.mycompany.customerclient.view.CurrentOrderView;
 import com.mycompany.customerclient.view.customerUpdate;
+import com.sun.tools.javac.Main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,9 +64,8 @@ public class CustomerCurrentOrderController {
     private Long customerId;
     private OrderDto currentOrder;
 
-    public CustomerCurrentOrderController(OrderDto currentOrder, Long customerId) {
+    public CustomerCurrentOrderController(Long customerId) {
         this.customerId = customerId;
-        this.currentOrder = currentOrder;
 
         //View creation
         orderView = new CurrentOrderView();
@@ -88,34 +92,60 @@ public class CustomerCurrentOrderController {
         retroBuild = new RetrofitBuilder();
         apiService = retroBuild.getRetrofit().create(ServiceApi.class);
 
-        //Fill dish table
-        List<DishOrderAssociation> associations = currentOrder.getDishOrderAssociations();
-        DefaultTableModel dishTableModel = (DefaultTableModel) dishTable.getModel();
-        DishEntity dish;
-        Object row[] = new Object[3];
-        for (DishOrderAssociation ass : associations) {
-            ass.getQuantity();
-            dish = ass.getDish();
-            row[0] = dish.getName();
-            row[1] = dish.getPrice();
-            row[2] = ass.getQuantity();
-            dishTableModel.addRow(row);
-        }
-        //fill information field about current order
-        Double orderPrice = currentOrder.getPrice();
-        totalField.setText(orderPrice.toString());
-        providerField.setText(currentOrder.getProvider().getProviderName());
-        RiderDto rider = currentOrder.getRider();
-        String riderName = "";
-        if (rider != null) {
-            riderName = rider.getName();
-        } else {
-            riderName = "";
-        }
-        riderField.setText(riderName);
-        deliveryTimeField.setText(currentOrder.getDeliveryTime());
-        orderStateField.setText(currentOrder.getOrderState().toString());
-        orderTypeField.setText(currentOrder.getOrderType().toString());
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    //Fill dish table
+                    List<DishOrderAssociation> associations = currentOrder.getDishOrderAssociations();
+                    DefaultTableModel dishTableModel = (DefaultTableModel) dishTable.getModel();
+                    DishEntity dish;
+                    Object row[] = new Object[3];
+                    for (DishOrderAssociation ass : associations) {
+                        ass.getQuantity();
+                        dish = ass.getDish();
+                        row[0] = dish.getName();
+                        row[1] = dish.getPrice();
+                        row[2] = ass.getQuantity();
+                        dishTableModel.addRow(row);
+                    }
+                    //fill information field about current order
+                    Double orderPrice = currentOrder.getPrice();
+                    totalField.setText(orderPrice.toString());
+                    providerField.setText(currentOrder.getProvider().getProviderName());
+                    RiderDto rider = currentOrder.getRider();
+                    String riderName = "";
+                    if (rider != null) {
+                        riderName = rider.getName();
+                    } else {
+                        riderName = "";
+                    }
+                    riderField.setText(riderName);
+                    deliveryTimeField.setText(currentOrder.getDeliveryTime());
+                    orderStateField.setText(currentOrder.getOrderState().toString());
+                    orderTypeField.setText(currentOrder.getOrderType().toString());
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(orderView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(orderView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
 
         //When a dish in the table are clicked more informations are showd in below text areas
         dishTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -123,7 +153,7 @@ public class CustomerCurrentOrderController {
                 if (!event.getValueIsAdjusting()) {
                     int selectedRow = dishTable.getSelectedRow();
                     if (selectedRow >= 0) {
-                        DishEntity selectOrder = associations.get(selectedRow).getDish();
+                        DishEntity selectOrder = currentOrder.getDishOrderAssociations().get(selectedRow).getDish();
                         dishDescriptionTextArea.setText(selectOrder.getDescription());
                         dishIngredientTextArea.setText(selectOrder.getIngredients().toString());
 
@@ -134,7 +164,7 @@ public class CustomerCurrentOrderController {
                 }
             }
         });
-        
+
         //Action Perform when refresh button is pressed: request server for costumer's current order and if it is uptadete modify
         //view
         refreshButton.addActionListener(new ActionListener() {
@@ -179,7 +209,7 @@ public class CustomerCurrentOrderController {
                 });
             }
         });
-        
+
         //When logout button is pressed logIn view is displayed
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -187,7 +217,7 @@ public class CustomerCurrentOrderController {
                 nav.fromOrderViewertoLogIn(CustomerCurrentOrderController.this);
             }
         });
-        
+
         //When update account button is pressed update customer information view is displayed
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -203,14 +233,14 @@ public class CustomerCurrentOrderController {
                 nav.fromOrderViewertoToBalance(CustomerCurrentOrderController.this);
             }
         });
-        
+
         // When logout history button is pressed display customer order history view
-        historyButton.addActionListener(new ActionListener(){
+        historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderViewertoHistory(CustomerCurrentOrderController.this);
             }
-            
+
         });
         orderView.setVisible(true);
     }

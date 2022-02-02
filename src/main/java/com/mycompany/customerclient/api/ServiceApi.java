@@ -50,4 +50,7 @@ public interface ServiceApi {
     @GET("customer/{customer-id}/myorders")
     Call<List<OrderDto>> getCustomerHistory(@Path("customer-id") Long customerId);
     
+    @GET("customer/order/{order-id}")
+    Call<OrderDto> getOrderDTO(@Path("order-id") Long orderId);
+    
 }
