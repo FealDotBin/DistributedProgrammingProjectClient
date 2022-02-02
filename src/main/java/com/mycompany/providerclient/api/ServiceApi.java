@@ -67,4 +67,22 @@ public interface ServiceApi {
     
     @PUT("provider/putRiderOrder")
     Call<Void> putRiderOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseTakeAway")
+    Call<Void> refuseTakeAway(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseNoRider")
+    Call<Void> refuseNoRider(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseRider")
+    Call<Void> refuseRider(@Query("id") Long orderId);
+    
+    @PUT("provider/putShipOrder")
+    Call<Void> putShipOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putCompletedHandOrder")
+    Call<Void> putCompletedHandOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putCompletedOrder")
+    Call<Void> putCompletedOrder(@Query("id") Long orderId);
 }

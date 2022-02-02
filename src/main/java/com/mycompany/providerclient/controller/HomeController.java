@@ -158,7 +158,14 @@ public class HomeController {
     }
     
     private void fetchAllOrdersFromServer(){
-        // fetch all pending orders
+        fetchPendingOrdersFromServer();
+        fetchAcceptedOrdersFromServer();
+        fetchSemiAcceptedOrdersFromServer();
+        fetchShippedOrdersFromServer();
+        fetchCompletedOrdersFromServer();
+    }
+    
+    private void fetchPendingOrdersFromServer(){
         Call<List<OrderDto>> getPendingOrdersCall = serviceApi.getPendingOrders(providerId);
         getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
@@ -190,8 +197,9 @@ public class HomeController {
                   System.out.println("failed");
             }
         });
-        
-        // fetch all accepted orders
+    }
+    
+    private void fetchAcceptedOrdersFromServer(){
         Call<List<OrderDto>> getAcceptedOrdersCall = serviceApi.getAcceptedOrders(providerId);
         getAcceptedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
@@ -223,8 +231,9 @@ public class HomeController {
                       System.out.println("failed");
                 }
         });
-        
-        // fetch all semi-accepted orders
+    }
+    
+    private void fetchSemiAcceptedOrdersFromServer(){
         Call<List<OrderDto>> getSemiAcceptedOrdersCall = serviceApi.getSemiAcceptedOrders(providerId);
         getSemiAcceptedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
@@ -256,8 +265,9 @@ public class HomeController {
                       System.out.println("failed");
                 }
         });
-        
-        // fetch all shipped orders
+    }
+    
+    private void fetchShippedOrdersFromServer(){
         Call<List<OrderDto>> getShippedOrdersCall = serviceApi.getShippedOrders(providerId);
         getShippedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
@@ -267,7 +277,7 @@ public class HomeController {
                         List<OrderDto> shippedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
                             orderList.addAll(shippedOrders);
-                            addOrdersOnTable(orderList);
+                            addOrdersOnTable(shippedOrders);
                         }
                     }
                     else{ // in caso di errori
@@ -289,8 +299,9 @@ public class HomeController {
                       System.out.println("failed");
                 }
         });
-        
-        // fetch all completed orders
+    }
+    
+    private void fetchCompletedOrdersFromServer(){
         Call<List<OrderDto>> getCompletedOrdersCall = serviceApi.getCompletedOrders(providerId);
         getCompletedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
@@ -300,7 +311,7 @@ public class HomeController {
                         List<OrderDto> completedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
                             orderList.addAll(completedOrders);
-                            addOrdersOnTable(orderList);
+                            addOrdersOnTable(completedOrders);
                         }
                     }
                     else{ // in caso di errori
@@ -394,11 +405,28 @@ public class HomeController {
     
     private void attachListenerToRefreshBtn(){
         refreshBtn.addActionListener((event) -> {
-            // <- qua ci devo mettere il codice per resettare alcune
-            // robe, tipo tabelle
             
-            // <- qua ci va il codice per ricaricare 
-            // gli ordini dal backend
+            // reset controller's data
+            orderList.clear();
+            selectedOrder = null;
+            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            
+            // clear allOrdersTable's content
+            NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
+            allOrdersTableModel.setRowCount(0);
+            
+            // clear selectedOrderTable's content
+            NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
+            selectedOrderTableModel.setRowCount(0);
+            
+            // disable all buttons
+            acceptBtn.setEnabled(false);
+            shipBtn.setEnabled(false);
+            completeBtn.setEnabled(false);
+            refuseBtn.setEnabled(false);
+            
+            // fetch order's from server and show them on table
+            fetchAllOrdersFromServer();
         });
     }
     
@@ -424,7 +452,9 @@ public class HomeController {
                     return;
                 }
             }
-            putTakeAwayOrderCall();
+            else{
+                putTakeAwayOrderCall();
+            }
         });
     }
     
@@ -525,31 +555,234 @@ public class HomeController {
     
     private void attachListenerToShipBtn(){
         shipBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.ship();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            if(selectedOrderType.equals(OrderType.DELIVERY_NORIDER)){
+                putShipOrderCall();
+            }
+            else{
+                selectedOrderState.ship();
+                selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
+    private void putShipOrderCall(){
+        Call<Void> putShipOrderCall = serviceApi.putShipOrder(selectedOrder.getId());
+        putShipOrderCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.ship();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
         });
     }
     
     private void attachListenerToCompleteBtn(){
         completeBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.complete();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            switch(selectedOrderType){
+                case TAKE_AWAY:
+                    completeTakeAwayCall();
+                    break;
+                case DELIVERY_NORIDER:
+                    completeNoRiderCall();
+                    break;
+                default:
+                    selectedOrderState.complete();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
+    private void completeTakeAwayCall(){
+        Call<Void> putCompletedHandOrderCall = serviceApi.putCompletedHandOrder(selectedOrder.getId());
+        putCompletedHandOrderCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.complete();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    private void completeNoRiderCall(){
+        Call<Void> putCompletedOrderCall = serviceApi.putCompletedOrder(selectedOrder.getId());
+        putCompletedOrderCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.complete();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
         });
     }
     
     private void attachListenerToRefuseBtn(){
         refuseBtn.addActionListener((event) -> {
-            // <- qua ci va il codice della richiesta al server
-            // se va bene mi cambio lo stato
-            // se va male non faccio niente
-            selectedOrderState.refuse();
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            switch(selectedOrderType){
+                case TAKE_AWAY:
+                    refuseTakeAwayCall();
+                    break;
+                case DELIVERY:
+                    refuseNoRiderCall();
+                    break;
+                default:
+                    selectedOrderState.refuse();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
+    private void refuseRiderCall(){
+        Call<Void> refuseRiderCall = serviceApi.refuseRider(selectedOrder.getId());
+        refuseRiderCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.refuse();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    private void refuseNoRiderCall(){
+        Call<Void> refuseNoRiderCall = serviceApi.refuseNoRider(selectedOrder.getId());
+        refuseNoRiderCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.refuse();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    private void refuseTakeAwayCall(){
+        Call<Void> refuseTakeAwayCall = serviceApi.refuseTakeAway(selectedOrder.getId());
+        refuseTakeAwayCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    selectedOrderState.refuse();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
         });
     }
     
