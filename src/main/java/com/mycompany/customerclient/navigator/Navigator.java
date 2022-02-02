@@ -176,6 +176,12 @@ public class Navigator {
            new CustomerProviderSelectionController(customerId);
         }
         
+        public void fromOrderCreationToOrderViewer(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerCurrentOrderController(customerId);
+        }
+        
         public void fromOrderViewertoLogIn(CustomerCurrentOrderController c){
            c.disposeView();
            customerId=null;

@@ -199,8 +199,9 @@ public class CustomerCurrentOrderController {
                             deliveryTimeField.setText(newCurrentOrder.getDeliveryTime());
                             orderStateField.setText(newCurrentOrder.getOrderState().toString());
                             orderTypeField.setText(newCurrentOrder.getOrderType().toString());
-                        }else{
+                        } else {
                             getOrderById();
+                            nav.fromOrderViewerToProviderSelection(CustomerCurrentOrderController.this);
                         }
                     }
 
@@ -215,42 +216,50 @@ public class CustomerCurrentOrderController {
             }
         });
 
-        //When logout button is pressed logIn view is displayed
+        //When log out  button is pressed check if the current order is completed or refuse and then 
+        //display log in view
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                otherButtonExit();
                 nav.fromOrderViewertoLogIn(CustomerCurrentOrderController.this);
             }
         });
 
-        //When update account button is pressed update customer information view is displayed
+        //When update account button is pressed check if the current order is completed or refuse and then 
+        //display update customer information view 
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                otherButtonExit();
                 nav.fromOrderViewertoUpdate(CustomerCurrentOrderController.this);
             }
         });
 
-        //When balance button is pressed balance update view is displayed
+        //When balance button is pressed check if the current order is completed or refuse and then 
+        //display manage balance view
         balanceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                otherButtonExit();
                 nav.fromOrderViewertoToBalance(CustomerCurrentOrderController.this);
             }
         });
 
-        // When logout history button is pressed display customer order history view
+        //When update history button is pressed check if the current order is completed or refuse and then 
+        //display customer's order history view
         historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                otherButtonExit();
                 nav.fromOrderViewertoHistory(CustomerCurrentOrderController.this);
             }
 
         });
         orderView.setVisible(true);
     }
-    
-     private void getOrderById() {
+
+    private void getOrderById() {
         Call<OrderDto> getOrderById = apiService.getOrderDTO(this.currentOrder.getId());
         getOrderById.enqueue(new Callback<OrderDto>() {
             @Override
@@ -263,12 +272,12 @@ public class CustomerCurrentOrderController {
                         JOptionPane.showMessageDialog(orderView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
                     }
                     File file = new File("persistentOrder.txt");
-                    if(file.delete()){
+                    if (file.delete()) {
                         System.out.println("File cancellato con successo");
-                    }
-                    else
+                    } else {
                         System.out.println("Problemi con la cancellazione del file");
-                    nav.fromOrderViewerToProviderSelection(CustomerCurrentOrderController.this);
+                    }
+                    
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -291,7 +300,27 @@ public class CustomerCurrentOrderController {
 
         });
     }
-    
+
+    private void otherButtonExit() {
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(CustomerCurrentOrderController.this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (!response.isSuccessful()) {
+                    getOrderById();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(orderView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
     public void disposeView() {
         this.orderView.dispose();
     }

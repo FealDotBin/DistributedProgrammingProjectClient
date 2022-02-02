@@ -170,6 +170,7 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         accountBtn.setBackground(new java.awt.Color(255, 255, 255));
         accountBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        accountBtn.setForeground(new java.awt.Color(5, 5, 5));
         accountBtn.setText("Update Account");
         accountBtn.setBorderPainted(false);
         accountBtn.setPreferredSize(new java.awt.Dimension(145, 29));
@@ -181,6 +182,7 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
         logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setForeground(new java.awt.Color(5, 5, 5));
         logOutBtn.setText("Log out");
         logOutBtn.setBorderPainted(false);
         logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
@@ -192,6 +194,7 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         historyBtn.setBackground(new java.awt.Color(255, 255, 255));
         historyBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        historyBtn.setForeground(new java.awt.Color(5, 5, 5));
         historyBtn.setText("Order history");
         historyBtn.setBorderPainted(false);
         historyBtn.setPreferredSize(new java.awt.Dimension(145, 29));

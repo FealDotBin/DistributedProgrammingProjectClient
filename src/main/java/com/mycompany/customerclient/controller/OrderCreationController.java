@@ -324,7 +324,7 @@ public class OrderCreationController {
                                     Logger.getLogger(CustomerLogInController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
-                            nav.fromOrderCreationToProviderSelection(OrderCreationController.this);
+                            nav.fromOrderCreationToOrderViewer(OrderCreationController.this);
 
                         } else { // if server error occurs
                             try {
