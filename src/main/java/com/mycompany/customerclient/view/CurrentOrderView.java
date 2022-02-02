@@ -13,6 +13,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -36,6 +37,9 @@ public class CurrentOrderView extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JButton getAccountBtn() {
@@ -264,6 +268,7 @@ public class CurrentOrderView extends javax.swing.JFrame {
 
         accountBtn.setBackground(new java.awt.Color(255, 255, 255));
         accountBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        accountBtn.setForeground(new java.awt.Color(5, 5, 5));
         accountBtn.setText("Update Account");
         accountBtn.setBorderPainted(false);
         accountBtn.setPreferredSize(new java.awt.Dimension(145, 29));
@@ -275,6 +280,7 @@ public class CurrentOrderView extends javax.swing.JFrame {
 
         logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
         logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setForeground(new java.awt.Color(5, 5, 5));
         logOutBtn.setText("Log out");
         logOutBtn.setBorderPainted(false);
         logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
@@ -286,6 +292,7 @@ public class CurrentOrderView extends javax.swing.JFrame {
 
         historyBtn.setBackground(new java.awt.Color(255, 255, 255));
         historyBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        historyBtn.setForeground(new java.awt.Color(5, 5, 5));
         historyBtn.setText("Order history");
         historyBtn.setBorderPainted(false);
         historyBtn.setPreferredSize(new java.awt.Dimension(145, 29));

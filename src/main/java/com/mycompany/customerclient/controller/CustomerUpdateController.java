@@ -8,6 +8,7 @@ package com.mycompany.customerclient.controller;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
 import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.model.CustomerEntity;
 import com.mycompany.customerclient.navigator.Navigator;
@@ -17,6 +18,7 @@ import com.sun.tools.javac.Main;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import java.text.DateFormat;
@@ -57,6 +59,7 @@ public class CustomerUpdateController {
     private ServiceApi apiService;
     private Navigator nav;
     private Long customerId;
+    private OrderDto currentOrder;
 
     public CustomerUpdateController(Long customerId) {
         this.customerId = customerId;
@@ -91,13 +94,14 @@ public class CustomerUpdateController {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()){
+                    currentOrder = response.body();
                     homeButton.setText("Current Order");
-                    homeButton.addActionListener(new ActionListener(){
+                    homeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            nav.fromUpdatetoOrderViewer(CustomerUpdateController.this);
+                            changeToHome();
                         }
-                        
+
                     });
                 }
                 else{
@@ -240,7 +244,7 @@ public class CustomerUpdateController {
 
                         if (response.isSuccessful()) { // status code tra 200-299
                             JOptionPane.showMessageDialog(updateView, "ACCOUNT INFORMATIONS ARE BEEN UPTATED", "Update success", JOptionPane.INFORMATION_MESSAGE);
-                            
+                            passwordField.setText("");
                         } else { // if server error occurs
                             try {
                                 JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -290,6 +294,73 @@ public class CustomerUpdateController {
 
     private void fieldErrorPane(String errorMessage) {
         JOptionPane.showMessageDialog(updateView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void changeToHome() {
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(CustomerUpdateController.this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    nav.fromUpdatetoOrderViewer(CustomerUpdateController.this);
+                } else {
+                    getOrderById();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(updateView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+    }
+
+    private void getOrderById() {
+        Call<OrderDto> getOrderById = apiService.getOrderDTO(CustomerUpdateController.this.currentOrder.getId());
+        getOrderById.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    OrderDto orderGhost = response.body();
+                    if (orderGhost.getOrderState().equals(OrderState.REFUSED)) {
+                        JOptionPane.showMessageDialog(updateView, "YOUR CURRENT ORDER HAVE BEEN REFUSED BUT YOU GOT: " + orderGhost.getPrice() + " MONEY BACK", "Order Refused", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(updateView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    File file = new File("customer"+customerId+"/persistentOrder.txt");
+                    if(file.delete()){
+                        System.out.println("File cancellato con successo");
+                    }
+                    else
+                        System.out.println("Problemi con la cancellazione del file");
+                    nav.fromUpdatetoProviderSelection(CustomerUpdateController.this);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(updateView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(updateView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
     }
     
     public void disposeView(){

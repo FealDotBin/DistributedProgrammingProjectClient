@@ -5,6 +5,7 @@
  */
 package com.mycompany.common.model.dao.order;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author aferr
  */
-public class DishEntity {
+public class DishEntity implements Serializable{
     
     private Long id;
     private String name;

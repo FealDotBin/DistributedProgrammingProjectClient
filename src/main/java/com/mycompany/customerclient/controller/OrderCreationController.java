@@ -5,7 +5,6 @@
  */
 package com.mycompany.customerclient.controller;
 
-
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JButtonDeleteItemEditor;
 import com.mycompany.common.components.JButtonEditor;
@@ -30,7 +29,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,7 +90,6 @@ public class OrderCreationController {
     private ProviderDto selectedProvider;
     private CustomerEntity customer;
     private Long customerId;
-    
 
     private Navigator nav;
 
@@ -133,13 +136,26 @@ public class OrderCreationController {
             menuTableModel.addRow(row);
         }
 
+        //Auto setting delivery mode if provider does't support take away or home delivery
+        if (selectedProvider.getDoDelivering() && (!selectProvider.getDoTakeAway())) {
+            homeDeliveryButton.setSelected(true);
+            homeDeliveryButton.setEnabled(false);
+            takeAwayButton.setEnabled(false);
+        }
+        if (selectedProvider.getDoTakeAway() && (!selectedProvider.getDoDelivering())) {
+            takeAwayButton.setSelected(true);
+            takeAwayButton.setEnabled(false);
+            homeDeliveryButton.setEnabled(false);
+        }
+
+        //Retrive costumer info from server
         Call<CustomerEntity> call = apiService.getCustomer(customerId);
         call.enqueue(new Callback<CustomerEntity>() {
             @Override
             public void onResponse(Call<CustomerEntity> call, Response<CustomerEntity> response) {
                 if (response.isSuccessful()) { // status code tra 200-299
                     OrderCreationController.this.customer = response.body();
-                     
+
                 } else { // if server error occurs
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -171,7 +187,7 @@ public class OrderCreationController {
                 button.setForeground(new Color(200, 200, 200));
                 int selectedRow = menuTable.getSelectedRow();
                 String dishName = (String) menuTable.getValueAt(selectedRow, 0);
-                Double dishPrice = (Double)menuTable.getValueAt(selectedRow, 1);
+                Double dishPrice = (Double) menuTable.getValueAt(selectedRow, 1);
                 DefaultTableModel cartTableModel = (DefaultTableModel) cartTable.getModel();
                 cartTableModel.addRow(new Object[]{dishName, dishPrice, new JButton()});
                 DishEntity selectedDish = providerDishList.get(selectedRow);
@@ -237,6 +253,8 @@ public class OrderCreationController {
             }
         });
 
+        //Action performed when confirm button is pressed: read necessary field, validate them and make a request fot the server
+        //to create the order
         confirmOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -257,8 +275,8 @@ public class OrderCreationController {
                 }
                 String hour = hourComboBox.getSelectedItem().toString();
                 String min = minComboBox.getSelectedItem().toString();
-                formattedDeliveryDate+="T"+hour+":"+min+":00.000";
-                
+                formattedDeliveryDate += "T" + hour + ":" + min + ":00.000";
+
                 List<DishOrderAssociation> assList = new LinkedList<>();
                 DishOrderAssociation newAss;
                 DishOrderAssociation oldAss = null;
@@ -266,7 +284,7 @@ public class OrderCreationController {
                 for (DishEntity selectedDish : cart) {
                     newAss = new DishOrderAssociation(selectedDish);
                     index = assList.indexOf(newAss);
-                    
+
                     if (index >= 0) {
                         oldAss = assList.get(index);
                         oldAss.increaseQuantity();
@@ -282,15 +300,44 @@ public class OrderCreationController {
                 } else {
                     orderType = OrderType.TAKE_AWAY;
                 }
-                
+
                 OrderEntity order = new OrderEntity(assList, customer, selectedProvider, orderType, OrderState.PENDING, formattedDeliveryDate, total);
-                
+
                 Call<OrderDto> orderCall = apiService.createOrder(order);
                 orderCall.enqueue(new Callback<OrderDto>() {
                     @Override
                     public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                         if (response.isSuccessful()) { // status code tra 200-299
                             JOptionPane.showMessageDialog(orderCreationView, "ORDER CREATED", "ORDER CREATE SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                            ObjectOutputStream file = null;
+                            File dir;
+                            try {
+                                String path = "customer" + customerId;
+                                dir = new File(path);
+                                if (dir.mkdir()) {
+                                    System.out.println("Nuova cartella creata");
+                                } else {
+                                    System.out.println("Impossibile creare la cartella");
+                                }
+                                file = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(path + "/persistentOrder.txt")));
+     
+                                file.writeObject(response.body());
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(OrderCreationController.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IOException ex) {
+                                Logger.getLogger(OrderCreationController.class.getName()).log(Level.SEVERE, null, ex);
+                            } finally {
+                                try {
+                                    if (file != null) {
+                                        file.close();
+                                        
+                                    }
+                                } catch (IOException ex) {
+                                    Logger.getLogger(CustomerLogInController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            nav.fromOrderCreationToOrderViewer(OrderCreationController.this);
+
                         } else { // if server error occurs
                             try {
                                 JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -317,48 +364,48 @@ public class OrderCreationController {
 
         }
         );
-        
-        balanceButton.addActionListener(new ActionListener(){
+
+        balanceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderCreationToBalance(OrderCreationController.this);
             }
-            
+
         });
-        
-        updateButton.addActionListener(new ActionListener(){
+
+        updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderCreationToUpdate(OrderCreationController.this);
             }
-            
+
         });
-        
-        logOutButton.addActionListener(new ActionListener(){
+
+        logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderCreationToLogOut(OrderCreationController.this);
             }
-            
+
         });
-        
-        goBackButton.addActionListener(new ActionListener(){
+
+        goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderCreationToProviderSelection(OrderCreationController.this);
             }
-            
+
         });
-        
+
         // When history button is pressed display customer order history view
-        historyButton.addActionListener(new ActionListener(){
+        historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nav.fromOrderCreationtoHistory(OrderCreationController.this);
             }
-            
+
         });
-        
+
         orderCreationView.setVisible(
                 true);
     }
@@ -367,10 +414,10 @@ public class OrderCreationController {
         this.orderCreationView.dispose();
     }
 
-    public Long getCustomerId(){
+    public Long getCustomerId() {
         return customerId;
     }
-    
+
     private void fieldErrorPane(String errorMessage) {
         JOptionPane.showMessageDialog(orderCreationView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
     }
