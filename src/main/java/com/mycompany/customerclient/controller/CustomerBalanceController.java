@@ -7,6 +7,7 @@ package com.mycompany.customerclient.controller;
 
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
 import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.model.CustomerEntity;
 import com.mycompany.customerclient.navigator.Navigator;
@@ -15,6 +16,7 @@ import com.mycompany.customerclient.view.customerUpdate;
 import com.sun.tools.javac.Main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -51,6 +53,7 @@ public class CustomerBalanceController {
 
     private Long customerId;
     private Double currentBalance;
+    private OrderDto currentOrder;
 
     private Navigator nav;
 
@@ -187,13 +190,14 @@ public class CustomerBalanceController {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()){
+                    currentOrder = response.body();
                     homeButton.setText("Current Order");
-                    homeButton.addActionListener(new ActionListener(){
+                    homeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            nav.fromBalancetoOrderViewer(CustomerBalanceController.this);
+                            changeToHome();
                         }
-                        
+
                     });
                 }
                 else{
@@ -232,6 +236,73 @@ public class CustomerBalanceController {
 
     public Long getCustomerId() {
         return customerId;
+    }
+    
+    private void changeToHome() {
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(CustomerBalanceController.this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    nav.fromBalancetoOrderViewer(CustomerBalanceController.this);
+                } else {
+                    getOrderById();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(balanceView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+    }
+
+    private void getOrderById() {
+        Call<OrderDto> getOrderById = apiService.getOrderDTO(CustomerBalanceController.this.currentOrder.getId());
+        getOrderById.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    OrderDto orderGhost = response.body();
+                    if (orderGhost.getOrderState().equals(OrderState.REFUSED)) {
+                        JOptionPane.showMessageDialog(balanceView, "YOUR CURRENT ORDER HAVE BEEN REFUSED BUT YOU GOT: " + orderGhost.getPrice() + " MONEY BACK", "Order Refused", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(balanceView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    File file = new File("persistentOrder.txt");
+                    if(file.delete()){
+                        System.out.println("File cancellato con successo");
+                    }
+                    else
+                        System.out.println("Problemi con la cancellazione del file");
+                    nav.fromBalancetoProviderSelection(CustomerBalanceController.this);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(balanceView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(balanceView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
     }
 
         public static void main(String args[]) {

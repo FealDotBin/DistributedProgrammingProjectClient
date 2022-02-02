@@ -5,11 +5,13 @@
  */
 package com.mycompany.common.model.dto.user;
 
+import java.io.Serializable;
+
 /**
  *
  * @author aferr
  */
-public class CustomerDto {
+public class CustomerDto implements Serializable{
     
     private Long id;
     private String address;

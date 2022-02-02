@@ -5,11 +5,13 @@
  */
 package com.mycompany.common.model.dto.user;
 
+import java.io.Serializable;
+
 /**
  *
  * @author aferr
  */
-public class RiderDto {
+public class RiderDto implements Serializable{
     
     private String vehicleType;
     private String name;

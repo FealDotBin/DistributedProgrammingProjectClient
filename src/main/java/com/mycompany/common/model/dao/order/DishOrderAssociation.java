@@ -5,13 +5,14 @@
  */
 package com.mycompany.common.model.dao.order;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author aferr
  */
-public class DishOrderAssociation {
+public class DishOrderAssociation implements Serializable{
     
     private DishEntity dish;
     private int quantity;

@@ -5,13 +5,14 @@
  */
 package com.mycompany.common.model.dao.order;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author aferr
  */
-public class MenuEntity {
+public class MenuEntity implements Serializable{
     
     private Long id;
     private List<DishEntity> dishEntities;

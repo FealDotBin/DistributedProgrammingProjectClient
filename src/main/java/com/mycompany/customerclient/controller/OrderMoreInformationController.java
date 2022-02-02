@@ -10,13 +10,19 @@ import com.mycompany.common.model.dao.order.DishEntity;
 import com.mycompany.common.model.dao.order.DishOrderAssociation;
 import com.mycompany.common.model.dto.order.OrderDto;
 import com.mycompany.common.model.dto.user.RiderDto;
+import com.mycompany.common.model.enumerations.OrderState;
 import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.navigator.Navigator;
 import com.mycompany.customerclient.view.CustomerFrameHistory1;
 import com.mycompany.customerclient.view.MoreOrderInformation;
+import com.sun.tools.javac.Main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,6 +65,7 @@ public class OrderMoreInformationController {
 
     private Long customerId;
     private OrderDto selectedOrder;
+    private OrderDto currentOrder;
 
     public OrderMoreInformationController(Long customerId, OrderDto selectedOrder) {
         this.customerId = customerId;
@@ -111,7 +119,7 @@ public class OrderMoreInformationController {
                 nav.fromMoreInfoToBalance(OrderMoreInformationController.this);
             }
         });
-        
+
         //When back button is pressed, order history view si displayed
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -126,12 +134,13 @@ public class OrderMoreInformationController {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()) {
-                    
+
+                    currentOrder = response.body();
                     homeButton.setText("Current Order");
                     homeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            nav.fromMoreInfoToOrderViewer(OrderMoreInformationController.this);
+                            changeToHome();
                         }
 
                     });
@@ -151,7 +160,7 @@ public class OrderMoreInformationController {
             }
 
         });
-        
+
         //Fill dish table
         List<DishOrderAssociation> associations = selectedOrder.getDishOrderAssociations();
         DefaultTableModel dishTableModel = (DefaultTableModel) dishTable.getModel();
@@ -199,10 +208,75 @@ public class OrderMoreInformationController {
             }
         });
 
-        
-
         moreInformationView.setVisible(true);
 
+    }
+
+    private void changeToHome() {
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(OrderMoreInformationController.this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    nav.fromMoreInfoToOrderViewer(OrderMoreInformationController.this);
+                } else {
+                    getOrderById();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(moreInformationView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+    }
+
+    private void getOrderById() {
+        Call<OrderDto> getOrderById = apiService.getOrderDTO(OrderMoreInformationController.this.currentOrder.getId());
+        getOrderById.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    OrderDto orderGhost = response.body();
+                    if (orderGhost.getOrderState().equals(OrderState.REFUSED)) {
+                        JOptionPane.showMessageDialog(moreInformationView, "YOUR CURRENT ORDER HAVE BEEN REFUSED BUT YOU GOT: " + orderGhost.getPrice() + " MONEY BACK", "Order Refused", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(moreInformationView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    File file = new File("persistentOrder.txt");
+                    if (file.delete()) {
+                        System.out.println("File cancellato con successo");
+                    } else {
+                        System.out.println("Problemi con la cancellazione del file");
+                    }
+                    nav.fromMoreInfoToProviderSelection(OrderMoreInformationController.this);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(moreInformationView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(moreInformationView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
     }
 
     public void disposeView() {
@@ -212,7 +286,5 @@ public class OrderMoreInformationController {
     public Long getCustomerId() {
         return customerId;
     }
-
-
 
 }
