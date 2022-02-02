@@ -139,10 +139,12 @@ public class OrderCreationController {
         if(selectedProvider.getDoDelivering() && (!selectProvider.getDoTakeAway())){
             homeDeliveryButton.setSelected(true);
             homeDeliveryButton.setEnabled(false);
+            takeAwayButton.setEnabled(false);
         }
         if(selectedProvider.getDoTakeAway() && (!selectedProvider.getDoDelivering())){
             takeAwayButton.setSelected(true);
             takeAwayButton.setEnabled(false);
+            homeDeliveryButton.setEnabled(false);
         }
         
         //Retrive costumer info from server
@@ -322,6 +324,7 @@ public class OrderCreationController {
                                     Logger.getLogger(CustomerLogInController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
+                            nav.fromOrderCreationToProviderSelection(OrderCreationController.this);
 
                         } else { // if server error occurs
                             try {
