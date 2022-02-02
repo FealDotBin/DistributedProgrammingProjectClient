@@ -7,9 +7,11 @@ package com.mycompany.customerclient.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.NoEditableTableModel;
+import java.awt.Color;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -88,6 +90,10 @@ public class MoreOrderInformation extends javax.swing.JFrame {
         return totalTextField;
     }
 
+    public JButton getBackBtn() {
+        return backBtn;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,6 +144,7 @@ public class MoreOrderInformation extends javax.swing.JFrame {
         accountBtn = new javax.swing.JButton();
         logOutBtn = new javax.swing.JButton();
         balanceBtn = new javax.swing.JButton();
+        backBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,11 +158,13 @@ public class MoreOrderInformation extends javax.swing.JFrame {
     );
     jScrollPane3.setViewportView(dishTable);
 
+    dishDescriptionTextArea.setEditable(false);
     dishDescriptionTextArea.setColumns(20);
     dishDescriptionTextArea.setRows(5);
     dishDescriptionTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Description", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
     jScrollPane4.setViewportView(dishDescriptionTextArea);
 
+    dishIngredientTextArea.setEditable(false);
     dishIngredientTextArea.setColumns(20);
     dishIngredientTextArea.setRows(5);
     dishIngredientTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Ingredient", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -171,26 +180,35 @@ public class MoreOrderInformation extends javax.swing.JFrame {
     tableLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     tableLabel.setText("Your order");
 
+    totalTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     totalTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             totalTextFieldActionPerformed(evt);
         }
     });
+    totalTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    totalTextField.setEditable(false);
 
     providerLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     providerLabel.setText("Provider: ");
 
+    providerField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     providerField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             providerFieldActionPerformed(evt);
         }
     });
+    providerField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    providerField.setEditable(false);
 
+    riderField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     riderField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             riderFieldActionPerformed(evt);
         }
     });
+    riderField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    riderField.setEditable(false);
 
     riderNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     riderNameLabel.setText("Rider:");
@@ -198,29 +216,38 @@ public class MoreOrderInformation extends javax.swing.JFrame {
     stateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     stateLabel.setText("Order State:  ");
 
+    stateField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     stateField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             stateFieldActionPerformed(evt);
         }
     });
+    stateField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    stateField.setEditable(false);
 
     deliviryTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     deliviryTimeLabel.setText("Delivery time: ");
 
+    deliveryField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     deliveryField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             deliveryFieldActionPerformed(evt);
         }
     });
+    deliveryField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    deliveryField.setEditable(false);
 
     typeLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     typeLabel.setText("Order Type:  ");
 
+    orderTypeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     orderTypeField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             orderTypeFieldActionPerformed(evt);
         }
     });
+    orderTypeField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(80,80,80)));
+    orderTypeField.setEditable(false);
 
     navBar.setBackground(new java.awt.Color(146, 43, 32));
 
@@ -301,6 +328,15 @@ public class MoreOrderInformation extends javax.swing.JFrame {
             .addGap(24, 24, 24))
     );
 
+    backBtn.setBackground(new java.awt.Color(44, 73, 129));
+    backBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    backBtn.setText("Return to order selection");
+    backBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            backBtnActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -342,9 +378,12 @@ public class MoreOrderInformation extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(totalLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(totalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(totalLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(totalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(tableLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(0, 0, Short.MAX_VALUE))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -375,16 +414,16 @@ public class MoreOrderInformation extends javax.swing.JFrame {
                 .addComponent(typeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(orderTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
+            .addComponent(tableLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(tableLabel)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(56, 56, 56)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(totalLabel)
-                        .addComponent(totalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(totalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(backBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -396,19 +435,16 @@ public class MoreOrderInformation extends javax.swing.JFrame {
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 933, Short.MAX_VALUE)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 537, Short.MAX_VALUE)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
@@ -454,6 +490,10 @@ public class MoreOrderInformation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_balanceBtnActionPerformed
 
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -492,6 +532,7 @@ public class MoreOrderInformation extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accountBtn;
+    private javax.swing.JButton backBtn;
     private javax.swing.JButton balanceBtn;
     private javax.swing.JTextField deliveryField;
     private javax.swing.JLabel deliviryTimeLabel;

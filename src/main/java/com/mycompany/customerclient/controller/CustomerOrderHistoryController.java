@@ -46,7 +46,6 @@ public class CustomerOrderHistoryController {
     private Navigator nav;
 
     private Long customerId;
-    private OrderDto currentOrder;
     private OrderDto selectedOrder;
     private List<OrderDto> orderHistory;
 
@@ -99,7 +98,7 @@ public class CustomerOrderHistoryController {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()) {
-                    currentOrder = response.body();
+                    
                     homeButton.setText("Current Order");
                     homeButton.addActionListener(new ActionListener() {
                         @Override
@@ -110,7 +109,14 @@ public class CustomerOrderHistoryController {
                     });
                 } else {
                     homeButton.setText("Create Order");
-                    nav.fromHistory1ToProviderSelection(CustomerOrderHistoryController.this);
+                    homeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromHistory1ToProviderSelection(CustomerOrderHistoryController.this);
+                        }
+
+                    });
+                    
                 }
 
             }
@@ -164,7 +170,7 @@ public class CustomerOrderHistoryController {
 
         });
 
-        JButtonEditor providerTableEditor = new JButtonEditor("View Menù", new ActionListener() {
+        JButtonEditor orderTableEditor = new JButtonEditor("View Menù", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JButton button = (JButton) e.getSource();
@@ -177,6 +183,8 @@ public class CustomerOrderHistoryController {
             }
 
         });
+        orderTable.setDefaultEditor(JButton.class, orderTableEditor);
+        
 
         historyView.setVisible(true);
 
@@ -190,9 +198,7 @@ public class CustomerOrderHistoryController {
         return customerId;
     }
 
-    public OrderDto getCurrentOrder() {
-        return currentOrder;
-    }
+
 
     public OrderDto getSelectedOrder() {
         return selectedOrder;
