@@ -19,12 +19,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author CATELLO
  */
-public class RiderOrderSelection extends javax.swing.JFrame {
+public class RiderOrderSelectionView extends javax.swing.JFrame {
 
     /**
      * Creates new form RiderOrderSelection
      */
-    public RiderOrderSelection() {
+    public RiderOrderSelectionView() {
         try {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
@@ -150,20 +150,21 @@ public class RiderOrderSelection extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RiderOrderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderOrderSelectionView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RiderOrderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderOrderSelectionView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RiderOrderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderOrderSelectionView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiderOrderSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderOrderSelectionView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RiderOrderSelection().setVisible(true);
+                new RiderOrderSelectionView().setVisible(true);
             }
         });
     }

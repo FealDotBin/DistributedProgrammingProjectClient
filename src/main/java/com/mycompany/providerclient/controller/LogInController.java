@@ -104,8 +104,12 @@ public class LogInController {
                 @Override
                 public void onFailure(Call<Long> call, Throwable t) {
                     // Log error here since request failed
-                      System.out.println("failed");
-                }
+                        JOptionPane.showMessageDialog(logInView,
+                                "Something went wrong...",
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        }
+
             });
         });
         

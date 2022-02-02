@@ -58,7 +58,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <Component id="userameTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="usernameTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       <Component id="ibanTextField" alignment="0" max="32767" attributes="0"/>
                       <Component id="telephoneTextField" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
@@ -90,7 +90,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="userameTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="usernameTextField" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="passwordTextField" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -158,12 +158,12 @@
             <Property name="text" type="java.lang.String" value="SIGN UP"/>
           </Properties>
         </Component>
-        <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="userameTextField">
+        <Component class="com.mycompany.common.components.JTextFieldPlaceholder" name="usernameTextField">
           <Properties>
             <Property name="text" type="java.lang.String" value="Username"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userameTextFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernameTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTextFieldPlaceholder(&quot;Username&quot;)"/>

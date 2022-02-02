@@ -11,6 +11,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.common.components.NoEditableTableModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -18,12 +21,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author CATELLO
  */
-public class CurrentDeliveryOrder extends javax.swing.JFrame {
+public class DeliveryOrderView extends javax.swing.JFrame {
 
     /**
      * Creates new form CurrentDeliveryOrder
      */
-    public CurrentDeliveryOrder() {
+    public DeliveryOrderView() {
         try {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarculaLaf());
@@ -32,6 +35,60 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
         }
         initComponents();
     }
+
+    public JButton getCompleteBtn() {
+        return completeBtn;
+    }
+
+    public JButton getShippedBtn() {
+        return shippedBtn;
+    }
+
+    public JLabel getTableLabel() {
+        return tableLabel;
+    }
+
+    
+    
+    public JLabel getCustomerAddressLabel() {
+        return customerAddressLabel;
+    }
+
+
+    public JLabel getCustomerNameLabel() {
+        return customerNameLabel;
+    }
+
+
+    public JLabel getCustomerTelephoneLabel() {
+        return customerTelephoneLabel;
+    }
+    public JLabel getDeliveryTimeLabel() {
+        return deliveryTimeLabel;
+    }
+
+    public JTable getDishTable() {
+        return dishTable;
+    }
+
+    public JLabel getProviderAddressLabel() {
+        return providerAddressLabel;
+    }
+
+    public JLabel getProviderNameLabel() {
+        return providerNameLabel;
+    }
+
+
+    public JLabel getProviderTelephoneLabel() {
+        return providerTelephoneLabel;
+    }
+
+    public JLabel getStateLabel() {
+        return stateLabel;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,7 +119,7 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
             }
         };
         customerTelephoneLabel = new javax.swing.JLabel();
-        deliviryTimeLabel = new javax.swing.JLabel();
+        deliveryTimeLabel = new javax.swing.JLabel();
         tableLabel = new javax.swing.JLabel();
         stateLabel = new javax.swing.JLabel();
         customerAddressLabel = new javax.swing.JLabel();
@@ -114,8 +171,8 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
     customerTelephoneLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     customerTelephoneLabel.setText("Telephone:  Customer number");
 
-    deliviryTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    deliviryTimeLabel.setText("Delivery time:  HH:mm GG/MM/AAAA");
+    deliveryTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    deliveryTimeLabel.setText("Delivery time:  HH:mm GG/MM/AAAA");
 
     tableLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
     tableLabel.setText("Your order to deliver");
@@ -147,7 +204,7 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(deliviryTimeLabel)
+            .addComponent(deliveryTimeLabel)
             .addGap(137, 137, 137))
         .addComponent(titleLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -201,7 +258,7 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
                 .addComponent(customerAddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(customerTelephoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
-            .addComponent(deliviryTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(deliveryTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addComponent(tableLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -261,20 +318,23 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CurrentDeliveryOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeliveryOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CurrentDeliveryOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeliveryOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CurrentDeliveryOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeliveryOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CurrentDeliveryOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeliveryOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CurrentDeliveryOrder().setVisible(true);
+                new DeliveryOrderView().setVisible(true);
             }
         });
     }
@@ -284,7 +344,7 @@ public class CurrentDeliveryOrder extends javax.swing.JFrame {
     private javax.swing.JLabel customerAddressLabel;
     private javax.swing.JLabel customerNameLabel;
     private javax.swing.JLabel customerTelephoneLabel;
-    private javax.swing.JLabel deliviryTimeLabel;
+    private javax.swing.JLabel deliveryTimeLabel;
     private javax.swing.JTable dishTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;

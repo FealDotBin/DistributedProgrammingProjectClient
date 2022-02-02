@@ -19,7 +19,6 @@ public class RiderEntity {
     private String iban;
     private String telephoneNumber;
     private double balance;
-    private String documentPath;
     private String vehicleType;
 
     public Long getId() {
@@ -96,14 +95,6 @@ public class RiderEntity {
 
 
 
-    public String getDocumentPath() {
-        return documentPath;
-    }
-
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
-    }
-
     public String getVehicleType() {
         return vehicleType;
     }
@@ -112,7 +103,7 @@ public class RiderEntity {
         this.vehicleType = vehicleType;
     }
 
-    public RiderEntity(String username, String password, String name, String surname, String birthDate, String iban, String telephoneNumber,String documentPath, String vehicleType) {
+    public RiderEntity(String username, String password, String name, String surname, String birthDate, String iban, String telephoneNumber, String vehicleType) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -120,14 +111,26 @@ public class RiderEntity {
         this.birthDate = birthDate;
         this.iban = iban;
         this.telephoneNumber = telephoneNumber;
-        this.documentPath = documentPath;
         this.vehicleType = vehicleType;
     }
 
     @Override
     public String toString() {
-        return "RiderEntity{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", surname=" + surname + ", birthDate=" + birthDate + ", iban=" + iban + ", telephoneNumber=" + telephoneNumber + ", balance=" + balance +  ", documentPath=" + documentPath + ", vehicleType=" + vehicleType + '}';
+        return "RiderEntity{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", surname=" + surname + ", birthDate=" + birthDate + ", iban=" + iban + ", telephoneNumber=" + telephoneNumber + ", balance=" + balance +  ", documentPath="+ ", vehicleType=" + vehicleType + '}';
     }
+
+    public RiderEntity(Long id, String username, String password, String name, String surname, String birthDate, String iban, String telephoneNumber, String vehicleType) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.iban = iban;
+        this.telephoneNumber = telephoneNumber;
+        this.vehicleType = vehicleType;
+    }
+    
     
     
     

@@ -9,6 +9,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -16,12 +17,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author Marco
  */
-public class RiderLogIn extends javax.swing.JFrame {
+public class RiderLoginView extends javax.swing.JFrame {
 
     /**
      * Creates new form ProviderLogIn
      */
-    public RiderLogIn() {
+    public RiderLoginView() {
         try {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
@@ -30,6 +31,25 @@ public class RiderLogIn extends javax.swing.JFrame {
         }
         initComponents();
     }
+
+    public JButton getLogInBtn() {
+        return logInBtn;
+    }
+
+    public JTextFieldPlaceholder getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JButton getSignUpBtn() {
+        return signUpBtn;
+    }
+
+    public JTextFieldPlaceholder getUsernameTextField() {
+        return usernameTextField;
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,7 +62,7 @@ public class RiderLogIn extends javax.swing.JFrame {
 
         newLogin = new javax.swing.JPanel();
         logInBtn = new javax.swing.JButton();
-        signInBtn = new javax.swing.JButton();
+        signUpBtn = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         usernameTextField = new JTextFieldPlaceholder("Username");
@@ -59,7 +79,7 @@ public class RiderLogIn extends javax.swing.JFrame {
             }
         });
 
-        signInBtn.setText("Sign Up");
+        signUpBtn.setText("Sign Up");
 
         titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -97,7 +117,7 @@ public class RiderLogIn extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newLoginLayout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(signInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(signUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newLoginLayout.createSequentialGroup()
                         .addGroup(newLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -118,7 +138,7 @@ public class RiderLogIn extends javax.swing.JFrame {
                 .addComponent(logInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(newLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(signInBtn)
+                    .addComponent(signUpBtn)
                     .addComponent(jLabel4))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
@@ -170,14 +190,26 @@ public class RiderLogIn extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RiderLogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderLoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RiderLogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderLoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RiderLogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderLoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiderLogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderLoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -186,7 +218,7 @@ public class RiderLogIn extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RiderLogIn().setVisible(true);
+                new RiderLoginView().setVisible(true);
             }
         });
     }
@@ -196,7 +228,7 @@ public class RiderLogIn extends javax.swing.JFrame {
     private javax.swing.JButton logInBtn;
     private javax.swing.JPanel newLogin;
     private com.mycompany.common.components.JTextFieldPlaceholder passwordTextField;
-    private javax.swing.JButton signInBtn;
+    private javax.swing.JButton signUpBtn;
     private javax.swing.JLabel titleLabel;
     private com.mycompany.common.components.JTextFieldPlaceholder usernameTextField;
     // End of variables declaration//GEN-END:variables

@@ -40,6 +40,10 @@ public interface ServiceApi {
     @GET("rider/getSemiAcceptedOrders")
     Call<List<OrderDto>> getSemiAcceptedOrders();
     
+    
+    @GET("rider/order/{order-id}")
+    Call<OrderDto> getOrderById(@Path("order-id") Long order);
+    
     @PUT("rider/{rider-id}/acceptOrder")
     Call<Void> acceptOrder(@Path("rider-id") Long riderId,@Query("id") Long orderId);
     
