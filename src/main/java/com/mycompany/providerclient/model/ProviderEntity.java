@@ -13,6 +13,7 @@ import java.time.LocalDate;
  */
 public class ProviderEntity {
     
+    private Long id;
     private String username;
     private String password;
     
@@ -32,6 +33,29 @@ public class ProviderEntity {
     private Boolean isAvailable;
 
     // Constructor with all attributes except balance
+    public ProviderEntity(Long id, String username, String password, 
+            String name, String surname, String birthDate, String iban, 
+            String telephoneNumber, String providerName, String cuisine, 
+            String address, Boolean doDelivering, Boolean doTakeAway, 
+            Boolean hasOwnRiders, Boolean isAvailable) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.iban = iban;
+        this.telephoneNumber = telephoneNumber;
+        this.providerName = providerName;
+        this.cuisine = cuisine;
+        this.address = address;
+        this.doDelivering = doDelivering;
+        this.doTakeAway = doTakeAway;
+        this.hasOwnRiders = hasOwnRiders;
+        this.isAvailable = isAvailable;
+    }
+    
+    // Constructor with all attributes except id, balance
     public ProviderEntity(String username, String password, 
             String name, String surname, String birthDate, String iban, 
             String telephoneNumber, String providerName, String cuisine, 
@@ -53,7 +77,7 @@ public class ProviderEntity {
         this.isAvailable = isAvailable;
     }
 
-    // constructor without isAvailable and balance attribute
+    // constructor without id, isAvailable, balance attributes
     public ProviderEntity(String username, String password, String name, 
             String surname, String birthDate, String iban,
             String telephoneNumber, String providerName, String cuisine, 
@@ -76,6 +100,10 @@ public class ProviderEntity {
         isAvailable = false;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public void setUsername(String username) {
         this.username = username;
     }
@@ -134,6 +162,10 @@ public class ProviderEntity {
 
     public void setIsAvailable(Boolean isAvailable) {
         this.isAvailable = isAvailable;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUsername() {

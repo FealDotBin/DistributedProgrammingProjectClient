@@ -149,6 +149,7 @@ public class SignUpView extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         signUpBtn.setBackground(new java.awt.Color(44, 73, 129));
         signUpBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

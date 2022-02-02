@@ -856,14 +856,5 @@ public class HomeController {
     public void disposeView(){
         homeView.dispose();
     }
-
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                HomeController c = new HomeController(1L);
-            }
-        });
-    }
     
 }

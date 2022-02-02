@@ -80,6 +80,7 @@ public class LogInView extends javax.swing.JFrame {
         passwordTextField = new JTextFieldPlaceholder("Password");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         logInBtn.setBackground(new java.awt.Color(44, 73, 129));
         logInBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

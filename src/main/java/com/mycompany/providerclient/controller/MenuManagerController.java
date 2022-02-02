@@ -465,12 +465,4 @@ public class MenuManagerController {
         return providerId;
     }
     
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                MenuManagerController c = new MenuManagerController(8L);
-            }
-        });
-    }
 }

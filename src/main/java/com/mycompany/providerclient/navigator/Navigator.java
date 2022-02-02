@@ -9,6 +9,7 @@ import com.mycompany.providerclient.controller.HomeController;
 import com.mycompany.providerclient.controller.LogInController;
 import com.mycompany.providerclient.controller.MenuManagerController;
 import com.mycompany.providerclient.controller.SignUpController;
+import com.mycompany.providerclient.controller.UpdateController;
 
 /**
  *
@@ -52,11 +53,9 @@ public class Navigator {
         }
         
         public void fromHomeToUpdateAccount(HomeController c){
-            // TODO 
-            // Mi devo creare UpdateAccount
-            // c.disposeView();
-            // Long provider id = c.getProviderId();
-            // new UpdateAccountController(providerId);
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new UpdateController(providerId);
         }
         
         public void fromHomeToLogIn(HomeController c){
@@ -71,14 +70,29 @@ public class Navigator {
         }
         
         public void fromMenuManagerToUpdateAccount(MenuManagerController c){
-            // TODO 
-            // Mi devo creare UpdateAccount
-            // c.disposeView();
-            // Long providerId = c.getProviderId();
-            // new UpdateAccountController(providerId);
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new UpdateController(providerId);
         }
         
         public void fromMenuManagerToLogIn(MenuManagerController c){
+            c.disposeView();
+            new LogInController();
+        }
+        
+        public void fromUpdateToMenuManager(UpdateController c){
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new MenuManagerController(providerId);
+        }
+        
+        public void fromUpdateToHome(UpdateController c){
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new HomeController(providerId);
+        }
+        
+        public void fromUpdateToLogIn(UpdateController c){
             c.disposeView();
             new LogInController();
         }
