@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
@@ -62,6 +63,12 @@ public class HomeController {
     private JButton manageMenuBtn;
     private JButton updateAccountBtn;
     private JButton logOutBtn;
+    private JRadioButton pendingRadioButton;
+    private JRadioButton semiAcceptedRadioButton;
+    private JRadioButton acceptedRadioButton;
+    private JRadioButton shippedRadioButton;
+    private JRadioButton completedRadioButton;
+    private JRadioButton refusedRadioButton;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     private List<OrderDto> orderList;
@@ -88,6 +95,12 @@ public class HomeController {
         manageMenuBtn = homeView.getManageMenuBtn();
         updateAccountBtn = homeView.getUpdateAccountBtn();
         logOutBtn = homeView.getLogOutBtn();
+        pendingRadioButton = homeView.getPendingRadioButton();
+        semiAcceptedRadioButton = homeView.getSemiAcceptedRadioButton();
+        acceptedRadioButton = homeView.getAcceptedRadioButton();
+        shippedRadioButton = homeView.getShippedRadioButton();
+        completedRadioButton = homeView.getCompletedRadioButton();
+        refusedRadioButton = homeView.getRefusedRadioButton();
         
         // disable all buttons
         acceptBtn.setEnabled(false);
@@ -105,15 +118,20 @@ public class HomeController {
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
         // fetch provider's infos from server
-        fetchProviderFromServer();
+        getMyInfoCall();
         
-        // fetch all orders from server and show them on allOrdersTable
-        fetchAllOrdersFromServer();
+        // fetch pending orders from server and show them on allOrdersTable
+        getPendingOrdersCall();
         
         // get navigator
         navigator = Navigator.getInstance();
         
         // attach listeners
+        attachListenerToPendingRadioButton();
+        attachListenerToAcceptedRadioButton();
+        attachListenerToSemiAcceptedRadioButton();
+        attachListerToShippedRadioButton();
+        attachListenerToCompletedRadioButton();
         attachListenerToAllOrdersTable();
         attachListenerToAcceptBtn();
         attachListenerToShipBtn();
@@ -126,7 +144,7 @@ public class HomeController {
         attachListenerToAvailableBtn();
     }
     
-    private void fetchProviderFromServer(){
+    private void getMyInfoCall(){
         Call<ProviderEntity> getMyInfoCall = serviceApi.getMyInfo(providerId);
         getMyInfoCall.enqueue(new Callback<ProviderEntity>(){
             @Override
@@ -157,25 +175,23 @@ public class HomeController {
         });
     }
     
-    private void fetchAllOrdersFromServer(){
-        fetchPendingOrdersFromServer();
-        fetchAcceptedOrdersFromServer();
-        fetchSemiAcceptedOrdersFromServer();
-        fetchShippedOrdersFromServer();
-        fetchCompletedOrdersFromServer();
+    private void attachListenerToPendingRadioButton(){
+        pendingRadioButton.addActionListener(event -> {
+            getPendingOrdersCall();
+        });
     }
     
-    private void fetchPendingOrdersFromServer(){
+    private void getPendingOrdersCall(){
         Call<List<OrderDto>> getPendingOrdersCall = serviceApi.getPendingOrders(providerId);
         getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
                 if(response.isSuccessful()){ // status code tra 200-299
-                    List<OrderDto> pendingOrders = response.body();
                     synchronized(orderList){
-                        orderList.addAll(pendingOrders);
-                        addOrdersOnTable(pendingOrders);
+                        orderList = response.body();
+                        clearControllerState();
+                        addOrdersOnTable(orderList);
                     }
                 }
                 else{ // in caso di errori
@@ -199,17 +215,23 @@ public class HomeController {
         });
     }
     
-    private void fetchAcceptedOrdersFromServer(){
+    private void attachListenerToAcceptedRadioButton(){
+        acceptedRadioButton.addActionListener(event -> {
+            getAcceptedOrdersCall();
+        });
+    }
+    
+    private void getAcceptedOrdersCall(){
         Call<List<OrderDto>> getAcceptedOrdersCall = serviceApi.getAcceptedOrders(providerId);
         getAcceptedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
                 public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
                     if(response.isSuccessful()){ // status code tra 200-299
-                        List<OrderDto> acceptedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
-                            orderList.addAll(acceptedOrders);
-                            addOrdersOnTable(acceptedOrders);
+                            orderList = response.body();
+                            clearControllerState();
+                            addOrdersOnTable(orderList);
                         }
                     }
                     else{ // in caso di errori
@@ -233,17 +255,23 @@ public class HomeController {
         });
     }
     
-    private void fetchSemiAcceptedOrdersFromServer(){
+    private void attachListenerToSemiAcceptedRadioButton(){
+        semiAcceptedRadioButton.addActionListener(event -> {
+            getSemiAcceptedOrdersCall();
+        });
+    }
+    
+    private void getSemiAcceptedOrdersCall(){
         Call<List<OrderDto>> getSemiAcceptedOrdersCall = serviceApi.getSemiAcceptedOrders(providerId);
         getSemiAcceptedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
                 public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
                     if(response.isSuccessful()){ // status code tra 200-299
-                        List<OrderDto> semiAcceptedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
-                            orderList.addAll(semiAcceptedOrders);
-                            addOrdersOnTable(semiAcceptedOrders);
+                            orderList = response.body();
+                            clearControllerState();
+                            addOrdersOnTable(orderList);
                         }
                     }
                     else{ // in caso di errori
@@ -267,17 +295,23 @@ public class HomeController {
         });
     }
     
-    private void fetchShippedOrdersFromServer(){
+    private void attachListerToShippedRadioButton(){
+        shippedRadioButton.addActionListener(event -> {
+            getShippedOrdersCall();
+        });
+    }
+    
+    private void getShippedOrdersCall(){
         Call<List<OrderDto>> getShippedOrdersCall = serviceApi.getShippedOrders(providerId);
         getShippedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
                 public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
                     if(response.isSuccessful()){ // status code tra 200-299
-                        List<OrderDto> shippedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
-                            orderList.addAll(shippedOrders);
-                            addOrdersOnTable(shippedOrders);
+                            orderList = response.body();
+                            clearControllerState();
+                            addOrdersOnTable(orderList);
                         }
                     }
                     else{ // in caso di errori
@@ -301,17 +335,23 @@ public class HomeController {
         });
     }
     
-    private void fetchCompletedOrdersFromServer(){
+    private void attachListenerToCompletedRadioButton(){
+        completedRadioButton.addActionListener(event -> {
+            getCompletedOrdersCall();
+        });
+    }
+    
+    private void getCompletedOrdersCall(){
         Call<List<OrderDto>> getCompletedOrdersCall = serviceApi.getCompletedOrders(providerId);
         getCompletedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
                 public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
                     if(response.isSuccessful()){ // status code tra 200-299
-                        List<OrderDto> completedOrders = (List<OrderDto>) response.body();
                         synchronized(orderList){
-                            orderList.addAll(completedOrders);
-                            addOrdersOnTable(completedOrders);
+                            orderList = response.body();
+                            clearControllerState();
+                            addOrdersOnTable(orderList);
                         }
                     }
                     else{ // in caso di errori
@@ -403,6 +443,7 @@ public class HomeController {
         });
     }
     
+    // QUESTO LO DEVO FARE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     private void attachListenerToRefreshBtn(){
         refreshBtn.addActionListener((event) -> {
             
@@ -426,7 +467,7 @@ public class HomeController {
             refuseBtn.setEnabled(false);
             
             // fetch order's from server and show them on table
-            fetchAllOrdersFromServer();
+            //fetchAllOrdersFromServer();
         });
     }
     
@@ -467,6 +508,10 @@ public class HomeController {
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrder.setOrderType(OrderType.DELIVERY_RIDERS);
                     selectedOrderState.accept();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -499,6 +544,10 @@ public class HomeController {
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrder.setOrderType(OrderType.DELIVERY_NORIDER);
                     selectedOrderState.accept();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -530,6 +579,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.accept();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -574,6 +627,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.ship();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -622,6 +679,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.complete();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -653,6 +714,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.complete();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -701,6 +766,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.refuse();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -732,6 +801,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.refuse();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -763,6 +836,10 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     selectedOrderState.refuse();
+                    
+                    // remove order from list and remove order selection
+                    orderList.remove(selectedOrder);
+                    selectedOrder = null;
                     selectedOrderState = new SelectedOrderStateNotSelected(homeView);
                 }
                 else{ // in caso di errori
@@ -849,6 +926,20 @@ public class HomeController {
         }
     }
     
+    private void clearControllerState(){
+        // removes all rows from allOrdersTable
+        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
+        allOrdersTableModel.setRowCount(0);
+        
+        // set order state to "no order selected"
+        selectedOrder = null;
+        selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        
+        // remove all rows from selectedOrderTable
+        NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
+        selectedOrderTableModel.setRowCount(0);
+    }
+    
     public Long getProviderId(){
         return providerId;
     }
@@ -857,4 +948,12 @@ public class HomeController {
         homeView.dispose();
     }
     
+    public static void main(String args[]) {
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               new HomeController(49L);
+           }
+       });
+    }
 }

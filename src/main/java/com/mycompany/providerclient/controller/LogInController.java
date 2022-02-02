@@ -123,12 +123,12 @@ public class LogInController {
         logInView.dispose();
     }
     
-     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LogInController();
-            }
-        });
+    public static void main(String args[]) {
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               new LogInController();
+           }
+       });
     }
 }

@@ -151,8 +151,8 @@ public class SignUpController {
             }
             
             Boolean doDelivering = deliveringCheckBox.isSelected();
-            Boolean doTakeAway = deliveringCheckBox.isSelected();
-            Boolean hasOwnRiders = deliveringCheckBox.isSelected();
+            Boolean doTakeAway = takeAwayCheckBox.isSelected();
+            Boolean hasOwnRiders = ownRiderCheckBox.isSelected();
             
             ProviderEntity provider = new ProviderEntity(
                     username, password, 
