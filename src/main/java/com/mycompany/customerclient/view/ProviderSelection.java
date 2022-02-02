@@ -37,11 +37,23 @@ public class ProviderSelection extends javax.swing.JFrame {
     }
 
     public JButton getLogoutBtn() {
-        return logoutBtn;
+        return logOutBtn;
     }
 
     public JTable getProviderTable() {
         return providerTable;
+    }
+
+    public JButton getAccountBtn() {
+        return accountBtn;
+    }
+
+    public JButton getBalanceBtn() {
+        return balanceBtn;
+    }
+
+    public JButton getHistoryBtn() {
+        return historyBtn;
     }
     
 
@@ -87,9 +99,9 @@ public class ProviderSelection extends javax.swing.JFrame {
             }
         };
         navBar = new javax.swing.JPanel();
-        logoutBtn = new javax.swing.JButton();
         balanceBtn = new javax.swing.JButton();
         accountBtn = new javax.swing.JButton();
+        logOutBtn = new javax.swing.JButton();
         historyBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -138,24 +150,13 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         navBar.setBackground(new java.awt.Color(146, 43, 32));
 
-        logoutBtn.setBackground(new java.awt.Color(255, 255, 255));
-        logoutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        logoutBtn.setForeground(new java.awt.Color(5, 5, 5));
-        logoutBtn.setText("Update Balance");
-        logoutBtn.setBorderPainted(false);
-        logoutBtn.setMaximumSize(new java.awt.Dimension(145, 29));
-        logoutBtn.setMinimumSize(new java.awt.Dimension(145, 29));
-        logoutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
-        logoutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutBtnActionPerformed(evt);
-            }
-        });
-
         balanceBtn.setBackground(new java.awt.Color(255, 255, 255));
         balanceBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        balanceBtn.setText("Update Account");
+        balanceBtn.setForeground(new java.awt.Color(5, 5, 5));
+        balanceBtn.setText("Update Balance");
         balanceBtn.setBorderPainted(false);
+        balanceBtn.setMaximumSize(new java.awt.Dimension(145, 29));
+        balanceBtn.setMinimumSize(new java.awt.Dimension(145, 29));
         balanceBtn.setPreferredSize(new java.awt.Dimension(145, 29));
         balanceBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,12 +166,23 @@ public class ProviderSelection extends javax.swing.JFrame {
 
         accountBtn.setBackground(new java.awt.Color(255, 255, 255));
         accountBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        accountBtn.setText("Log out");
+        accountBtn.setText("Update Account");
         accountBtn.setBorderPainted(false);
         accountBtn.setPreferredSize(new java.awt.Dimension(145, 29));
         accountBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accountBtnActionPerformed(evt);
+            }
+        });
+
+        logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
+        logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setText("Log out");
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutBtnActionPerformed(evt);
             }
         });
 
@@ -191,13 +203,13 @@ public class ProviderSelection extends javax.swing.JFrame {
             navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navBarLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
                 .addComponent(balanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
+                .addComponent(accountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73)
-                .addComponent(accountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         navBarLayout.setVerticalGroup(
@@ -205,9 +217,9 @@ public class ProviderSelection extends javax.swing.JFrame {
             .addGroup(navBarLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(balanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(accountBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(historyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
         );
@@ -236,10 +248,6 @@ public class ProviderSelection extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logoutBtnActionPerformed
-
     private void balanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_balanceBtnActionPerformed
@@ -247,6 +255,10 @@ public class ProviderSelection extends javax.swing.JFrame {
     private void accountBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_accountBtnActionPerformed
+
+    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutBtnActionPerformed
 
     private void historyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyBtnActionPerformed
         // TODO add your handling code here:
@@ -262,7 +274,7 @@ public class ProviderSelection extends javax.swing.JFrame {
     private javax.swing.JButton balanceBtn;
     private javax.swing.JButton historyBtn;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton logoutBtn;
+    private javax.swing.JButton logOutBtn;
     private javax.swing.JPanel navBar;
     private javax.swing.JTable providerTable;
     private javax.swing.JPanel providerView;

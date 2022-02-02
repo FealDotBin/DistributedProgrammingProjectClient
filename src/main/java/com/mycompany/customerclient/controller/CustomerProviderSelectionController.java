@@ -35,11 +35,15 @@ public class CustomerProviderSelectionController {
     private ProviderSelection providerSelectionView;
     private JTable providerTable;
     private JButton logOutButton;
+    private JButton historyButton;
+    private JButton updateButton;
+    private JButton balanceButton;
     private Long customerId;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     private Navigator nav;
     private Long providerId;
+    private ProviderDto selectedProvider;
     private List<ProviderDto> providerList;
 
     public CustomerProviderSelectionController(Long customerId) {
@@ -54,13 +58,17 @@ public class CustomerProviderSelectionController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = providerTable.getSelectedRow();
-                providerId = providerList.get(selectedRow).getId();
+                selectedProvider = providerList.get(selectedRow);
+                providerId = selectedProvider.getId();
                 nav.fromProviderSelectionToOrderCreation(CustomerProviderSelectionController.this);
             }
             
         });
         providerTable.setDefaultEditor(JButton.class, providerTableEditor);
         logOutButton = providerSelectionView.getLogoutBtn();
+        historyButton = providerSelectionView.getHistoryBtn();
+        updateButton = providerSelectionView.getAccountBtn();
+        balanceButton = providerSelectionView.getBalanceBtn();
         //action performed when log out is pressed: return to log out view
         logOutButton.addActionListener(new ActionListener(){
             @Override
@@ -121,9 +129,40 @@ public class CustomerProviderSelectionController {
                                 JOptionPane.ERROR_MESSAGE);
                 }
             });
+        
+        //When logout button is pressed logIn view is displayed
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectionToLogIn(CustomerProviderSelectionController.this);
+            }
+        });
+
+        //When update account button is pressed update customer information view is displayed
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoUpdate(CustomerProviderSelectionController.this);
+            }
+        });
+
+        //When balance button is pressed balance update view is displayed
+        balanceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoBalance(CustomerProviderSelectionController.this);
+            }
+        });
+
+        // When logout history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromProviderSelectiontoHistory(CustomerProviderSelectionController.this);
+            }
+
+        });
         providerSelectionView.setVisible(true);
-        
-        
     }
     
     public void disposeView(){
@@ -132,6 +171,15 @@ public class CustomerProviderSelectionController {
     public Long getProviderId(){
         return providerId;
     }
+    
+    public ProviderDto getSelectedProvider(){
+        return selectedProvider;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

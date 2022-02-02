@@ -31,6 +31,18 @@ public class OrderDto implements Serializable{
     private String deliveryTime;
     private double price;
 
+    public OrderDto(List<DishOrderAssociation> dishOrderAssociations, CustomerDto customer, ProviderDto provider, OrderType orderType, OrderState orderState, String deliveryTime, double price) {
+        this.dishOrderAssociations = dishOrderAssociations;
+        this.customer = customer;
+        this.provider = provider;
+        this.orderType = orderType;
+        this.orderState = orderState;
+        this.deliveryTime = deliveryTime;
+        this.price = price;
+    }
+
+    
+    
     public void setId(Long id) {
         this.id = id;
     }

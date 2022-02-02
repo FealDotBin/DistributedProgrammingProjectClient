@@ -47,6 +47,7 @@ public class CustomerBalanceController {
     private JButton homeButton;
     private JButton confirmButton;
     private JButton logOutButton;
+    private JButton historyButton;
 
     private Long customerId;
     private Double currentBalance;
@@ -69,6 +70,7 @@ public class CustomerBalanceController {
         homeButton = balanceView.getHomeBtn();
         logOutButton = balanceView.getLogOutBtn();
         accountButton = balanceView.getAccountBtn();
+        historyButton = balanceView.getHistoryBtn();
         
 
         //View navigator creation
@@ -118,10 +120,10 @@ public class CustomerBalanceController {
                     fieldErrorPane("Increment balance cannot be negative");
                     return;
                 }
-                Call<Object> updateBalanceCall = apiService.increaseBalance(customerId, increment);
-                updateBalanceCall.enqueue(new Callback<Object>() {
+                Call<Void> updateBalanceCall = apiService.increaseBalance(customerId, increment);
+                updateBalanceCall.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) { // status code tra 200-299
 
                             Double newCurrentBalance = increment + currentBalance;
@@ -140,7 +142,7 @@ public class CustomerBalanceController {
                     }
 
                     @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         // Log error here since request failed
                         JOptionPane.showMessageDialog(balanceView,
                                 "Contact you system administrator",
@@ -169,6 +171,16 @@ public class CustomerBalanceController {
             }
             
         });
+        
+        // When logout history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromBalancetoHistory(CustomerBalanceController.this);
+            }
+            
+        });
+        
         //Set home button text and his action listener based on the presence of current order
         Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
         currentOrderCall.enqueue(new Callback<OrderDto>(){
@@ -176,9 +188,15 @@ public class CustomerBalanceController {
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()){
                     homeButton.setText("Current Order");
-                    
+                    homeButton.addActionListener(new ActionListener(){
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromBalancetoOrderViewer(CustomerBalanceController.this);
+                        }
+                        
+                    });
                 }
-                else
+                else{
                     homeButton.setText("Create Order");
                     homeButton.addActionListener(new ActionListener(){
                         @Override
@@ -187,6 +205,7 @@ public class CustomerBalanceController {
                         }
                         
                     });
+                }
             }
 
             @Override

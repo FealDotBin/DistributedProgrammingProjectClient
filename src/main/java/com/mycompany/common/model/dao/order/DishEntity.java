@@ -6,6 +6,7 @@
 package com.mycompany.common.model.dao.order;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -15,6 +16,8 @@ public class DishEntity {
     
     private Long id;
     private String name;
+
+
     private String description;
     private List<String> ingredients;
     private double price;
@@ -75,5 +78,35 @@ public class DishEntity {
     public void setPrice(double price) {
         this.price = price;
     }
+        @Override
+    public String toString() {
+        return "DishEntity{" + "id=" + id + ", name=" + name + ", description=" + description + ", ingredients=" + ingredients + ", price=" + price + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DishEntity other = (DishEntity) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }

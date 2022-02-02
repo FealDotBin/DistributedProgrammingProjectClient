@@ -50,6 +50,7 @@ public class CustomerUpdateController {
     private JButton updateButton;
     private JButton homeButton;
     private JButton balanceButton;
+    private JButton historyButton;
     private JButton logOutButton;
     private customerUpdate updateView;
     private RetrofitBuilder retroBuild;
@@ -74,6 +75,8 @@ public class CustomerUpdateController {
         updateButton = updateView.getUpdateBtn();
         homeButton = updateView.getHomeBtn();
         logOutButton = updateView.getLogOutBtn();
+        historyButton = updateView.getHistoryBtn();
+        balanceButton = updateView.getBalanceBtn();
         
         //View navigator creation
         nav = Navigator.getInstance();
@@ -89,9 +92,15 @@ public class CustomerUpdateController {
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()){
                     homeButton.setText("Current Order");
-                    
+                    homeButton.addActionListener(new ActionListener(){
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromUpdatetoOrderViewer(CustomerUpdateController.this);
+                        }
+                        
+                    });
                 }
-                else
+                else{
                     homeButton.setText("Create Order");
                     homeButton.addActionListener(new ActionListener(){
                         @Override
@@ -100,6 +109,7 @@ public class CustomerUpdateController {
                         }
                         
                     });
+                }
             }
 
             @Override
@@ -257,6 +267,25 @@ public class CustomerUpdateController {
 
         });
         updateView.setVisible(true);
+        
+        // When history button is pressed display customer order history view
+        historyButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromUpdatetoHistory(CustomerUpdateController.this);
+            }
+            
+        });
+        
+        // When balance button is pressed display update balance view
+        balanceButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nav.fromUpdatetoBalance(CustomerUpdateController.this);
+            }
+            
+        });
+        
     }
 
     private void fieldErrorPane(String errorMessage) {

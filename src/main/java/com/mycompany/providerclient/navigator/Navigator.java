@@ -7,6 +7,7 @@ package com.mycompany.providerclient.navigator;
 
 import com.mycompany.providerclient.controller.HomeController;
 import com.mycompany.providerclient.controller.LogInController;
+import com.mycompany.providerclient.controller.MenuManagerController;
 import com.mycompany.providerclient.controller.SignUpController;
 
 /**
@@ -44,7 +45,40 @@ public class Navigator {
             new LogInController();
         }
         
+        public void fromHomeToMenuManager(HomeController c){
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new MenuManagerController(providerId);
+        }
+        
+        public void fromHomeToUpdateAccount(HomeController c){
+            // TODO 
+            // Mi devo creare UpdateAccount
+            // c.disposeView();
+            // Long provider id = c.getProviderId();
+            // new UpdateAccountController(providerId);
+        }
+        
         public void fromHomeToLogIn(HomeController c){
+            c.disposeView();
+            new LogInController();
+        }
+        
+        public void fromMenuManagerToHome(MenuManagerController c){
+            c.disposeView();
+            Long providerId = c.getProviderId();
+            new HomeController(providerId);
+        }
+        
+        public void fromMenuManagerToUpdateAccount(MenuManagerController c){
+            // TODO 
+            // Mi devo creare UpdateAccount
+            // c.disposeView();
+            // Long providerId = c.getProviderId();
+            // new UpdateAccountController(providerId);
+        }
+        
+        public void fromMenuManagerToLogIn(MenuManagerController c){
             c.disposeView();
             new LogInController();
         }

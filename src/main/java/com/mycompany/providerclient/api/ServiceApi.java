@@ -26,6 +26,12 @@ public interface ServiceApi {
     @POST("provider/postProvider")
     Call<ProviderEntity> createNewProvider(@Body ProviderEntity provider);
     
+    @GET("provider/{provider-id}/myinfo")
+    Call<ProviderEntity> getMyInfo(@Path("provider-id") Long providerId);
+    
+    @PUT("provider/{provider-id}/")
+    Call<Void> setAvail(@Path("provider-id") Long providerId, @Query("availability") Boolean isAvailable);
+    
     @GET("provider/{provider-id}/getPendingOrders")
     Call<List<OrderDto>> getPendingOrders(@Path("provider-id") Long providerId);
     
@@ -46,4 +52,37 @@ public interface ServiceApi {
     
     @POST("provider/{provider-id}/addDish")
     Call<DishEntity> addDish(@Path("provider-id") Long providerId, @Body DishEntity dish);
+    
+    @DELETE("provider/{provider-id}/removeDish")
+    Call<Void> deleteDish(@Path("provider-id") Long providerId, @Query("dish_id") Long dishId);
+    
+    @PUT("provider/{provider-id}/updateDish")
+    Call<DishEntity> updateDish(@Path("provider-id") Long providerId, @Body DishEntity dish);
+    
+    @PUT("provider/putTakeAwayOrder")
+    Call<Void> putTakeAwayOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putNoRiderDeliveringOrder")
+    Call<Void> putNoRiderDeliveringOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putRiderOrder")
+    Call<Void> putRiderOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseTakeAway")
+    Call<Void> refuseTakeAway(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseNoRider")
+    Call<Void> refuseNoRider(@Query("id") Long orderId);
+    
+    @PUT("provider/refuseRider")
+    Call<Void> refuseRider(@Query("id") Long orderId);
+    
+    @PUT("provider/putShipOrder")
+    Call<Void> putShipOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putCompletedHandOrder")
+    Call<Void> putCompletedHandOrder(@Query("id") Long orderId);
+    
+    @PUT("provider/putCompletedOrder")
+    Call<Void> putCompletedOrder(@Query("id") Long orderId);
 }

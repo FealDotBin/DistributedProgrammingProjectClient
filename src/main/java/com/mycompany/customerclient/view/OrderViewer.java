@@ -9,6 +9,10 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.NoEditableTableModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -31,6 +35,39 @@ public class OrderViewer extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JTextField getDeliveryTimeField() {
+        return deliveryTimeField;
+    }
+
+    public JTextArea getDishDescriptionTextArea() {
+        return dishDescriptionTextArea;
+    }
+
+    public JTextArea getDishIngredientTextArea() {
+        return dishIngredientTextArea;
+    }
+
+    public JTable getDishTable() {
+        return dishTable;
+    }
+
+    public JTextField getOrderStateField() {
+        return orderStateField;
+    }
+
+    public JTextField getProviderField() {
+        return providerField;
+    }
+
+    public JButton getRefreshBtn() {
+        return refreshBtn;
+    }
+
+    public JTextField getRiderField() {
+        return riderField;
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +77,6 @@ public class OrderViewer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         refreshBtn = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
@@ -70,8 +106,10 @@ public class OrderViewer extends javax.swing.JFrame {
         dishDescriptionTextArea = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         dishIngredientTextArea = new javax.swing.JTextArea();
-
-        jButton1.setText("jButton1");
+        providerField = new javax.swing.JTextField();
+        riderField = new javax.swing.JTextField();
+        orderStateField = new javax.swing.JTextField();
+        deliveryTimeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,13 +123,14 @@ public class OrderViewer extends javax.swing.JFrame {
         });
 
         titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("YOUR ORDER IN PROGRESS");
 
         providerLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        providerLabel.setText("Provider:  Nome provider");
+        providerLabel.setText("Provider: ");
 
         deliviryTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        deliviryTimeLabel.setText("Delivery time:  HH:mm GG/MM/AAAA");
+        deliviryTimeLabel.setText("Delivery time: ");
 
         tableLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tableLabel.setText("Your order");
@@ -100,10 +139,10 @@ public class OrderViewer extends javax.swing.JFrame {
         totalLabel.setText("Total");
 
         stateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        stateLabel.setText("Order State:  Stato dell'ordine");
+        stateLabel.setText("Order State:  ");
 
         riderNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        riderNameLabel.setText("Rider:  Nome rider");
+        riderNameLabel.setText("Rider:");
 
         totalField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,53 +175,88 @@ public class OrderViewer extends javax.swing.JFrame {
     dishIngredientTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dish Ingredient", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
     jScrollPane5.setViewportView(dishIngredientTextArea);
 
+    providerField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            providerFieldActionPerformed(evt);
+        }
+    });
+
+    riderField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            riderFieldActionPerformed(evt);
+        }
+    });
+
+    orderStateField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            orderStateFieldActionPerformed(evt);
+        }
+    });
+
+    deliveryTimeField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            deliveryTimeFieldActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addComponent(jScrollPane4)
-                    .addGap(18, 18, 18)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(tableLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(titleLabel)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(providerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(83, 83, 83)
-                            .addComponent(riderNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(54, 54, 54)
-                            .addComponent(stateLabel))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(45, 45, 45)
-                            .addComponent(deliviryTimeLabel))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jScrollPane4)
+                            .addGap(18, 18, 18)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tableLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(providerLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(providerField, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(riderNameLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(riderField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(stateLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(deliveryTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(15, 15, 15)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(deliviryTimeLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(orderStateField))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(totalLabel)
                                     .addGap(7, 7, 7)
                                     .addComponent(totalField))
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))))))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap(56, Short.MAX_VALUE))))
     );
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addContainerGap(105, Short.MAX_VALUE)
             .addComponent(titleLabel)
             .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(deliviryTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(stateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(providerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(riderNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(riderNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(providerField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(riderField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(orderStateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(deliveryTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -199,28 +273,20 @@ public class OrderViewer extends javax.swing.JFrame {
                     .addGap(11, 11, 11)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(22, Short.MAX_VALUE))
+            .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 937, Short.MAX_VALUE)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 430, Short.MAX_VALUE)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+        .addGroup(layout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 19, Short.MAX_VALUE))
     );
 
     pack();
@@ -233,6 +299,22 @@ public class OrderViewer extends javax.swing.JFrame {
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void providerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_providerFieldActionPerformed
+
+    private void riderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_riderFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_riderFieldActionPerformed
+
+    private void orderStateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderStateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_orderStateFieldActionPerformed
+
+    private void deliveryTimeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryTimeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deliveryTimeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,17 +353,59 @@ public class OrderViewer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton accountBtn;
+    private javax.swing.JButton accountBtn1;
+    private javax.swing.JButton accountBtn2;
+    private javax.swing.JButton accountBtn3;
+    private javax.swing.JButton accountBtn4;
+    private javax.swing.JButton accountBtn5;
+    private javax.swing.JButton accountBtn6;
+    private javax.swing.JButton balanceBtn;
+    private javax.swing.JButton balanceBtn1;
+    private javax.swing.JButton balanceBtn2;
+    private javax.swing.JButton balanceBtn3;
+    private javax.swing.JButton balanceBtn4;
+    private javax.swing.JButton balanceBtn5;
+    private javax.swing.JButton balanceBtn6;
+    private javax.swing.JTextField deliveryTimeField;
     private javax.swing.JLabel deliviryTimeLabel;
     private javax.swing.JTextArea dishDescriptionTextArea;
     private javax.swing.JTextArea dishIngredientTextArea;
     private javax.swing.JTable dishTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton historyBtn;
+    private javax.swing.JButton historyBtn1;
+    private javax.swing.JButton historyBtn2;
+    private javax.swing.JButton historyBtn3;
+    private javax.swing.JButton historyBtn4;
+    private javax.swing.JButton historyBtn5;
+    private javax.swing.JButton historyBtn6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JButton logoutBtn;
+    private javax.swing.JButton logoutBtn1;
+    private javax.swing.JButton logoutBtn2;
+    private javax.swing.JButton logoutBtn3;
+    private javax.swing.JButton logoutBtn4;
+    private javax.swing.JButton logoutBtn5;
+    private javax.swing.JButton logoutBtn6;
+    private javax.swing.JButton logoutBtn7;
+    private javax.swing.JButton logoutBtn8;
+    private javax.swing.JPanel navBar;
+    private javax.swing.JPanel navBar1;
+    private javax.swing.JPanel navBar2;
+    private javax.swing.JPanel navBar3;
+    private javax.swing.JPanel navBar4;
+    private javax.swing.JPanel navBar5;
+    private javax.swing.JPanel navBar6;
+    private javax.swing.JPanel navBar7;
+    private javax.swing.JPanel navBar8;
+    private javax.swing.JTextField orderStateField;
+    private javax.swing.JTextField providerField;
     private javax.swing.JLabel providerLabel;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JTextField riderField;
     private javax.swing.JLabel riderNameLabel;
     private javax.swing.JLabel stateLabel;
     private javax.swing.JLabel tableLabel;

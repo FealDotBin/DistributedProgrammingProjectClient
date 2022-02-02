@@ -27,8 +27,5 @@ public class Navigator {
             return instance;
         }
         
-        public void fromLogInToOrderCreation(CustomerLogInController c){
-            c.disposeView();
-            new OrderCreationController();
-        }
+     
 }
