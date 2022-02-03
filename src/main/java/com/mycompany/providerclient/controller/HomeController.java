@@ -26,11 +26,14 @@ import com.mycompany.providerclient.model.ProviderEntity;
 import com.mycompany.providerclient.navigator.Navigator;
 import com.mycompany.providerclient.view.HomeView;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -69,6 +72,7 @@ public class HomeController {
     private JRadioButton shippedRadioButton;
     private JRadioButton completedRadioButton;
     private JRadioButton refusedRadioButton;
+    private JRadioButton selectedRadioButton;
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     private List<OrderDto> orderList;
@@ -108,10 +112,11 @@ public class HomeController {
         completeBtn.setEnabled(false);
         refuseBtn.setEnabled(false);
         
-        // initialize orderList, selectedOrderState and selectedOrder
+        // initialize orderList, selectedOrderState, selectedOrder, selectdRadioButton
         orderList = new LinkedList<>();
         selectedOrderState = new SelectedOrderStateNotSelected(homeView);
         selectedOrder = null;
+        selectedRadioButton = pendingRadioButton;
         
         // initialize retrofitBuilder and serviceApi
         retroBuild = new RetrofitBuilder();
@@ -132,6 +137,7 @@ public class HomeController {
         attachListenerToSemiAcceptedRadioButton();
         attachListerToShippedRadioButton();
         attachListenerToCompletedRadioButton();
+        attachListenerToRefusedRadioButton();
         attachListenerToAllOrdersTable();
         attachListenerToAcceptBtn();
         attachListenerToShipBtn();
@@ -142,6 +148,56 @@ public class HomeController {
         attachListenerToUpdateAccountBtn();
         attachListenerToLogOutBtn();
         attachListenerToAvailableBtn();
+    }
+    
+    public Long getProviderId(){
+        return providerId;
+    }
+    
+    public void disposeView(){
+        homeView.dispose();
+    }
+    
+    private void addOrdersOnTable(List<OrderDto> orderList){
+        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
+        for(OrderDto order : orderList){
+            RiderDto rider = null;
+            Object[] orderRow = new Object[5];
+            orderRow[0] = order.getCustomer().getName();
+            orderRow[1] = ((rider = order.getRider()) == null ? "" : rider.getName());
+            orderRow[2] = order.getOrderType();
+            orderRow[3] = order.getOrderState();
+            orderRow[4] = order.getDeliveryTime();
+            allOrdersTableModel.addRow(orderRow);
+        }
+    }
+    
+    private void updateAvailableBtn(){
+        if(provider.getIsAvailable()){
+            availableBtn.setText("AVAILABLE");
+            availableBtn.setBackground(new Color(44,73,129));
+        }
+        else{
+            availableBtn.setText("NOT AVAILABLE");
+            availableBtn.setBackground(new Color(146,43,32));
+        }
+    }
+    
+    private void clearControllerState(){
+        // clear orderList
+        orderList.clear();
+        
+        // removes all rows from allOrdersTable
+        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
+        allOrdersTableModel.setRowCount(0);
+        
+        // set order state to "no order selected"
+        selectedOrder = null;
+        selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+        
+        // remove all rows from selectedOrderTable
+        NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
+        selectedOrderTableModel.setRowCount(0);
     }
     
     private void getMyInfoCall(){
@@ -175,12 +231,6 @@ public class HomeController {
         });
     }
     
-    private void attachListenerToPendingRadioButton(){
-        pendingRadioButton.addActionListener(event -> {
-            getPendingOrdersCall();
-        });
-    }
-    
     private void getPendingOrdersCall(){
         Call<List<OrderDto>> getPendingOrdersCall = serviceApi.getPendingOrders(providerId);
         getPendingOrdersCall.enqueue(new Callback<List<OrderDto>>(){
@@ -189,8 +239,8 @@ public class HomeController {
 
                 if(response.isSuccessful()){ // status code tra 200-299
                     synchronized(orderList){
-                        orderList = response.body();
                         clearControllerState();
+                        orderList = response.body();
                         addOrdersOnTable(orderList);
                     }
                 }
@@ -215,12 +265,6 @@ public class HomeController {
         });
     }
     
-    private void attachListenerToAcceptedRadioButton(){
-        acceptedRadioButton.addActionListener(event -> {
-            getAcceptedOrdersCall();
-        });
-    }
-    
     private void getAcceptedOrdersCall(){
         Call<List<OrderDto>> getAcceptedOrdersCall = serviceApi.getAcceptedOrders(providerId);
         getAcceptedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
@@ -229,8 +273,8 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         synchronized(orderList){
-                            orderList = response.body();
                             clearControllerState();
+                            orderList = response.body();
                             addOrdersOnTable(orderList);
                         }
                     }
@@ -252,12 +296,6 @@ public class HomeController {
                     // Log error here since request failed
                       System.out.println("failed");
                 }
-        });
-    }
-    
-    private void attachListenerToSemiAcceptedRadioButton(){
-        semiAcceptedRadioButton.addActionListener(event -> {
-            getSemiAcceptedOrdersCall();
         });
     }
     
@@ -269,8 +307,8 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         synchronized(orderList){
-                            orderList = response.body();
                             clearControllerState();
+                            orderList = response.body();
                             addOrdersOnTable(orderList);
                         }
                     }
@@ -292,12 +330,6 @@ public class HomeController {
                     // Log error here since request failed
                       System.out.println("failed");
                 }
-        });
-    }
-    
-    private void attachListerToShippedRadioButton(){
-        shippedRadioButton.addActionListener(event -> {
-            getShippedOrdersCall();
         });
     }
     
@@ -309,8 +341,8 @@ public class HomeController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         synchronized(orderList){
-                            orderList = response.body();
                             clearControllerState();
+                            orderList = response.body();
                             addOrdersOnTable(orderList);
                         }
                     }
@@ -332,12 +364,6 @@ public class HomeController {
                     // Log error here since request failed
                       System.out.println("failed");
                 }
-        });
-    }
-    
-    private void attachListenerToCompletedRadioButton(){
-        completedRadioButton.addActionListener(event -> {
-            getCompletedOrdersCall();
         });
     }
     
@@ -345,156 +371,66 @@ public class HomeController {
         Call<List<OrderDto>> getCompletedOrdersCall = serviceApi.getCompletedOrders(providerId);
         getCompletedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
             @Override
-                public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+            public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
 
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        synchronized(orderList){
-                            orderList = response.body();
-                            clearControllerState();
-                            addOrdersOnTable(orderList);
-                        }
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(homeView,
-                                jObjError.get("message"),
-                                "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                if(response.isSuccessful()){ // status code tra 200-299
+                    synchronized(orderList){
+                        clearControllerState();
+                        orderList = response.body();
+                        addOrdersOnTable(orderList);
                     }
                 }
-
-                @Override
-                public void onFailure(Call<List<OrderDto>> call, Throwable t) {
-                    // Log error here since request failed
-                      System.out.println("failed");
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-        });
-    }
-    
-    private void addOrdersOnTable(List<OrderDto> orderList){
-        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
-        for(OrderDto order : orderList){
-            RiderDto rider = null;
-            Object[] orderRow = new Object[5];
-            orderRow[0] = order.getCustomer().getName();
-            orderRow[1] = ((rider = order.getRider()) == null ? "" : rider.getName());
-            orderRow[2] = order.getOrderType();
-            orderRow[3] = order.getOrderState();
-            orderRow[4] = order.getDeliveryTime();
-            allOrdersTableModel.addRow(orderRow);
-        }
-    }
-    
-    private void attachListenerToAllOrdersTable(){
-        allOrdersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            
+            }
+
             @Override
-            public void valueChanged(ListSelectionEvent event) {
-                
-                int selectedOrderIndex = allOrdersTable.getSelectedRow();
-                if(!event.getValueIsAdjusting() && selectedOrderIndex >= 0){
-                    NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
-                    selectedOrderTableModel.setRowCount(0);
-                    
-                    // get selected Order
-                    selectedOrder = orderList.get(selectedOrderIndex);
-                    List<DishOrderAssociation> dishOrderAssociationList = selectedOrder.getDishOrderAssociations();
-                    
-                    // put order's info in selectedOrderTable
-                    for(DishOrderAssociation dishOrderAssociation : dishOrderAssociationList){
-                        DishEntity dish = dishOrderAssociation.getDish();
-                        Object[] orderRow = new Object[2];
-                        orderRow[0] = dish.getName();
-                        orderRow[1] = dishOrderAssociation.getQuantity();
-                        selectedOrderTableModel.addRow(orderRow);
-                    }
-                    
-                    // change current state based on selected order
-                    OrderState orderState = selectedOrder.getOrderState();
-                    switch(orderState){
-                        case PENDING:
-                            selectedOrderState = new SelectedOrderStatePending(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        case SEMI_ACCEPTED:
-                            selectedOrderState = new SelectedOrderStateSemiAccepted(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        case ACCEPTED:
-                            selectedOrderState = new SelectedOrderStateAccepted(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        case SHIPPED:
-                            selectedOrderState = new SelectedOrderStateShipped(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        case COMPLETED:
-                            selectedOrderState = new SelectedOrderStateCompleted(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        case REFUSED:
-                            selectedOrderState = new SelectedOrderStateRefused(homeView, selectedOrder, selectedOrderIndex);
-                            break;
-                        default:
-                            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-                    }
-                    selectedOrderState.updateButton();
-                }
+            public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
             }
         });
     }
     
-    // QUESTO LO DEVO FARE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    private void attachListenerToRefreshBtn(){
-        refreshBtn.addActionListener((event) -> {
-            
-            // reset controller's data
-            orderList.clear();
-            selectedOrder = null;
-            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-            
-            // clear allOrdersTable's content
-            NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
-            allOrdersTableModel.setRowCount(0);
-            
-            // clear selectedOrderTable's content
-            NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
-            selectedOrderTableModel.setRowCount(0);
-            
-            // disable all buttons
-            acceptBtn.setEnabled(false);
-            shipBtn.setEnabled(false);
-            completeBtn.setEnabled(false);
-            refuseBtn.setEnabled(false);
-            
-            // fetch order's from server and show them on table
-            //fetchAllOrdersFromServer();
-        });
-    }
-    
-    private void attachListenerToAcceptBtn(){
-        acceptBtn.addActionListener((event) -> {
-            OrderType orderType = selectedOrder.getOrderType();
-            
-            if(!orderType.equals(OrderType.TAKE_AWAY)){
-                // ask user if he wants to use riders
-                int wantRiders = JOptionPane.showConfirmDialog(homeView,
-                    "Do you want to use our riders?", 
-                    "Question", 
-                    JOptionPane.YES_NO_OPTION);
-                
-                // update order's type according to user response
-                if(wantRiders == JOptionPane.YES_OPTION){
-                    putRiderOrderCall();
+    private void getRefusedOrdersCall(){
+        Call<List<OrderDto>> getRefusedOrdersCall = serviceApi.getRefusedOrders(providerId);
+        getRefusedOrdersCall.enqueue(new Callback<List<OrderDto>>(){
+            @Override
+            public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    synchronized(orderList){
+                        clearControllerState();
+                        orderList = response.body();
+                        addOrdersOnTable(orderList);
+                    }
                 }
-                else if(wantRiders == JOptionPane.NO_OPTION) {
-                    putNoRiderDeliveringOrderCall();
-                }
-                else {
-                    return;
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(homeView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
-            else{
-                putTakeAwayOrderCall();
+
+            @Override
+            public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
             }
         });
     }
@@ -606,19 +542,6 @@ public class HomeController {
         });
     }
     
-    private void attachListenerToShipBtn(){
-        shipBtn.addActionListener((event) -> {
-            OrderType selectedOrderType = selectedOrder.getOrderType();
-            if(selectedOrderType.equals(OrderType.DELIVERY_NORIDER)){
-                putShipOrderCall();
-            }
-            else{
-                selectedOrderState.ship();
-                selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-            }
-        });
-    }
-    
     private void putShipOrderCall(){
         Call<Void> putShipOrderCall = serviceApi.putShipOrder(selectedOrder.getId());
         putShipOrderCall.enqueue(new Callback<Void>(){
@@ -650,23 +573,6 @@ public class HomeController {
             public void onFailure(Call<Void> call, Throwable t) {
                 // Log error here since request failed
                   System.out.println("failed");
-            }
-        });
-    }
-    
-    private void attachListenerToCompleteBtn(){
-        completeBtn.addActionListener((event) -> {
-            OrderType selectedOrderType = selectedOrder.getOrderType();
-            switch(selectedOrderType){
-                case TAKE_AWAY:
-                    completeTakeAwayCall();
-                    break;
-                case DELIVERY_NORIDER:
-                    completeNoRiderCall();
-                    break;
-                default:
-                    selectedOrderState.complete();
-                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
             }
         });
     }
@@ -737,23 +643,6 @@ public class HomeController {
             public void onFailure(Call<Void> call, Throwable t) {
                 // Log error here since request failed
                   System.out.println("failed");
-            }
-        });
-    }
-    
-    private void attachListenerToRefuseBtn(){
-        refuseBtn.addActionListener((event) -> {
-            OrderType selectedOrderType = selectedOrder.getOrderType();
-            switch(selectedOrderType){
-                case TAKE_AWAY:
-                    refuseTakeAwayCall();
-                    break;
-                case DELIVERY:
-                    refuseNoRiderCall();
-                    break;
-                default:
-                    selectedOrderState.refuse();
-                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
             }
         });
     }
@@ -863,6 +752,192 @@ public class HomeController {
         });
     }
     
+    private void attachListenerToPendingRadioButton(){
+        pendingRadioButton.addActionListener(event -> {
+            selectedRadioButton = pendingRadioButton;
+            getPendingOrdersCall();
+        });
+    }
+    
+    private void attachListenerToAcceptedRadioButton(){
+        acceptedRadioButton.addActionListener(event -> {
+            selectedRadioButton = acceptedRadioButton;
+            getAcceptedOrdersCall();
+        });
+    }
+    
+    private void attachListenerToSemiAcceptedRadioButton(){
+        semiAcceptedRadioButton.addActionListener(event -> {
+            selectedRadioButton = semiAcceptedRadioButton;
+            getSemiAcceptedOrdersCall();
+        });
+    }
+    
+    private void attachListerToShippedRadioButton(){
+        shippedRadioButton.addActionListener(event -> {
+            selectedRadioButton = shippedRadioButton;
+            getShippedOrdersCall();
+        });
+    }
+    
+    private void attachListenerToCompletedRadioButton(){
+        completedRadioButton.addActionListener(event -> {
+            selectedRadioButton = completedRadioButton;
+            getCompletedOrdersCall();
+        });
+    }
+    
+    private void attachListenerToRefusedRadioButton(){
+        refusedRadioButton.addActionListener(event -> {
+            selectedRadioButton = refusedRadioButton;
+            getRefusedOrdersCall();
+        });
+    }
+    
+    private void attachListenerToAllOrdersTable(){
+        allOrdersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                
+                int selectedOrderIndex = allOrdersTable.getSelectedRow();
+                if(!event.getValueIsAdjusting() && selectedOrderIndex >= 0){
+                    NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
+                    selectedOrderTableModel.setRowCount(0);
+                    
+                    // get selected Order
+                    selectedOrder = orderList.get(selectedOrderIndex);
+                    List<DishOrderAssociation> dishOrderAssociationList = selectedOrder.getDishOrderAssociations();
+                    
+                    // put order's info in selectedOrderTable
+                    for(DishOrderAssociation dishOrderAssociation : dishOrderAssociationList){
+                        DishEntity dish = dishOrderAssociation.getDish();
+                        Object[] orderRow = new Object[2];
+                        orderRow[0] = dish.getName();
+                        orderRow[1] = dishOrderAssociation.getQuantity();
+                        selectedOrderTableModel.addRow(orderRow);
+                    }
+                    
+                    // change current state based on selected order
+                    OrderState orderState = selectedOrder.getOrderState();
+                    switch(orderState){
+                        case PENDING:
+                            selectedOrderState = new SelectedOrderStatePending(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        case SEMI_ACCEPTED:
+                            selectedOrderState = new SelectedOrderStateSemiAccepted(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        case ACCEPTED:
+                            selectedOrderState = new SelectedOrderStateAccepted(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        case SHIPPED:
+                            selectedOrderState = new SelectedOrderStateShipped(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        case COMPLETED:
+                            selectedOrderState = new SelectedOrderStateCompleted(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        case REFUSED:
+                            selectedOrderState = new SelectedOrderStateRefused(homeView, selectedOrder, selectedOrderIndex);
+                            break;
+                        default:
+                            selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+                    }
+                    selectedOrderState.updateButton();
+                }
+            }
+        });
+    }
+    
+    private void attachListenerToRefreshBtn(){
+        refreshBtn.addActionListener((event) -> {
+            clearControllerState();
+            
+            // disable all buttons
+            acceptBtn.setEnabled(false);
+            shipBtn.setEnabled(false);
+            completeBtn.setEnabled(false);
+            refuseBtn.setEnabled(false);
+            
+            // trigger listener on currently selected radio button
+            selectedRadioButton.doClick();
+        });
+    }
+    
+    private void attachListenerToAcceptBtn(){
+        acceptBtn.addActionListener((event) -> {
+            OrderType orderType = selectedOrder.getOrderType();
+            
+            if(!orderType.equals(OrderType.TAKE_AWAY)){
+                // ask user if he wants to use riders
+                int wantRiders = JOptionPane.showConfirmDialog(homeView,
+                    "Do you want to use our riders?", 
+                    "Question", 
+                    JOptionPane.YES_NO_OPTION);
+                
+                // update order's type according to user response
+                if(wantRiders == JOptionPane.YES_OPTION){
+                    putRiderOrderCall();
+                }
+                else if(wantRiders == JOptionPane.NO_OPTION) {
+                    putNoRiderDeliveringOrderCall();
+                }
+                else {
+                    return;
+                }
+            }
+            else{
+                putTakeAwayOrderCall();
+            }
+        });
+    }
+    
+    private void attachListenerToShipBtn(){
+        shipBtn.addActionListener((event) -> {
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            if(selectedOrderType.equals(OrderType.DELIVERY_NORIDER)){
+                putShipOrderCall();
+            }
+            else{
+                selectedOrderState.ship();
+                selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
+    private void attachListenerToCompleteBtn(){
+        completeBtn.addActionListener((event) -> {
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            switch(selectedOrderType){
+                case TAKE_AWAY:
+                    completeTakeAwayCall();
+                    break;
+                case DELIVERY_NORIDER:
+                    completeNoRiderCall();
+                    break;
+                default:
+                    selectedOrderState.complete();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
+    private void attachListenerToRefuseBtn(){
+        refuseBtn.addActionListener((event) -> {
+            OrderType selectedOrderType = selectedOrder.getOrderType();
+            switch(selectedOrderType){
+                case TAKE_AWAY:
+                    refuseTakeAwayCall();
+                    break;
+                case DELIVERY:
+                    refuseNoRiderCall();
+                    break;
+                default:
+                    selectedOrderState.refuse();
+                    selectedOrderState = new SelectedOrderStateNotSelected(homeView);
+            }
+        });
+    }
+    
     private void attachListenerToManageMenuBtn(){
         manageMenuBtn.addActionListener(event -> {
             navigator.fromHomeToMenuManager(HomeController.this);
@@ -913,39 +988,6 @@ public class HomeController {
                 }
             });   
         });
-    }
-    
-    private void updateAvailableBtn(){
-        if(provider.getIsAvailable()){
-            availableBtn.setText("AVAILABLE");
-            availableBtn.setBackground(new Color(44,73,129));
-        }
-        else{
-            availableBtn.setText("NOT AVAILABLE");
-            availableBtn.setBackground(new Color(146,43,32));
-        }
-    }
-    
-    private void clearControllerState(){
-        // removes all rows from allOrdersTable
-        NoEditableTableModel allOrdersTableModel = (NoEditableTableModel) allOrdersTable.getModel();
-        allOrdersTableModel.setRowCount(0);
-        
-        // set order state to "no order selected"
-        selectedOrder = null;
-        selectedOrderState = new SelectedOrderStateNotSelected(homeView);
-        
-        // remove all rows from selectedOrderTable
-        NoEditableTableModel selectedOrderTableModel = (NoEditableTableModel) selectedOrderTable.getModel();
-        selectedOrderTableModel.setRowCount(0);
-    }
-    
-    public Long getProviderId(){
-        return providerId;
-    }
-    
-    public void disposeView(){
-        homeView.dispose();
     }
     
     public static void main(String args[]) {

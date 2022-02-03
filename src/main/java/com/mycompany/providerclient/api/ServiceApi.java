@@ -50,6 +50,9 @@ public interface ServiceApi {
     @GET("provider/{provider-id}/getCompletedOrders")
     Call<List<OrderDto>> getCompletedOrders(@Path("provider-id") Long providerId);
     
+    @GET("provider/{provider-id}/getRefusedOrders")
+    Call<List<OrderDto>> getRefusedOrders(@Path("provider-id") Long providerId);
+    
     @GET("provider/{provider-id}/getMenu")
     Call<MenuEntity> getMenu(@Path("provider-id") Long providerId);
     

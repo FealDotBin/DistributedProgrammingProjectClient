@@ -5,6 +5,7 @@
  */
 package com.mycompany.customerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.Credentials;
@@ -29,9 +30,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.json.JSONObject;
@@ -59,7 +62,9 @@ public class CustomerLogInController {
     public CustomerLogInController() {
         // initialize view
         logInView = new LogInView();
-
+        logInView.pack();
+        logInView.setLocationRelativeTo(null);
+        logInView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // get components from view
         usernameTextField = logInView.getUsernameTextField();
         passwordTextField = logInView.getPasswordTextField();
@@ -83,10 +88,13 @@ public class CustomerLogInController {
 
             if (username.isBlank()) {
                 fieldErrorPane("Username cannot be blank");
+                return;
             }
             if (password.isBlank()) {
                 fieldErrorPane("Password cannot be blank");
+                return;
             }
+            password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
             Credentials credentials = new Credentials(username, password);
 
             // send call to API

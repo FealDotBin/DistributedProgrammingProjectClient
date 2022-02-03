@@ -126,8 +126,8 @@ public class HomeView extends javax.swing.JFrame {
         return acceptedRadioButton;
     }
 
-    public ButtonGroup getButtonGroup1() {
-        return buttonGroup1;
+    public ButtonGroup getAllOrdersTableButtonGroup() {
+        return allOrdersTableButtonGroup;
     }
 
     public JRadioButton getCompletedRadioButton() {
@@ -156,7 +156,7 @@ public class HomeView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        allOrdersTableButtonGroup = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -304,23 +304,23 @@ public class HomeView extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup1.add(pendingRadioButton);
+        allOrdersTableButtonGroup.add(pendingRadioButton);
         pendingRadioButton.setSelected(true);
         pendingRadioButton.setText("Pending");
 
-        buttonGroup1.add(semiAcceptedRadioButton);
+        allOrdersTableButtonGroup.add(semiAcceptedRadioButton);
         semiAcceptedRadioButton.setText("Semi Accepted");
 
-        buttonGroup1.add(acceptedRadioButton);
+        allOrdersTableButtonGroup.add(acceptedRadioButton);
         acceptedRadioButton.setText("Accepted");
 
-        buttonGroup1.add(ShippedRadioButton);
+        allOrdersTableButtonGroup.add(ShippedRadioButton);
         ShippedRadioButton.setText("Shipped");
 
-        buttonGroup1.add(completedRadioButton);
+        allOrdersTableButtonGroup.add(completedRadioButton);
         completedRadioButton.setText("Completed");
 
-        buttonGroup1.add(refusedRadioButton);
+        allOrdersTableButtonGroup.add(refusedRadioButton);
         refusedRadioButton.setText("Refused");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -583,9 +583,9 @@ public class HomeView extends javax.swing.JFrame {
     private javax.swing.JButton acceptBtn;
     private javax.swing.JRadioButton acceptedRadioButton;
     private javax.swing.JTable allOrdersTable;
+    private javax.swing.ButtonGroup allOrdersTableButtonGroup;
     private javax.swing.JScrollPane allOrdersTableScroll;
     private javax.swing.JButton availableBtn;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton completeBtn;
     private javax.swing.JRadioButton completedRadioButton;
     private javax.swing.JLabel homeLabel;

@@ -5,6 +5,7 @@
  */
 package com.mycompany.customerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.customerclient.api.ServiceApi;
@@ -16,6 +17,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -85,6 +87,7 @@ public class CustomerSignUpController {
                     fieldErrorPane("Password cannot be blank");
                     return;
                 }
+                password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 
                 String name = nameField.getText(true).trim();
                 if (name.isBlank()) {

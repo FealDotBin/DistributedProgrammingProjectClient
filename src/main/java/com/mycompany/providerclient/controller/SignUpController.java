@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.providerclient.api.ServiceApi;
@@ -14,6 +15,7 @@ import com.mycompany.providerclient.view.SignUpView;
 import com.sun.tools.javac.Main;
 import com.toedter.calendar.JDateChooser;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -83,6 +85,49 @@ public class SignUpController {
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
         // attach listener to signUpBtn
+        attachListenerToSignUpBtn();
+        
+        // attach listener to logInBtn
+        attachListenerToLogInBtn();
+        
+    }
+    
+    private void createNewProviderCall(ProviderEntity provider){
+        Call<ProviderEntity> createNewProviderCall = serviceApi.createNewProvider(provider);
+        createNewProviderCall.enqueue(new Callback<ProviderEntity>(){
+            @Override
+            public void onResponse(Call<ProviderEntity> call, Response<ProviderEntity> response) {
+
+                if (response.isSuccessful()) { // status code tra 200-299
+                   JOptionPane.showMessageDialog(signUpView, 
+                           "NOW YOU ARE A PROVIDER OF OUR SYSTEM", 
+                           "Sign up success", 
+                           JOptionPane.INFORMATION_MESSAGE);
+
+                   //If sign up procedure is correct change current view with log in one
+                   navigator.fromSignUpToLogIn(SignUpController.this);
+                } else { // if server error occurs
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(signUpView,
+                                jObjError.get("message"), 
+                                "Server error", 
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProviderEntity> call, Throwable t) {
+                // Log error here since request failed
+                System.out.println("failed");
+            }
+        });
+    }
+    
+    private void attachListenerToSignUpBtn(){
         signUpBtn.addActionListener((event) -> {
             String username = usernameTextField.getText(true).trim();
             if (username.isBlank()) {
@@ -95,6 +140,7 @@ public class SignUpController {
                     fieldErrorPane("Password cannot be blank");
                     return;
             }
+            password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
             
             String name = nameTextField.getText(true).trim();
             if (name.isBlank()) {
@@ -154,50 +200,27 @@ public class SignUpController {
             Boolean doTakeAway = takeAwayCheckBox.isSelected();
             Boolean hasOwnRiders = ownRiderCheckBox.isSelected();
             
-            ProviderEntity provider = new ProviderEntity(
-                    username, password, 
-                    name, surname, formattedBirthDate, iban, telephoneNumber, 
-                    providerName, cuisine, address, 
-                    doDelivering, doTakeAway, hasOwnRiders);
-            Call<ProviderEntity> createNewProviderCall = serviceApi.createNewProvider(provider);
-            createNewProviderCall.enqueue(new Callback<ProviderEntity>(){
-                @Override
-                    public void onResponse(Call<ProviderEntity> call, Response<ProviderEntity> response) {
-
-                        if (response.isSuccessful()) { // status code tra 200-299
-                           JOptionPane.showMessageDialog(signUpView, 
-                                   "NOW YOU ARE A PROVIDER OF OUR SYSTEM", 
-                                   "Sign up success", 
-                                   JOptionPane.INFORMATION_MESSAGE);
-                           
-                           //If sign up procedure is correct change current view with log in one
-                           navigator.fromSignUpToLogIn(SignUpController.this);
-                        } else { // if server error occurs
-                            try {
-                                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                                JOptionPane.showMessageDialog(signUpView,
-                                        jObjError.get("message"), 
-                                        "Server error", 
-                                        JOptionPane.ERROR_MESSAGE);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProviderEntity> call, Throwable t) {
-                        // Log error here since request failed
-                        System.out.println("failed");
-                    }
-            });
+            // if all checkboxes are unchecked pop up an error dialog,
+            // otherwise send data to server
+            if(!doTakeAway && !hasOwnRiders && !doDelivering){
+                    fieldErrorPane("You must check at least one of "
+                            + "\"take away\", \"own riders\" or \"delivering\"");
+            }
+            else{
+                ProviderEntity provider = new ProviderEntity(
+                        username, password, 
+                        name, surname, formattedBirthDate, iban, telephoneNumber, 
+                        providerName, cuisine, address, 
+                        doDelivering, doTakeAway, hasOwnRiders);
+                createNewProviderCall(provider);
+            }
         });
-        
-        // attach listener to logInBtn
+    }
+    
+    private void attachListenerToLogInBtn(){
         logInBtn.addActionListener((event) -> {
             navigator.fromSignUpToLogIn(SignUpController.this);
         });
-        
     }
     
     //Shows a pop up to inform the user that the informations that is typing are not correct
