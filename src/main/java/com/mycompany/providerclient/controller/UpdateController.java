@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.customerclient.controller.CustomerUpdateController;
 import com.mycompany.providerclient.navigator.Navigator;
@@ -13,6 +14,7 @@ import com.mycompany.providerclient.model.ProviderEntity;
 import com.mycompany.providerclient.view.UpdateView;
 import com.toedter.calendar.JDateChooser;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -165,6 +167,9 @@ public class UpdateController {
                 }
 
                 String password = passwordTextField.getText().trim();
+                if(!password.isBlank()){
+                    password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+                }
 
                 String name = nameTextField.getText().trim();
                 if (name.isBlank()) {

@@ -5,6 +5,7 @@
  */
 package com.mycompany.providerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.Credentials;
@@ -18,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import com.mycompany.providerclient.api.ServiceApi;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
@@ -56,7 +58,55 @@ public class LogInController {
         // get navigator
         navigator = Navigator.getInstance();
         
-        // attach listener to logInBtn
+        // attach listeners
+        attachListenerToLogInBtn();
+        attachListenerToSignUpBtn();
+    }
+
+    public Long getProviderId(){
+        return providerId;
+    }
+    
+    public void disposeView(){
+        logInView.dispose();
+    }
+    
+    private void loginCall(Credentials credentials){
+        Call<Long> loginCall = serviceApi.login(credentials);
+        loginCall.enqueue(new Callback<Long>(){
+
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    providerId = response.body();
+                    navigator.fromLogInToHome(LogInController.this);
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(logInView,
+                            jObjError.get("message"),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                // Log error here since request failed
+                    JOptionPane.showMessageDialog(logInView,
+                            "Something went wrong...",
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+    
+    private void attachListenerToLogInBtn(){
         logInBtn.addActionListener((event) -> {
             String username = usernameTextField.getText(true).trim();
             String password = passwordTextField.getText(true).trim();
@@ -68,6 +118,7 @@ public class LogInController {
                                 JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
             if(password.isBlank()){
                 JOptionPane.showMessageDialog(logInView,
                                 "Password cannot be blank.",
@@ -75,56 +126,19 @@ public class LogInController {
                                 JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+            
             Credentials credentials = new Credentials(username, password);
             
             // send call to API
-            Call<Long> loginCall = serviceApi.login(credentials);
-            loginCall.enqueue(new Callback<Long>(){
-                
-                @Override
-                public void onResponse(Call<Long> call, Response<Long> response) {
-
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        providerId = response.body();
-                        navigator.fromLogInToHome(LogInController.this);
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(logInView,
-                                jObjError.get("message"),
-                                "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Long> call, Throwable t) {
-                    // Log error here since request failed
-                        JOptionPane.showMessageDialog(logInView,
-                                "Something went wrong...",
-                                "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                        }
-
-            });
+            loginCall(credentials);
         });
-        
-        // attach listener to signUpBtn
+    }
+    
+    private void attachListenerToSignUpBtn(){
         signUpBtn.addActionListener((event) -> {
             navigator.fromLogInToSignUp(LogInController.this);
         });
-    }
-
-    public Long getProviderId(){
-        return providerId;
-    }
-    
-    public void disposeView(){
-        logInView.dispose();
     }
     
     public static void main(String args[]) {
