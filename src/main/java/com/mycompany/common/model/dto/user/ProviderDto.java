@@ -6,12 +6,13 @@
 package com.mycompany.common.model.dto.user;
 
 import com.mycompany.common.model.dao.order.MenuEntity;
+import java.io.Serializable;
 
 /**
  *
  * @author aferr
  */
-public class ProviderDto {
+public class ProviderDto implements Serializable{
     
     private Long id;
     private String telephoneNumber;

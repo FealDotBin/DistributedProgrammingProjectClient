@@ -156,6 +156,8 @@ public class Navigator {
            new CustomerUpdateController(customerId);
         }
         
+
+        
         public void fromOrderCreationToBalance(OrderCreationController c){
            c.disposeView();
            customerId=c.getCustomerId();
@@ -172,6 +174,12 @@ public class Navigator {
            c.disposeView();
            customerId=c.getCustomerId();
            new CustomerProviderSelectionController(customerId);
+        }
+        
+        public void fromOrderCreationToOrderViewer(OrderCreationController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerCurrentOrderController(customerId);
         }
         
         public void fromOrderViewertoLogIn(CustomerCurrentOrderController c){
@@ -196,6 +204,12 @@ public class Navigator {
            c.disposeView();
            customerId=c.getCustomerId();
            new CustomerOrderHistoryController(customerId);
+        }
+        
+        public void fromOrderViewerToProviderSelection(CustomerCurrentOrderController c){
+           c.disposeView();
+           customerId=c.getCustomerId();
+           new CustomerProviderSelectionController(customerId);
         }
         
         public void fromLogInToOrderViewer(CustomerLogInController c){

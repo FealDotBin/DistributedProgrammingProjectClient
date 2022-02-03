@@ -151,8 +151,8 @@ public class SignUpController {
             }
             
             Boolean doDelivering = deliveringCheckBox.isSelected();
-            Boolean doTakeAway = deliveringCheckBox.isSelected();
-            Boolean hasOwnRiders = deliveringCheckBox.isSelected();
+            Boolean doTakeAway = takeAwayCheckBox.isSelected();
+            Boolean hasOwnRiders = ownRiderCheckBox.isSelected();
             
             ProviderEntity provider = new ProviderEntity(
                     username, password, 
@@ -207,14 +207,5 @@ public class SignUpController {
     
     public void disposeView(){
         signUpView.dispose();
-    }
-    
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                SignUpController c = new SignUpController();
-            }
-        });
     }
 }

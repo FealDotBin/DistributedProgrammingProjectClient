@@ -5,10 +5,16 @@
 package com.mycompany.providerclient.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -23,7 +29,6 @@ public class UpdateView extends javax.swing.JFrame {
      */
     public UpdateView() {
         try {
-            //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -31,6 +36,134 @@ public class UpdateView extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JLabel getAddressLabel() {
+        return addressLabel;
+    }
+
+    public JTextField getAddressTextField() {
+        return addressTextField;
+    }
+
+    public JDateChooser getBirthDateChooser() {
+        return birthDateChooser;
+    }
+
+    public JLabel getBirthDateLabel() {
+        return birthDateLabel;
+    }
+
+    public JLabel getCuisineLabel() {
+        return cuisineLabel;
+    }
+
+    public JTextField getCuisineTextField() {
+        return cuisineTextField;
+    }
+
+    public JCheckBox getDeliveringCheckBox() {
+        return deliveringCheckBox;
+    }
+
+    public JLabel getIbanLabel() {
+        return ibanLabel;
+    }
+
+    public JTextField getIbanTextField() {
+        return ibanTextField;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
+
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+
+    public JCheckBox getOwnRidersCheckBox() {
+        return ownRidersCheckBox;
+    }
+
+    public JLabel getPasswordLabel() {
+        return passwordLabel;
+    }
+
+    public JTextField getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JLabel getProviderNameLabel() {
+        return providerNameLabel;
+    }
+
+    public JTextField getProviderNameTextField() {
+        return providerNameTextField;
+    }
+
+    public JLabel getSurnameLabel() {
+        return surnameLabel;
+    }
+
+    public JTextField getSurnameTextField() {
+        return surnameTextField;
+    }
+
+    public JCheckBox getTakeAwayCheckBox() {
+        return takeAwayCheckBox;
+    }
+
+    public JTextField getTelephomeTextField() {
+        return telephomeTextField;
+    }
+
+    public JLabel getTelephoneLabel() {
+        return telephoneLabel;
+    }
+
+    public JLabel getTitleLabel() {
+        return titleLabel;
+    }
+
+    public JLabel getTitleLabel2() {
+        return titleLabel2;
+    }
+
+    public JButton getUpdateBtn() {
+        return updateBtn;
+    }
+
+    public JPanel getUpdatePanel() {
+        return updatePanel;
+    }
+
+    public JLabel getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JPanel getjPanel1() {
+        return jPanel1;
+    }
+
+    public JButton getLogOutBtn() {
+        return logOutBtn;
+    }
+
+    public JButton getManageMenuBtn() {
+        return manageMenuBtn;
+    }
+
+    public JPanel getNavBar() {
+        return navBar;
+    }
+
+    public JButton getHomeBtn() {
+        return homeBtn;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,6 +173,11 @@ public class UpdateView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        navBar = new javax.swing.JPanel();
+        manageMenuBtn = new javax.swing.JButton();
+        homeBtn = new javax.swing.JButton();
+        logOutBtn = new javax.swing.JButton();
         updatePanel = new javax.swing.JPanel();
         updateBtn = new javax.swing.JButton();
         usernameLabel = new javax.swing.JLabel();
@@ -69,6 +207,71 @@ public class UpdateView extends javax.swing.JFrame {
         ownRidersCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        navBar.setBackground(new java.awt.Color(146, 43, 32));
+
+        manageMenuBtn.setBackground(new java.awt.Color(255, 255, 255));
+        manageMenuBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        manageMenuBtn.setForeground(new java.awt.Color(5, 5, 5));
+        manageMenuBtn.setText("Manage Menu");
+        manageMenuBtn.setBorderPainted(false);
+        manageMenuBtn.setMaximumSize(new java.awt.Dimension(145, 29));
+        manageMenuBtn.setMinimumSize(new java.awt.Dimension(145, 29));
+        manageMenuBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        manageMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageMenuBtnActionPerformed(evt);
+            }
+        });
+
+        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
+        homeBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        homeBtn.setForeground(new java.awt.Color(5, 5, 5));
+        homeBtn.setText("Home");
+        homeBtn.setBorderPainted(false);
+        homeBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
+
+        logOutBtn.setBackground(new java.awt.Color(255, 255, 255));
+        logOutBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        logOutBtn.setForeground(new java.awt.Color(5, 5, 5));
+        logOutBtn.setText("Log out");
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setPreferredSize(new java.awt.Dimension(145, 29));
+        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout navBarLayout = new javax.swing.GroupLayout(navBar);
+        navBar.setLayout(navBarLayout);
+        navBarLayout.setHorizontalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(manageMenuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(145, 145, 145)
+                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                .addComponent(logOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
+        navBarLayout.setVerticalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(manageMenuBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(homeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
+        );
 
         updateBtn.setBackground(new java.awt.Color(44, 73, 129));
         updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -304,18 +507,37 @@ public class UpdateView extends javax.swing.JFrame {
                             .addComponent(ownRidersCheckBox))))
                 .addGap(45, 45, 45)
                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(navBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(updatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(updatePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(updatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -361,6 +583,18 @@ public class UpdateView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cuisineTextFieldActionPerformed
 
+    private void manageMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageMenuBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_manageMenuBtnActionPerformed
+
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_homeBtnActionPerformed
+
+    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -405,10 +639,15 @@ public class UpdateView extends javax.swing.JFrame {
     private javax.swing.JLabel cuisineLabel;
     private javax.swing.JTextField cuisineTextField;
     private javax.swing.JCheckBox deliveringCheckBox;
+    private javax.swing.JButton homeBtn;
     private javax.swing.JLabel ibanLabel;
     private javax.swing.JTextField ibanTextField;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton logOutBtn;
+    private javax.swing.JButton manageMenuBtn;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JPanel navBar;
     private javax.swing.JCheckBox ownRidersCheckBox;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JTextField passwordTextField;

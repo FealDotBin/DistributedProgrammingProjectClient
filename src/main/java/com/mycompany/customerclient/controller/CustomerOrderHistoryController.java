@@ -8,13 +8,16 @@ package com.mycompany.customerclient.controller;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JButtonEditor;
 import com.mycompany.common.model.dto.order.OrderDto;
+import com.mycompany.common.model.enumerations.OrderState;
 import com.mycompany.customerclient.api.ServiceApi;
 import com.mycompany.customerclient.navigator.Navigator;
 import com.mycompany.customerclient.view.CustomerFrameHistory1;
 import com.mycompany.providerclient.controller.LogInController;
+import com.sun.tools.javac.Main;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,6 +50,7 @@ public class CustomerOrderHistoryController {
 
     private Long customerId;
     private OrderDto selectedOrder;
+    private OrderDto currentOrder;
     private List<OrderDto> orderHistory;
 
     public CustomerOrderHistoryController(Long customerId) {
@@ -98,12 +102,12 @@ public class CustomerOrderHistoryController {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()) {
-                    
+                    currentOrder = response.body();
                     homeButton.setText("Current Order");
                     homeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            nav.fromHistory1ToOrderViewer(CustomerOrderHistoryController.this);
+                            changeToHome();
                         }
 
                     });
@@ -116,7 +120,7 @@ public class CustomerOrderHistoryController {
                         }
 
                     });
-                    
+
                 }
 
             }
@@ -142,7 +146,7 @@ public class CustomerOrderHistoryController {
                     for (OrderDto order : orderHistory) {
                         row[0] = order.getId();
                         row[1] = order.getProvider().getProviderName();
-                        row[2] = order.getRider()!=null ? order.getRider().getName():"";
+                        row[2] = order.getRider() != null ? order.getRider().getName() : "";
                         row[3] = order.getDeliveryTime();
                         orderTableModel.addRow(row);
                     }
@@ -184,10 +188,76 @@ public class CustomerOrderHistoryController {
 
         });
         orderTable.setDefaultEditor(JButton.class, orderTableEditor);
-        
 
         historyView.setVisible(true);
 
+    }
+
+    private void changeToHome() {
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(CustomerOrderHistoryController.this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    nav.fromHistory1ToOrderViewer(CustomerOrderHistoryController.this);
+                } else {
+                    getOrderById();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(historyView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+    }
+
+    private void getOrderById() {
+        Call<OrderDto> getOrderById = apiService.getOrderDTO(CustomerOrderHistoryController.this.currentOrder.getId());
+        getOrderById.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    OrderDto orderGhost = response.body();
+                    if (orderGhost.getOrderState().equals(OrderState.REFUSED)) {
+                        JOptionPane.showMessageDialog(historyView, "YOUR CURRENT ORDER HAVE BEEN REFUSED BUT YOU GOT: " + orderGhost.getPrice() + " MONEY BACK", "Order Refused", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(historyView, "YOUR CURRENT ORDER HAVE BEEN COMPLETED", "Order Completed", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    File file = new File("customer"+customerId+"/persistentOrder.txt");
+                    if(file.delete()){
+                        System.out.println("File cancellato con successo");
+                    }
+                    else
+                        System.out.println("Problemi con la cancellazione del file");
+                    nav.fromHistory1ToProviderSelection(CustomerOrderHistoryController.this);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(historyView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(historyView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
     }
 
     public void disposeView() {
@@ -197,8 +267,6 @@ public class CustomerOrderHistoryController {
     public Long getCustomerId() {
         return customerId;
     }
-
-
 
     public OrderDto getSelectedOrder() {
         return selectedOrder;

@@ -128,12 +128,11 @@ public class LogInController {
     }
     
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                LogInController c = new LogInController();
-            }
-        });
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               new LogInController();
+           }
+       });
     }
-    
 }
