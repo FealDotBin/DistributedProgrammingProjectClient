@@ -51,6 +51,7 @@ public class RiderHomeController {
     private ButtonGroup btnGroup;
     
     private JMenuItem updateItem;
+    private JMenuItem logOutItem;
     
       
     private RetrofitBuilder retroBuild;
@@ -82,6 +83,7 @@ public class RiderHomeController {
         btnGroup = homeView.getBtnRadioGroup();
         
         updateItem = homeView.getMyInfoItem();
+        logOutItem = homeView.getLogoutItem();
         
         
                // initialize retrofitBuilder and serviceApi
@@ -97,6 +99,8 @@ public class RiderHomeController {
        semiAcceptedRadio.addActionListener(semiAcceptRadioAction);
        
        updateItem.addActionListener(updateAction);
+       
+       logOutItem.addActionListener(logoutAction);
         
         fillOrderTable();
      }
@@ -274,6 +278,17 @@ public class RiderHomeController {
         
         
     };
+     
+        private ActionListener logoutAction = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {            
+            navigator.fromHomeToLogin(RiderHomeController.this);
+        }
+        
+        
+        
+    };
+    
     
      
     private ActionListener semiAcceptRadioAction = new ActionListener(){

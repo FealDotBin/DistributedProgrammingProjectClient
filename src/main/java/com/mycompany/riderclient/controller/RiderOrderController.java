@@ -118,13 +118,13 @@ public class RiderOrderController {
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()) { // status code tra 200-299
                     OrderDto orderDto = response.body();
-                    providerNameLabel.setText("Provider: "+orderDto.getProvider().getProviderName());
-                    providerAddressLabel.setText("Provider address: "+orderDto.getProvider().getAddress());
-                    providerTelLabel.setText("Provider telephone: "+orderDto.getProvider().getTelephoneNumber());
+                    providerNameLabel.setText(orderDto.getProvider().getProviderName());
+                    providerAddressLabel.setText(orderDto.getProvider().getAddress());
+                    providerTelLabel.setText(orderDto.getProvider().getTelephoneNumber());
                     
-                    customerNameLabel.setText("Customer Name: "+orderDto.getCustomer().getName()+" "+orderDto.getCustomer().getSurname());
-                    customerAddressLabel.setText("Customer address: "+orderDto.getCustomer().getAddress());
-                    customerTelLabel.setText("Customer telephone: "+orderDto.getCustomer().getTelephoneNumber());
+                    customerNameLabel.setText(orderDto.getCustomer().getName()+" "+orderDto.getCustomer().getSurname());
+                    customerAddressLabel.setText(orderDto.getCustomer().getAddress());
+                    customerTelLabel.setText(orderDto.getCustomer().getTelephoneNumber());
                     DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm");
                      
                     orderStateLabel.setText("Order state: "+orderDto.getOrderState());
