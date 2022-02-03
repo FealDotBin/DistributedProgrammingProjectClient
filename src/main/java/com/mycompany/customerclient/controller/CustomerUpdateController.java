@@ -5,6 +5,7 @@
  */
 package com.mycompany.customerclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.dto.order.OrderDto;
@@ -20,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -190,6 +192,8 @@ public class CustomerUpdateController {
                 }
 
                 String password = passwordField.getText().trim();
+                if(!password.isBlank())
+                    password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 
                 String name = nameField.getText().trim();
                 if (name.isBlank()) {
