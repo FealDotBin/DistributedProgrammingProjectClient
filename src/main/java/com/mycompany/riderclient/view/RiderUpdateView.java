@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -102,8 +103,6 @@ public class RiderUpdateView extends javax.swing.JFrame {
         ibanTextField = new javax.swing.JTextField();
         vehicleTextField = new javax.swing.JTextField();
         telephoneTextField = new javax.swing.JTextField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         updateBtn.setBackground(new java.awt.Color(44, 73, 129));
         updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

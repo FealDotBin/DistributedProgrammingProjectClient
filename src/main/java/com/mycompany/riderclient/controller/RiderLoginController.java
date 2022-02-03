@@ -108,7 +108,7 @@ public class RiderLoginController {
                         riderId = response.body();
                         //GESTIRE NAVIGATOR
                         System.out.println("Login effettuato correttamente, id: "+riderId);
-                       
+                       navigator.fromLogInToHome(RiderLoginController.this);
                         //navigator per andare all'home
                      
                     }

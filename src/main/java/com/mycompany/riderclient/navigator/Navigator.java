@@ -6,7 +6,10 @@
 package com.mycompany.riderclient.navigator;
 
 
+import com.mycompany.riderclient.controller.RiderHomeController;
 import com.mycompany.riderclient.controller.RiderLoginController;
+import com.mycompany.riderclient.controller.RiderOrderController;
+import com.mycompany.riderclient.controller.RiderUpdateController;
 import com.mycompany.riderclient.controller.SignUpController;
 
 
@@ -17,6 +20,8 @@ import com.mycompany.riderclient.controller.SignUpController;
 public class Navigator {
     
     private static Navigator instance;
+    
+    private static RiderUpdateController riderUpdate;
         
         private Navigator(){
             
@@ -35,6 +40,15 @@ public class Navigator {
             new SignUpController();
         }
         
+        public void fromLogInToHome(RiderLoginController c){
+            c.disposeView();
+            new RiderHomeController(c.getRiderId());
+        }
+        
+        public void fromHomeToOrderView(RiderHomeController c, Long orderId){
+            c.disposeView();
+            new RiderOrderController(c.getRiderId(), orderId);
+        }
         
         
         public void fromSignUpToLogIn(SignUpController c){
@@ -42,6 +56,20 @@ public class Navigator {
             new RiderLoginController();
         }
         
+        public void fromOrderToHome(RiderOrderController c){
+            c.disposeView();
+            new RiderHomeController(c.getRiderId());
+        }
+        
+        public void showUpdateView(Long riderId){
+            //  RiderUpdateController.getInstance(riderId);
+            if(this.riderUpdate == null){
+                this.riderUpdate = new RiderUpdateController(riderId);
+                return;
+            }
+            riderUpdate.getUpdateView().setVisible(true);
+            
+        }
 
         
 }

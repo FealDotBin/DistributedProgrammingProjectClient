@@ -37,6 +37,8 @@ import retrofit2.Response;
  */
 public class RiderUpdateController {
     
+    
+    private static RiderUpdateController instance ;
     private RiderUpdateView updateView;
     
     private JTextField usernameField;
@@ -53,14 +55,26 @@ public class RiderUpdateController {
     private ServiceApi apiService;
     private Navigator navigator;
     
-    private Long riderId=35L;
-
+    private Long riderId;
+//
+//     public synchronized static RiderUpdateController getInstance(Long riderId) {
+//            if (updateView == null) {
+//
+//                instance = new RiderUpdateController(riderId);
+//   
+//            }
+//            
+//            return instance;
+//        }
     
     
-    public RiderUpdateController(){
+    public RiderUpdateController(Long riderId){
+        
+      
+        
+        this.riderId = riderId;
         updateView = new RiderUpdateView();
         updateView.setVisible(true);
-        
         
         //Component getter
         usernameField = updateView.getUsernameTextField();
@@ -253,12 +267,14 @@ public class RiderUpdateController {
 
             }
         
-            
-           
-        
+          
         
         
     };
+
+    public RiderUpdateView getUpdateView() {
+        return updateView;
+    }
             
 
 
@@ -286,7 +302,7 @@ public class RiderUpdateController {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                RiderUpdateController c = new RiderUpdateController();
+                RiderUpdateController c = new RiderUpdateController(30L);
             }
         });
     }
