@@ -34,6 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.json.JSONObject;
@@ -61,7 +62,9 @@ public class CustomerLogInController {
     public CustomerLogInController() {
         // initialize view
         logInView = new LogInView();
-
+        logInView.pack();
+        logInView.setLocationRelativeTo(null);
+        logInView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // get components from view
         usernameTextField = logInView.getUsernameTextField();
         passwordTextField = logInView.getPasswordTextField();
