@@ -11,10 +11,12 @@ import java.util.Vector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -115,6 +117,34 @@ public class HomeView extends javax.swing.JFrame {
     public JButton getUpdateAccountBtn() {
         return updateAccountBtn;
     }
+
+    public JRadioButton getShippedRadioButton() {
+        return ShippedRadioButton;
+    }
+
+    public JRadioButton getAcceptedRadioButton() {
+        return acceptedRadioButton;
+    }
+
+    public ButtonGroup getButtonGroup1() {
+        return buttonGroup1;
+    }
+
+    public JRadioButton getCompletedRadioButton() {
+        return completedRadioButton;
+    }
+
+    public JRadioButton getPendingRadioButton() {
+        return pendingRadioButton;
+    }
+
+    public JRadioButton getRefusedRadioButton() {
+        return refusedRadioButton;
+    }
+
+    public JRadioButton getSemiAcceptedRadioButton() {
+        return semiAcceptedRadioButton;
+    }
     
 
     /**
@@ -126,6 +156,7 @@ public class HomeView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -175,6 +206,12 @@ public class HomeView extends javax.swing.JFrame {
             }
         };
         availableBtn = new javax.swing.JButton();
+        pendingRadioButton = new javax.swing.JRadioButton();
+        semiAcceptedRadioButton = new javax.swing.JRadioButton();
+        acceptedRadioButton = new javax.swing.JRadioButton();
+        ShippedRadioButton = new javax.swing.JRadioButton();
+        completedRadioButton = new javax.swing.JRadioButton();
+        refusedRadioButton = new javax.swing.JRadioButton();
         navBar = new javax.swing.JPanel();
         manageMenuBtn = new javax.swing.JButton();
         updateAccountBtn = new javax.swing.JButton();
@@ -267,12 +304,36 @@ public class HomeView extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(pendingRadioButton);
+        pendingRadioButton.setSelected(true);
+        pendingRadioButton.setText("Pending");
+
+        buttonGroup1.add(semiAcceptedRadioButton);
+        semiAcceptedRadioButton.setText("Semi Accepted");
+
+        buttonGroup1.add(acceptedRadioButton);
+        acceptedRadioButton.setText("Accepted");
+
+        buttonGroup1.add(ShippedRadioButton);
+        ShippedRadioButton.setText("Shipped");
+
+        buttonGroup1.add(completedRadioButton);
+        completedRadioButton.setText("Completed");
+
+        buttonGroup1.add(refusedRadioButton);
+        refusedRadioButton.setText("Refused");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(324, 324, 324)
+                        .addComponent(homeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(availableBtn))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -281,24 +342,25 @@ public class HomeView extends javax.swing.JFrame {
                                 .addComponent(refuseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(113, 113, 113)
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(shipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(allOrdersTableScroll))
+                            .addComponent(shipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(95, 95, 95))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(324, 324, 324)
-                        .addComponent(homeLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(availableBtn)))
+                        .addGap(125, 125, 125)
+                        .addComponent(allOrdersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pendingRadioButton)
+                            .addComponent(semiAcceptedRadioButton)
+                            .addComponent(acceptedRadioButton)
+                            .addComponent(ShippedRadioButton)
+                            .addComponent(completedRadioButton)
+                            .addComponent(refusedRadioButton)
+                            .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 14, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -308,14 +370,27 @@ public class HomeView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homeLabel)
                     .addComponent(availableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(allOrdersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(pendingRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(semiAcceptedRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(acceptedRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(ShippedRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(completedRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(refusedRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(allOrdersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(selectedOrderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(selectedOrderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -326,13 +401,13 @@ public class HomeView extends javax.swing.JFrame {
                                 .addComponent(refuseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
+                        .addGap(101, 101, 101)
                         .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(shipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(195, Short.MAX_VALUE))))
+                        .addContainerGap(138, Short.MAX_VALUE))))
         );
 
         navBar.setBackground(new java.awt.Color(146, 43, 32));
@@ -504,11 +579,15 @@ public class HomeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton ShippedRadioButton;
     private javax.swing.JButton acceptBtn;
+    private javax.swing.JRadioButton acceptedRadioButton;
     private javax.swing.JTable allOrdersTable;
     private javax.swing.JScrollPane allOrdersTableScroll;
     private javax.swing.JButton availableBtn;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton completeBtn;
+    private javax.swing.JRadioButton completedRadioButton;
     private javax.swing.JLabel homeLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -517,10 +596,13 @@ public class HomeView extends javax.swing.JFrame {
     private javax.swing.JButton logOutBtn;
     private javax.swing.JButton manageMenuBtn;
     private javax.swing.JPanel navBar;
+    private javax.swing.JRadioButton pendingRadioButton;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton refuseBtn;
+    private javax.swing.JRadioButton refusedRadioButton;
     private javax.swing.JLabel selectedOrderLabel;
     private javax.swing.JTable selectedOrderTable;
+    private javax.swing.JRadioButton semiAcceptedRadioButton;
     private javax.swing.JButton shipBtn;
     private javax.swing.JButton updateAccountBtn;
     // End of variables declaration//GEN-END:variables

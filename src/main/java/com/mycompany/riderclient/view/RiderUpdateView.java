@@ -7,10 +7,14 @@ package com.mycompany.riderclient.view;
 
 import com.mycompany.customerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -18,12 +22,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author CATELLO
  */
-public class RiderUpdate extends javax.swing.JFrame {
+public class RiderUpdateView extends javax.swing.JFrame {
 
     /**
      * Creates new form customerUpdate
      */
-    public RiderUpdate() {
+    public RiderUpdateView() {
         try {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
@@ -33,6 +37,44 @@ public class RiderUpdate extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JDateChooser getBirthDateChooser() {
+        return birthDateChooser;
+    }
+
+    public JTextField getIbanTextField() {
+        return ibanTextField;
+    }
+
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+
+    public JTextField getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JTextField getSurnameTextField() {
+        return surnameTextField;
+    }
+
+    public JTextField getTelephoneTextField() {
+        return telephoneTextField;
+    }
+
+    public JButton getUpdateBtn() {
+        return updateBtn;
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JTextField getVehicleTextField() {
+        return vehicleTextField;
+    }
+
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,8 +103,6 @@ public class RiderUpdate extends javax.swing.JFrame {
         ibanTextField = new javax.swing.JTextField();
         vehicleTextField = new javax.swing.JTextField();
         telephoneTextField = new javax.swing.JTextField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         updateBtn.setBackground(new java.awt.Color(44, 73, 129));
         updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -312,21 +352,23 @@ public class RiderUpdate extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RiderUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderUpdateView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RiderUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderUpdateView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RiderUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderUpdateView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiderUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderUpdateView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RiderUpdate().setVisible(true);
+                new RiderUpdateView().setVisible(true);
             }
         });
     }

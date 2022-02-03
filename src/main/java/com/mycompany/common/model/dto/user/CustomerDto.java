@@ -48,6 +48,13 @@ public class CustomerDto implements Serializable{
     public String getTelephoneNumber() {
         return telephoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" + "id=" + id + ", address=" + address + ", name=" + name + ", surname=" + surname + ", telephoneNumber=" + telephoneNumber + '}';
+    }
+    
+    
     
     
 }

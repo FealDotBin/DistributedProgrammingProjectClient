@@ -8,8 +8,11 @@ package com.mycompany.riderclient.view;
 import com.mycompany.providerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
+import com.toedter.calendar.JDateChooser;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -17,12 +20,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author CATELLO
  */
-public class RiderSignIn extends javax.swing.JFrame {
+public class RiderSignUpView extends javax.swing.JFrame {
 
     /**
      * Creates new form ProviderSignIn
      */
-    public RiderSignIn() {
+    public RiderSignUpView() {
         try {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
@@ -31,6 +34,56 @@ public class RiderSignIn extends javax.swing.JFrame {
         }
         initComponents();
     }
+
+    public JDateChooser getBirthDateChooser() {
+        return birthDateChooser;
+    }
+
+    public JLabel getBirthDateLabel() {
+        return birthDateLabel;
+    }
+
+    public JTextFieldPlaceholder getIbanTextField() {
+        return ibanTextField;
+    }
+
+    public JTextFieldPlaceholder getNameTextField() {
+        return nameTextField;
+    }
+
+    public JTextFieldPlaceholder getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JButton getSignUpBtn() {
+        return signUpBtn;
+    }
+
+    public JTextFieldPlaceholder getSurnameTextField() {
+        return surnameTextField;
+    }
+
+    public JTextFieldPlaceholder getTelephoneTextField() {
+        return telephoneTextField;
+    }
+
+
+    public JTextFieldPlaceholder getVehicleTextField() {
+        return vehicleTextField;
+    }
+
+    public JTextFieldPlaceholder getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JButton getLogInBtn() {
+        return logInBtn;
+    }
+    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +100,7 @@ public class RiderSignIn extends javax.swing.JFrame {
         birthDateLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
-        userameTextField = new JTextFieldPlaceholder("Username");
+        usernameTextField = new JTextFieldPlaceholder("Username");
         birthDateChooser = new com.toedter.calendar.JDateChooser();
         nameTextField = new JTextFieldPlaceholder("Name");
         passwordTextField = new JTextFieldPlaceholder("Password");
@@ -78,10 +131,10 @@ public class RiderSignIn extends javax.swing.JFrame {
         titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
         titleLabel.setText("SIGN UP");
 
-        userameTextField.setText("Username");
-        userameTextField.addActionListener(new java.awt.event.ActionListener() {
+        usernameTextField.setText("Username");
+        usernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userameTextFieldActionPerformed(evt);
+                usernameTextFieldActionPerformed(evt);
             }
         });
 
@@ -147,7 +200,7 @@ public class RiderSignIn extends javax.swing.JFrame {
                             .addGroup(newSingupLayout.createSequentialGroup()
                                 .addGap(104, 104, 104)
                                 .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(userameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ibanTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(telephoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(newSingupLayout.createSequentialGroup()
@@ -174,7 +227,7 @@ public class RiderSignIn extends javax.swing.JFrame {
                         .addComponent(birthDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(newSingupLayout.createSequentialGroup()
                         .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -206,9 +259,9 @@ public class RiderSignIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void userameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userameTextFieldActionPerformed
+    private void usernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_userameTextFieldActionPerformed
+    }//GEN-LAST:event_usernameTextFieldActionPerformed
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
         // TODO add your handling code here:
@@ -255,14 +308,26 @@ public class RiderSignIn extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RiderSignIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderSignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RiderSignIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderSignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RiderSignIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderSignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiderSignIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiderSignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -271,7 +336,7 @@ public class RiderSignIn extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RiderSignIn().setVisible(true);
+                new RiderSignUpView().setVisible(true);
             }
         });
     }
@@ -289,7 +354,7 @@ public class RiderSignIn extends javax.swing.JFrame {
     private com.mycompany.common.components.JTextFieldPlaceholder surnameTextField;
     private com.mycompany.common.components.JTextFieldPlaceholder telephoneTextField;
     private javax.swing.JLabel titleLabel;
-    private com.mycompany.common.components.JTextFieldPlaceholder userameTextField;
+    private com.mycompany.common.components.JTextFieldPlaceholder usernameTextField;
     private com.mycompany.common.components.JTextFieldPlaceholder vehicleTextField;
     // End of variables declaration//GEN-END:variables
 }

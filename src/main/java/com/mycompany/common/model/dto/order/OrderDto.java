@@ -114,5 +114,12 @@ public class OrderDto implements Serializable{
     public double getPrice() {
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" + "id=" + id + ", dishOrderAssociations=" + dishOrderAssociations + ", customer=" + customer + ", provider=" + provider + ", rider=" + rider + ", orderType=" + orderType + ", orderState=" + orderState + ", deliveryTime=" + deliveryTime + ", price=" + price + '}';
+    }
+    
+    
     
 }

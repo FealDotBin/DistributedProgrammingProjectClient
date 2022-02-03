@@ -33,5 +33,13 @@ public class RiderDto implements Serializable{
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "RiderDto{" + "vehicleType=" + vehicleType + ", name=" + name + ", telephoneNumber=" + telephoneNumber + ", id=" + id + '}';
+    }
+    
+    
+    
     
 }

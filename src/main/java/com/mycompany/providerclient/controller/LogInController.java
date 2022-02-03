@@ -104,8 +104,12 @@ public class LogInController {
                 @Override
                 public void onFailure(Call<Long> call, Throwable t) {
                     // Log error here since request failed
-                      System.out.println("failed");
-                }
+                        JOptionPane.showMessageDialog(logInView,
+                                "Something went wrong...",
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        }
+
             });
         });
         
@@ -123,12 +127,12 @@ public class LogInController {
         logInView.dispose();
     }
     
-     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LogInController();
-            }
-        });
+    public static void main(String args[]) {
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               new LogInController();
+           }
+       });
     }
 }
