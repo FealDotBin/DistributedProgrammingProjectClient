@@ -30,6 +30,7 @@ public class RiderLoginView extends javax.swing.JFrame {
             Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+          setResizable(false);
     }
 
     public JButton getLogInBtn() {

@@ -35,6 +35,7 @@ public class RiderUpdateView extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+          setResizable(false);
     }
 
     public JDateChooser getBirthDateChooser() {

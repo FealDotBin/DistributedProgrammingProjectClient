@@ -45,6 +45,11 @@ public class Navigator {
             new RiderHomeController(c.getRiderId());
         }
         
+         public void fromHomeToLogin(RiderHomeController c){
+            c.disposeView();
+            new RiderLoginController();
+        }
+        
         public void fromHomeToOrderView(RiderHomeController c, Long orderId){
             c.disposeView();
             new RiderOrderController(c.getRiderId(), orderId);

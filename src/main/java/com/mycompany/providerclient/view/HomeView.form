@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    <Component class="javax.swing.ButtonGroup" name="allOrdersTableButtonGroup">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -372,7 +372,7 @@
                 <Component class="javax.swing.JRadioButton" name="pendingRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Pending"/>
@@ -381,7 +381,7 @@
                 <Component class="javax.swing.JRadioButton" name="semiAcceptedRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Semi Accepted"/>
                   </Properties>
@@ -389,7 +389,7 @@
                 <Component class="javax.swing.JRadioButton" name="acceptedRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Accepted"/>
                   </Properties>
@@ -397,7 +397,7 @@
                 <Component class="javax.swing.JRadioButton" name="ShippedRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Shipped"/>
                   </Properties>
@@ -405,7 +405,7 @@
                 <Component class="javax.swing.JRadioButton" name="completedRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Completed"/>
                   </Properties>
@@ -413,7 +413,7 @@
                 <Component class="javax.swing.JRadioButton" name="refusedRadioButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="buttonGroup1"/>
+                      <ComponentRef name="allOrdersTableButtonGroup"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Refused"/>
                   </Properties>
