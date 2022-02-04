@@ -34,6 +34,11 @@ import retrofit2.Response;
 /**
  *
  * @author CATELLO
+ * This class represents CustomerFrameHistory1 GUI controller. 
+ * This class is responsible for capturing input from the user and updating the view.
+ * It also makes calls to the restfull server when needed:
+ * -To obtain customer's orders history 
+ * -To decide which controller to invoke after home button has been pressed
  */
 public class CustomerOrderHistoryController {
 
@@ -53,6 +58,14 @@ public class CustomerOrderHistoryController {
     private OrderDto currentOrder;
     private List<OrderDto> orderHistory;
 
+    
+   /**
+     * Initialize order table history obtaining it from server.
+     * Add listener to buttons in order table to select and order that you want know more
+     * Add listeners to other buttons to navigate from this controller to the next
+     * @param customerId represents the logged customer's id
+     * 
+     */
     public CustomerOrderHistoryController(Long customerId) {
         this.customerId = customerId;
         //View creation
@@ -97,44 +110,48 @@ public class CustomerOrderHistoryController {
         });
 
         //Set home button text and his action listener based on the presence of current order
-        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
-        currentOrderCall.enqueue(new Callback<OrderDto>() {
+        addHomeButtonLogic();
+        
+        //Fill table with order history
+        fillOrderTable();
+
+        //When a button in row is pressed show GUI with more information about the information order
+        JButtonEditor orderTableEditor = new JButtonEditor("View Menù", new ActionListener() {
             @Override
-            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                if (response.isSuccessful()) {
-                    currentOrder = response.body();
-                    homeButton.setText("Current Order");
-                    homeButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            changeToHome();
-                        }
-
-                    });
-                } else {
-                    homeButton.setText("Create Order");
-                    homeButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            nav.fromHistory1ToProviderSelection(CustomerOrderHistoryController.this);
-                        }
-
-                    });
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
-                JOptionPane.showMessageDialog(historyView,
-                        "Contact you system administrator",
-                        "CRITICAL ERROR",
-                        JOptionPane.ERROR_MESSAGE);
+            public void actionPerformed(ActionEvent e) {
+                addTableButtonLogic(e);
             }
 
         });
+        orderTable.setDefaultEditor(JButton.class, orderTableEditor);
 
+        historyView.setVisible(true);
+
+    }
+    
+    /**
+     *The method sets the appearance of the button after it is pressed.
+     *Also the GUI will be shown which describes the order more in depth.
+     * @param e events that occurs when a table button is pressed
+     */
+    private void addTableButtonLogic(ActionEvent e){
+        JButton button = (JButton) e.getSource();
+        button.setBackground(new java.awt.Color(44, 73, 129));
+        button.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        button.setForeground(new Color(200, 200, 200));
+        int selectedRow = orderTable.getSelectedRow();
+        selectedOrder = orderHistory.get(selectedRow);
+        nav.fromHistory1ToMoreInfo(CustomerOrderHistoryController.this);
+    }
+    
+    /**
+    * The method sends a GET request to the server to get the customer's order history.
+    * Once obtained, it fills the view table with a row for each order in the history.
+    * Each line includes only some information about the order such as: 
+    * id, name of the selected provider, name of the rider who completed the order (if any), delivery / take-away time of the order.
+    * * In case of a communication error with the server, messages are displayed to inform the customer.
+    */
+    private void fillOrderTable(){
         Call<List<OrderDto>> orderListCall = apiService.getCustomerHistory(this.customerId);
         orderListCall.enqueue(new Callback<List<OrderDto>>() {
             @Override
@@ -173,26 +190,64 @@ public class CustomerOrderHistoryController {
             }
 
         });
-
-        JButtonEditor orderTableEditor = new JButtonEditor("View Menù", new ActionListener() {
+    }
+    
+    /**
+     * This method sends three calls to the server: the first requires the current order of the costumer to set the appropriate text to be displayed on the home button. 
+     * If the current order is not present, a listener is added to the button that allows you to view the GUI relating to the choice of providers.
+     * If, on the other hand, the current order is present at the moment of the construction of the button this could have been refused or completed at the moment of its pressure. 
+     * So when this event occurs, a new call is made to get the current order again. 
+     * If this is present, the interface that allows you to view information about it will be shown. 
+     * Instead, if not present, a third call is made this time to retrieve the last status of the order. Which is notified to the user together with any refund for a rejected order. 
+     * After that the GUI for the choice of providers will be shown.
+     * Furthermore case of a communication error with the server, messages are displayed to inform the customer.
+     */
+    private void addHomeButtonLogic(){
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JButton button = (JButton) e.getSource();
-                button.setBackground(new java.awt.Color(44, 73, 129));
-                button.setFont(new java.awt.Font("Segoe UI", 1, 14));
-                button.setForeground(new Color(200, 200, 200));
-                int selectedRow = orderTable.getSelectedRow();
-                selectedOrder = orderHistory.get(selectedRow);
-                nav.fromHistory1ToMoreInfo(CustomerOrderHistoryController.this);
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    currentOrder = response.body();
+                    homeButton.setText("Current Order");
+                    homeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            changeToHome();
+                        }
+
+                    });
+                } else {
+                    homeButton.setText("Create Order");
+                    homeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromHistory1ToProviderSelection(CustomerOrderHistoryController.this);
+                        }
+
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(historyView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
         });
-        orderTable.setDefaultEditor(JButton.class, orderTableEditor);
-
-        historyView.setVisible(true);
-
     }
 
+    /**
+     * The method sends a GET to the server to get the current order. If present, the GUI for its visualization will be shown.
+     * Otherwise a new GET is performed. This time the status of the order is obtained (which has been completed or rejected), which is communicated to the costumer through a specific notification.
+     * Finally the GUI for the choice of providers will be shown
+     * Furthermore in case of a communication error with the server, messages are displayed to inform the customer.
+     */
     private void changeToHome() {
         Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(CustomerOrderHistoryController.this.customerId);
         currentOrderCall.enqueue(new Callback<OrderDto>() {
@@ -217,7 +272,13 @@ public class CustomerOrderHistoryController {
 
         });
     }
-
+    
+    /**
+     *The method sends a GET to get the status of the last current order.
+     *If this is completed or refused, the user is notified together with any refund for the order placed by him.
+     *Finally the GUI for the provide interface will be displayed.
+     *Furthermore in case of a communication error with the server, messages are displayed to inform the customer.
+     */
     private void getOrderById() {
         Call<OrderDto> getOrderById = apiService.getOrderDTO(CustomerOrderHistoryController.this.currentOrder.getId());
         getOrderById.enqueue(new Callback<OrderDto>() {
@@ -259,15 +320,26 @@ public class CustomerOrderHistoryController {
 
         });
     }
-
+    
+    
+    /**
+     * Remove the CustomerFrameHistory1 view from the visualization
+     */
     public void disposeView() {
         historyView.dispose();
     }
 
+    /**
+     * Returns the logged customer's id
+     * @return String that represent the logged customer's id 
+     */
     public Long getCustomerId() {
         return customerId;
     }
-
+    /**
+     * Returns selected order by costumer through view
+     * @return selected order by costumer
+     */
     public OrderDto getSelectedOrder() {
         return selectedOrder;
     }
