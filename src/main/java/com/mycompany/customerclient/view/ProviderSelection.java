@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *
+ * This class represents the view with which the user interacts to select provider where to place the order
  * @author CATELLO
  */
 public class ProviderSelection extends javax.swing.JFrame {
@@ -32,7 +32,7 @@ public class ProviderSelection extends javax.swing.JFrame {
             //   UIManager.
             UIManager.setLookAndFeel(new FlatDarculaLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProviderSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
         this.pack();

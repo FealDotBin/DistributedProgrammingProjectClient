@@ -31,7 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *
+ * This class represents the view with which the user interacts to place an order
  * @author CATELLO
  */
 public class orderCreation extends javax.swing.JFrame {
@@ -44,7 +44,7 @@ public class orderCreation extends javax.swing.JFrame {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(orderCreation.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
         this.pack();
