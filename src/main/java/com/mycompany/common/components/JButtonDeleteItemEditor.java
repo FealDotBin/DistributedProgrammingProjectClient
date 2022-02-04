@@ -17,38 +17,49 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author Catello
- * Editor di una JTable che contiene nella sua quinta colonna dei JButton
- * in particolare questo editor fa si che il bottone sia cliccabile e
- * posso produrre l'evento relativo al click del muose
+  * Editor of a JTable that contains JButtons in one of his columns
+  * in particular this editor makes the button clickable and
+  * can produce the event related to the click of the mouse.
+  * It also allows you to delete the row to which the pressed button belongs
  */
 
 public class JButtonDeleteItemEditor extends AbstractCellEditor implements TableCellEditor{
     private JButton button;
     private String buttonText;
     boolean isButtonPushed;
-
+    /**
+     * Create a table editor that displays the buttons with the 
+     * text contained in the button text and adds the listener passed in the listener to each of them.
+     * @param buttonText Text that will be displayed on buttons
+     * @param listener Action listener for the action perfomed after that the button is clicked
+     */
     public JButtonDeleteItemEditor(String buttonText, ActionListener listener) {
         button = new JButton();
         button.addActionListener(listener);
         
     }
     
+    /**
+     * Create a table editor that displays the buttons with fixed text and no listener 
+     */
     public JButtonDeleteItemEditor() {
         this.button = new JButton("Select");
         button.setActionCommand("edit");
-        //button.addActionListener(this);
         button.setBorderPainted(true);
     }
 
+    /**
+     * Returns the editor for a certain table cell
+     * @param table  Create a table editor that displays the buttons with fixed text and no listener 
+     * @param value  Cell tye componente
+     * @param isSelected True if the cell selected, false otherwise
+     * @param row row number which cell belongs
+     * @param column column number which cell belongs
+     * @return Editated component for a certain cell
+     */
     @Override
     public Component getTableCellEditorComponent(final JTable table, Object value, boolean isSelected, int row, int column) {
         button.setText(buttonText);
@@ -59,34 +70,31 @@ public class JButtonDeleteItemEditor extends AbstractCellEditor implements Table
         return button; 
     }
 
+    /**
+     * Returns true if the button in the table is pushed
+     * @return true if the button in the table is pushed
+     */
     @Override
     public Object getCellEditorValue() {
         return isButtonPushed;
     }
+    
     /**
-     * Gestisce l'evento generato dalla pressione della cella.
-     * Evidenzia la cella selezionata per poi recuperare la prima cella della riga selezionata
-     * per poi istanziare le finestra successiva.
-     * @param ae evento che rappresenta la pressione del bottone 
+     * Force button pressure outside this class
      */
-
-      
-        /*String site= table.getModel().getValueAt(row, 1).toString();
-        String typology = table.getModel().getValueAt(row, 2).toString();
-        int time=parseInt(table.getModel().getValueAt(row, 3).toString().trim());
-        /*VerifyActivityGUI verify= new VerifyActivityGUI(planner, id.trim(), time, site,typology);
-        verify.setVisible(true);
-        verify.pack();
-        verify.setLocationRelativeTo(null);
-        verify.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.dispose();*/
     public void setIsButtonPressed(){
         isButtonPushed = true;
     }
     
+    /**
+     * Listener that allows to delete row from table
+     */
     public class DeleteButtonListener implements ActionListener {
 
         @Override
+        /**
+         * When a button in the table is clicked stop editing cell. In this way is possibile to delete row without expetion
+         */
         public void actionPerformed(ActionEvent e) {
             isButtonPushed = true;
             stopCellEditing();
