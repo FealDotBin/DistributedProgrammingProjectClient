@@ -33,7 +33,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * This class represents the controller of the view DeliveryOrderView. 
+ * Allows to control and manage all the GUI components.
+ * It also manages the logic needed to call the APIs asynchronously, based on the user request on the GUI.
+ * 
+ * The controller, given the order ID and the rider ID, allows you to perform the following operations:
+ * - view all informations of an accepted order, 
+ * - set the order into a new status ('shipped' or 'completed') 
+ * - move back to the previous view (RiderHomeView)
+ * 
  * @author Amos
  */
 public class RiderOrderController {
@@ -65,11 +73,20 @@ public class RiderOrderController {
     private Long riderId;
     private Long orderId;
     
+    /**
+     * * Initialize:
+      * - the view and its components;
+      * - the retrofitBuilder and the serviceApi in order to invoke the API calls.
+      * - the Navigator to switch between views
+      * - attach listeners to buttons in order to manage events
+      * 
+     * @param riderId is the rider ID that uniquely identifies the rider 
+     * @param orderId is the order ID that uniquely identifies the order 
+     */
     public RiderOrderController(Long riderId, Long orderId){
-        
-
         this.riderId = riderId;
         this.orderId = orderId;
+        
         orderView = new DeliveryOrderView();
         orderView.setVisible(true);
         providerNameLabel = orderView.getProviderNameLabel();
@@ -93,7 +110,7 @@ public class RiderOrderController {
         
         
         
-         // initialize retrofitBuilder and serviceApi
+        // initialize retrofitBuilder and serviceApi
         retroBuild = new RetrofitBuilder();
         apiService = retroBuild.getRetrofit().create(ServiceApi.class);
         
@@ -109,15 +126,22 @@ public class RiderOrderController {
         
     }
     
-    
+    /**
+     * This method allows to fill the fields of the text labels and of the table in the view with
+     * the current order informations.
+     * The method will call an asynchronous api to get the order from server.
+     */
     private void fillOrderLabels(){
         
+        //API CALL
              Call<OrderDto> call = apiService.getOrderById(this.orderId);
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
                 if (response.isSuccessful()) { // status code tra 200-299
                     OrderDto orderDto = response.body();
+                    
+                    //FILL FIELDS
                     providerNameLabel.setText(orderDto.getProvider().getProviderName());
                     providerAddressLabel.setText(orderDto.getProvider().getAddress());
                     providerTelLabel.setText(orderDto.getProvider().getTelephoneNumber());
@@ -129,6 +153,7 @@ public class RiderOrderController {
                      
                     orderStateLabel.setText("Order state: "+orderDto.getOrderState());
                     
+                    // Disabling/enabling buttons following theorder-status path: ACCEPTED->SHIPPED->COMPLETED
                     if(orderDto.getOrderState().toString().equals("ACCEPTED") ){
                         shipOrderBtn.setEnabled(true);
                         completeOrderBtn.setEnabled(false);
@@ -175,9 +200,6 @@ public class RiderOrderController {
                     JOptionPane.showMessageDialog(orderView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
                 }
                 
-              
-                
-                
             }
 
             @Override
@@ -200,14 +222,18 @@ public class RiderOrderController {
         orderView.dispose();
     }
         
-        
-       private MouseAdapter shipOrderAction = new MouseAdapter() {
+    /**
+     * It's a mouse listener that allows you to change the order state in 'shipped'.
+     * The method call an asynchronous API to change the order state.
+     */
+    private MouseAdapter shipOrderAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             
             if(!shipOrderBtn.isEnabled())
                 return;
             
+            //API CALL
              Call<Void> call2 = apiService.putOrderOnShipped(orderId);
              
               call2.enqueue(new Callback<Void>() {
@@ -246,15 +272,19 @@ public class RiderOrderController {
         
             
         }};
-    
-    
-      private MouseAdapter completeOrderAction = new MouseAdapter() {
+        
+    /**
+     * It's a mouse listener that allows you to change the order state in 'comlpeted'.
+     * The method call an asynchronous API to change the order state.
+     */
+    private MouseAdapter completeOrderAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             
              if(!completeOrderBtn.isEnabled())
                 return;
             
+             //API CALL
              Call<Void> call2 = apiService.completeOrder(orderId);
              
               call2.enqueue(new Callback<Void>() {
@@ -295,7 +325,11 @@ public class RiderOrderController {
         }
       };
       
-      private MouseAdapter backToOrdersAction = new MouseAdapter() {
+    /**
+     * It's a mouse listener that allows you to go back to the previous view RiderHomeView.
+     * The method use a method of the navigator to perform the view-switch.
+     */
+    private MouseAdapter backToOrdersAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             navigator.fromOrderToHome(RiderOrderController.this);
@@ -306,17 +340,4 @@ public class RiderOrderController {
         return riderId;
     }
       
-       
-    
-      
-      
-          
-     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                RiderOrderController c = new RiderOrderController(33L, 30L);
-            }
-        });
-    }
 }

@@ -13,9 +13,11 @@ import com.mycompany.riderclient.controller.RiderUpdateController;
 import com.mycompany.riderclient.controller.SignUpController;
 
 
+
 /**
- *
- * @author aferr
+ * Represents a navigator between the views. It allows the view-switch, disposing
+ * the previous view and creating a new controller instance of the next view.
+ * @author Amos
  */
 public class Navigator {
     
@@ -27,6 +29,10 @@ public class Navigator {
             
         }
         
+        /**
+         * Navigator singleton
+         * @return the current Navigator instance
+         */
         public synchronized static Navigator getInstance() {
             if (instance == null) {
                 instance = new Navigator();
@@ -34,38 +40,65 @@ public class Navigator {
             return instance;
         }
         
-        
+        /**
+         * Switch the view from RiderLoginView to RiderSignUpView
+         * @param c 
+         */
         public void fromLogInToSignUp(RiderLoginController c){
             c.disposeView();
             new SignUpController();
         }
         
+         /**
+         * Switch the view from RiderLoginView to RiderHomeView
+         * @param c 
+         */
         public void fromLogInToHome(RiderLoginController c){
             c.disposeView();
             new RiderHomeController(c.getRiderId());
         }
         
+        /**
+         * Switch the view from RiderHomeView to RiderLoginView
+         * @param c 
+         */
          public void fromHomeToLogin(RiderHomeController c){
             c.disposeView();
             new RiderLoginController();
         }
         
+         /**
+         * Switch the view from RiderHomeView to DeliveryOrderView
+         * @param c 
+         */
         public void fromHomeToOrderView(RiderHomeController c, Long orderId){
             c.disposeView();
             new RiderOrderController(c.getRiderId(), orderId);
         }
         
-        
+         /**
+         * Switch the view from RiderSignUp to RiderLoginView
+         * @param c 
+         */
         public void fromSignUpToLogIn(SignUpController c){
             c.disposeView();
             new RiderLoginController();
         }
         
+         /**
+         * Switch the view from DeliveryOrderView to RiderHomeView
+         * @param c 
+         */
         public void fromOrderToHome(RiderOrderController c){
             c.disposeView();
             new RiderHomeController(c.getRiderId());
         }
         
+        /**
+         * Show the RiderUpdateView; if the view was created and then closed,
+         * set the visibility on true, avoiding multiple istances.
+         * @param riderId 
+         */
         public void showUpdateView(Long riderId){
             //  RiderUpdateController.getInstance(riderId);
             if(this.riderUpdate == null){

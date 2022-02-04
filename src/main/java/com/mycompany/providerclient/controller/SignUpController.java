@@ -30,7 +30,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * Represents the controller associated to SignUpView class.
+ * It is responsible of taking the user's input to create a new Provider account.
+ * Whenever it's necessary to send or retrieve datas to/from server, the
+ * API endpoint (ServiceApi class) is being used.
  * @author aferr
  */
 public class SignUpController {
@@ -55,6 +58,10 @@ public class SignUpController {
     private ServiceApi serviceApi;
     private Navigator navigator;
     
+    /**
+     * Initialize both the view and the controller by attaching all necessary
+     * listeners to the buttons.
+     */
     public SignUpController(){
         // initialize view
         signUpView = new SignUpView();
@@ -84,14 +91,25 @@ public class SignUpController {
         retroBuild = new RetrofitBuilder();
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
         
-        // attach listener to signUpBtn
+        // attach listeners
         attachListenerToSignUpBtn();
-        
-        // attach listener to logInBtn
         attachListenerToLogInBtn();
-        
     }
     
+    /**
+     * Destroy the homeView instance and all its components.
+     */
+    public void disposeView(){
+        signUpView.dispose();
+    }
+    
+    /**
+     * Send a POST request to the server to create a new provider.
+     * If the response is successful, the provider has been created successfully
+     * and the user will be redirected to the "login" window;
+     * otherwise, an error message is shown to the user.
+     * @param provider The new provider who has to be created
+     */
     private void createNewProviderCall(ProviderEntity provider){
         Call<ProviderEntity> createNewProviderCall = serviceApi.createNewProvider(provider);
         createNewProviderCall.enqueue(new Callback<ProviderEntity>(){
@@ -127,6 +145,11 @@ public class SignUpController {
         });
     }
     
+    /**
+     * Attach an ActionListener to signUpButton in order to create a new Provider
+     * using the infos provided by the user through the input fields, 
+     * whenever the button is pressed.
+     */
     private void attachListenerToSignUpBtn(){
         signUpBtn.addActionListener((event) -> {
             String username = usernameTextField.getText(true).trim();
@@ -217,18 +240,20 @@ public class SignUpController {
         });
     }
     
+    /**
+     * Attach an ActionListener to logInButton in order to switch to
+     * the "log in" window, when the button is pressed.
+     */
     private void attachListenerToLogInBtn(){
         logInBtn.addActionListener((event) -> {
             navigator.fromSignUpToLogIn(SignUpController.this);
         });
     }
     
-    //Shows a pop up to inform the user that the informations that is typing are not correct
+    /**
+     * Shows a pop up to inform the user that the informations that is typing are not correct
+     */
     private void fieldErrorPane(String errorMessage){
         JOptionPane.showMessageDialog(signUpView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    public void disposeView(){
-        signUpView.dispose();
     }
 }

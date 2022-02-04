@@ -11,15 +11,25 @@ import com.mycompany.common.model.enumerations.OrderType;
 import com.mycompany.providerclient.view.HomeView;
 
 /**
- *
+ * Represents the state of an accepted order.
  * @author aferr
  */
 public class SelectedOrderStateAccepted extends SelectedOrderState {
     
+    /**
+     * Initialize the SelectedOrderStateAccepted
+     * @param homeView an instance of HomeView
+     * @param selectedOrder the order currently selected by the user from the table
+     * @param selectedOrderIndex the row of the order currently selected by the user
+     */
     public SelectedOrderStateAccepted(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
+    /**
+     * Enable and disable the "accept", "ship", "complete" and "refuse" buttons
+     * according to the order's type.
+     */
     @Override
     public void updateButton(){
         OrderType orderType = selectedOrder.getOrderType();
@@ -44,6 +54,18 @@ public class SelectedOrderStateAccepted extends SelectedOrderState {
         }
     }
     
+    /**
+     * Change the selected order's state to "shipped" if the order's type is 
+     * "DELIVERY_NORIDER".
+     * Moreover, update the view by:
+     * <ol>
+     *   <li> Deleting the row associated to the selected order, 
+     *   because the table is actually displaying the "accepted" order but 
+     *   the order state has been changed to "shipped" </li>
+     *   <li> Disabling all buttons </li>
+     *   <li> Clearing the selected order </li>
+     * </ol>
+     */
     @Override
     public void ship(){
         OrderType orderType = selectedOrder.getOrderType();
@@ -53,6 +75,18 @@ public class SelectedOrderStateAccepted extends SelectedOrderState {
         updateView();
     }
     
+    /**
+     * Change the selected order's state to "completed" if the order's type is 
+     * "TAKE_AWAY".
+     * Moreover, update the view by:
+     * <ol>
+     *   <li> Deleting the row associated to the selected order, 
+     *   because the table is actually displaying the "accepted" order but 
+     *   the order state has been changed to "completed" </li>
+     *   <li> Disabling all buttons </li>
+     *   <li> Clearing the selected order </li>
+     * </ol>
+     */
     @Override
     public void complete(){
         OrderType orderType = selectedOrder.getOrderType();

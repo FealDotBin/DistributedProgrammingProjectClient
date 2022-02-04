@@ -5,7 +5,9 @@
 package com.mycompany.riderclient.model;
 
 /**
- *
+ * It's a representation of the Rider.
+ * It contains all the personal informations that a rider can retrieve from the server 
+ * via API calls.
  * @author Amos
  */
 public class RiderEntity {
@@ -92,8 +94,6 @@ public class RiderEntity {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-
-
 
     public String getVehicleType() {
         return vehicleType;

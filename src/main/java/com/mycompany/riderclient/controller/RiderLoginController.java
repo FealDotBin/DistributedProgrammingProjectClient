@@ -4,6 +4,7 @@
  */
 package com.mycompany.riderclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.Credentials;
@@ -16,6 +17,7 @@ import com.mycompany.riderclient.view.RiderLoginView;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -28,7 +30,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * This class represents the controller of the view RiderLoginView. 
+ * Allows to control and manage all the GUI components.
+ * It also manages the logic needed to call the APIs asynchronously, based on the user request on the GUI.
+ * 
+ * The controller allows you to perform the following operations:
+ * - login with username and password
+ * - if the login is successfull, move on to the next view (RiderHomeView) 
+ * - open the sign-up form
  * @author Amos
  */
 public class RiderLoginController {
@@ -44,29 +53,48 @@ public class RiderLoginController {
     private Long riderId;
     private Navigator navigator;
     
-    
+    /**
+     * * Initialize:
+      * - the view and its components;
+      * - the retrofitBuilder and the serviceApi in order to invoke the API calls.
+      * - the Navigator to switch between views
+      * - attach listeners to buttons in order to manage events
+      * 
+     */
     public RiderLoginController(){
+        
+        // initialize view
         loginView = new RiderLoginView();
-        loginView.setVisible(true);
+        loginView.setVisible(true);   
         
-        
+        // inizialize components
         usernameTextField = loginView.getUsernameTextField();
         passwordTextField = loginView.getPasswordTextField();
         logInBtn = loginView.getLogInBtn();
         signUpBtn = loginView.getSignUpBtn();
         
-        
+        // initialize retrofitBuilder and serviceApi
         retroBuild = new RetrofitBuilder();
         serviceApi = retroBuild.getRetrofit().create(ServiceApi.class);
+        
+        // initialize Navigator to switch between views
         navigator = Navigator.getInstance();
         
-        
+        // add listeners to button
         logInBtn.addMouseListener(loginInAction);
         signUpBtn.addMouseListener(signUpAction);
         
         
     }
     
+    /**
+     * It's a mouse listener that allows you to login on the app, using 
+     * credentials. If the login is successfull, it calls a navigator method in 
+     * order to pass the control to the next view 
+     * controlled by RiderHomeController
+     * 
+     * The method calls an asynchronous API to login. 
+     */
     private MouseAdapter loginInAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
@@ -90,14 +118,11 @@ public class RiderLoginController {
                                 JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
+            //API CALL
+            password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
             Credentials credentials = new Credentials(username, password);
-            
-            // send call to API
             Call<Long> loginCall = serviceApi.login(credentials);
-            
-            
-            super.mouseClicked(mouseEvent);
-            
             
             loginCall.enqueue(new Callback<Long>(){
                 
@@ -106,10 +131,8 @@ public class RiderLoginController {
 
                     if(response.isSuccessful()){ // status code tra 200-299
                         riderId = response.body();
-                        //GESTIRE NAVIGATOR
                         System.out.println("Login effettuato correttamente, id: "+riderId);
                        navigator.fromLogInToHome(RiderLoginController.this);
-                        //navigator per andare all'home
                      
                     }
                     else{ // in caso di errori
@@ -137,6 +160,11 @@ public class RiderLoginController {
         }
     };
     
+    
+    /**
+     * It's an action listener that calls a navigator method in order to to pass 
+     * the control to the next view, controlled by SignUpController
+     */
     private MouseAdapter signUpAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
@@ -147,8 +175,10 @@ public class RiderLoginController {
          
     };
     
-    
-      public void disposeView(){
+    /**
+     * Dispose the controlled view
+     */
+    public void disposeView(){
         loginView.dispose();
     }
 
@@ -156,18 +186,5 @@ public class RiderLoginController {
         return riderId;
     }
     
-      
-      
-    
-    
-    
-     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                RiderLoginController c = new RiderLoginController();
-            }
-        });
-    }
     
 }

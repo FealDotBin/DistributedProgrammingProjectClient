@@ -32,7 +32,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * Represents the controller associated to MenuManagerView class.
+ * It is responsible of taking the user's input to add, delete or modify
+ * the menu's dishes.
+ * It is also responsible of showing the dishes contained into the menu.
+ * Whenever it's necessary to send or retrieve datas to/from server, the
+ * API endpoint (ServiceApi class) is being used.
  * @author aferr
  */
 public class MenuManagerController {
@@ -57,6 +62,12 @@ public class MenuManagerController {
     private DishEntity selectedDish;
     private int selectedDishIndex;
     
+    /**
+     * Initialize both the view and the controller by disabling the "update" and
+     * "delete" buttons, showing all menu's content on the table and attaching
+     * all necessary listeners to the buttons.
+     * @param providerId the provider's id
+     */
     public MenuManagerController(Long providerId){
         this.providerId = providerId;
         
@@ -88,7 +99,7 @@ public class MenuManagerController {
         disableButtons();
         
         // fetch menu from server and show it on table
-        fetchMenuFromServer();
+        getMenuCall();
         
         // attach listeners
         attachListenerOnAddBtn();
@@ -100,6 +111,299 @@ public class MenuManagerController {
         attachListenerOnLogOutBtn();
     }
     
+    /**
+     * Destroy the homeView instance and all its components.
+     */
+    public void disposeView(){
+        menuManagerView.dispose();
+    }
+    
+    /**
+     * Getter for providerId
+     * @return the provider's id
+     */
+    public Long getProviderId(){
+        return providerId;
+    }
+    
+    /**
+     * Shows a pop up to inform the user that the informations that is typing are not correct
+     */ 
+    private void fieldErrorPane(String errorMessage){
+        JOptionPane.showMessageDialog(menuManagerView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    /**
+     * Clear dish's name text field, dish's price text field, dish's description
+     * text area and dish's ingredients text area
+     */
+    private void clearAllFields(){
+        dishNameTextField.clear();
+        priceTextField.clear();
+        descriptionTextArea.setText("");
+        ingredientsTextArea.setText("");
+    }
+    
+    /**
+     * Disable delete and update buttons
+     */
+    private void disableButtons(){
+        deleteBtn.setEnabled(false);
+        updateBtn.setEnabled(false);
+    }
+    
+    /**
+     * Enable delete and update buttons
+     */
+    private void enableButtons(){
+        deleteBtn.setEnabled(true);
+        updateBtn.setEnabled(true);
+    }
+    
+    /**
+     * Show all the dishes contained into the menu on the menuTable.
+     * For each dish, its name, price, description and ingredients are displayed.
+     */
+    private void addMenuOnTable(){
+        List<DishEntity> dishList = menu.getDishEntities();
+        if(dishList != null){
+            for(DishEntity dish : dishList){
+                addDishOnTable(dish);
+            }
+        }
+    }
+    
+    /**
+     * Show a dish's name, price, description and ingredients on the menuTable.
+     */
+    private void addDishOnTable(DishEntity dish){
+        NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
+        Object[] dishRow = new Object[4];
+        dishRow[0] = dish.getName();
+        dishRow[1] = dish.getDescription();
+        dishRow[2] = dish.getIngredients();
+        dishRow[3] = dish.getPrice();
+        menuTableModel.addRow(dishRow);
+    }
+    
+    /**
+     * Update the dish at the given row with the given dish's infos.
+     * @param rowIndex the menuTable's row number associated to the 
+     * dish that has to be updated
+     * @param dish the updated dish whose infos have to be displayed on the table
+     */
+    private void updateDishOnTable(int rowIndex, DishEntity dish){
+        NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
+        menuTableModel.removeRow(selectedDishIndex);
+        Object[] dishRow = new Object[4];
+        dishRow[0] = dish.getName();
+        dishRow[1] = dish.getDescription();
+        dishRow[2] = dish.getIngredients();
+        dishRow[3] = dish.getPrice();
+        menuTableModel.insertRow(rowIndex, dishRow);
+    }
+    
+    /**
+     * Send a GET request to the server to get the provider's menu.
+     * If the response is successful, the provider's menu is shown on
+     * the menuTable;
+     * otherwise, an error message is shown to the user.
+     */
+    private void getMenuCall(){
+        Call<MenuEntity> getMenuCall = serviceApi.getMenu(providerId);
+        getMenuCall.enqueue(new Callback<MenuEntity>(){
+            @Override
+            public void onResponse(Call<MenuEntity> call, Response<MenuEntity> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    menu = (MenuEntity) response.body();
+                    addMenuOnTable();
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MenuEntity> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });   
+    }
+    
+    /**
+     * Send a POST request to the server to create a new dish.
+     * If the response is successful, the dish has been created successfully
+     * and it's displayed on the menuTable;
+     * otherwise, an error message is shown to the user.
+     */
+    private void addDishCall(DishEntity dish){
+        Call<DishEntity> addDishCall = serviceApi.addDish(providerId, dish);
+        addDishCall.enqueue(new Callback<DishEntity>(){
+            @Override
+            public void onResponse(Call<DishEntity> call, Response<DishEntity> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+                    DishEntity addedDish = (DishEntity) response.body();
+                    menu.getDishEntities().add(addedDish);
+                    JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                "Dish added successfully",
+                                "ERROR",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    // update view
+                    clearAllFields();
+                    addDishOnTable(addedDish);
+                    disableButtons();
+
+                    // clear selectedDish infos
+                    selectedDishIndex = -1;
+                    selectedDish = null;
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DishEntity> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    /**
+     * Send a DELETE request to the server to delete a dish.
+     * If the response is successful, the dish has been deleted successfully
+     * and it's removed from the menuTable;
+     * otherwise, an error message is shown to the user.
+     */
+    private void deleteDishCall(){
+        Call<Void> deleteDishCall = serviceApi.deleteDish(providerId, selectedDish.getId());
+        deleteDishCall.enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+
+                    menu.getDishEntities().remove(selectedDishIndex);
+                    JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                "Dish removed successfully",
+                                "ERROR",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    // update view
+                    clearAllFields();
+                    NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
+                    menuTableModel.removeRow(selectedDishIndex);
+                    disableButtons();
+
+                    // clear selected dish infos
+                    selectedDishIndex = -1;
+                    selectedDish = null;
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    /**
+     * Send a PUT request to the server to updated a dish.
+     * If the response is successful, the dish has been updated successfully
+     * and it's shown up to date on the menuTable;
+     * otherwise, an error message is shown to the user.
+     */
+    private void updateDishCall(DishEntity updatedDish){
+        Call<DishEntity> updateDishCall = serviceApi.updateDish(providerId, updatedDish);
+        updateDishCall.enqueue(new Callback<DishEntity>(){
+            @Override
+            public void onResponse(Call<DishEntity> call, Response<DishEntity> response) {
+
+                if(response.isSuccessful()){ // status code tra 200-299
+
+                    selectedDish.setName(updatedDish.getName());
+                    selectedDish.setDescription(updatedDish.getDescription());
+                    selectedDish.setIngredients(updatedDish.getIngredients());
+                    selectedDish.setPrice(updatedDish.getPrice());
+                    JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                "Dish updated successfully",
+                                "ERROR",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    // update view
+                    clearAllFields();
+                    updateDishOnTable(selectedDishIndex, selectedDish);
+                    disableButtons();
+
+                    // clear selectedDish infos
+                    selectedDishIndex = -1;
+                    selectedDish = null;
+                }
+                else{ // in caso di errori
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(
+                                menuManagerView,
+                                jObjError.get("message"),
+                                "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DishEntity> call, Throwable t) {
+                // Log error here since request failed
+                  System.out.println("failed");
+            }
+        });
+    }
+    
+    /**
+     * Attach a ListSelectionListener to menuTable in order to 
+     * load the dish's name text field, dish's price text field,
+     * dish's description text area and dish's ingredients text area
+     * with the selected dish's infos, whenever a dish is selected.
+     */
     private void attachListenerOnMenuTable(){
         menuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             
@@ -130,48 +434,11 @@ public class MenuManagerController {
         });
     }
     
-    private void fetchMenuFromServer(){
-        Call<MenuEntity> getMenuCall = serviceApi.getMenu(providerId);
-        getMenuCall.enqueue(new Callback<MenuEntity>(){
-            @Override
-            public void onResponse(Call<MenuEntity> call, Response<MenuEntity> response) {
-
-                if(response.isSuccessful()){ // status code tra 200-299
-                    menu = (MenuEntity) response.body();
-                    addMenuOnTable();
-                }
-                else{ // in caso di errori
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        JOptionPane.showMessageDialog(
-                                menuManagerView,
-                                jObjError.get("message"),
-                                "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                    } catch (IOException ex) {
-                        Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MenuEntity> call, Throwable t) {
-                // Log error here since request failed
-                  System.out.println("failed");
-            }
-        });
-        
-    }
-     
-    private void addMenuOnTable(){
-        List<DishEntity> dishList = menu.getDishEntities();
-        if(dishList != null){
-            for(DishEntity dish : dishList){
-                addDishOnTable(dish);
-            }
-        }
-    }
-    
+    /**
+     * Attach an ActionListener to addButton in order to 
+     * add a new dish containing the infos provided by the user
+     * through the text fields and text areas.
+     */
     private void attachListenerOnAddBtn(){
         addBtn.addActionListener(event -> {
             String dishName = dishNameTextField.getText(true).trim();
@@ -211,101 +478,25 @@ public class MenuManagerController {
             
             // send dish to server
             DishEntity dish = new DishEntity(dishName, description, ingredientsList, priceDouble);
-            Call<DishEntity> addDishCall = serviceApi.addDish(providerId, dish);
-            addDishCall.enqueue(new Callback<DishEntity>(){
-                @Override
-                public void onResponse(Call<DishEntity> call, Response<DishEntity> response) {
-                    
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        DishEntity addedDish = (DishEntity) response.body();
-                        menu.getDishEntities().add(addedDish);
-                        JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    "Dish added successfully",
-                                    "ERROR",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        // update view
-                        clearAllFields();
-                        addDishOnTable(addedDish);
-                        disableButtons();
-                        
-                        // clear selectedDish infos
-                        selectedDishIndex = -1;
-                        selectedDish = null;
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    jObjError.get("message"),
-                                    "ERROR",
-                                    JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<DishEntity> call, Throwable t) {
-                    // Log error here since request failed
-                      System.out.println("failed");
-                }
-            });
+            addDishCall(dish);
         });
     }
     
+    /**
+     * Attach an ActionListener to deleteBtn in order to 
+     * delete a dish selected by the user.
+     */
     private void attachListenerOnDeleteBtn(){
         deleteBtn.addActionListener(event -> {
-            
-            // send delete request to server
-            Call<Void> deleteDishCall = serviceApi.deleteDish(providerId, selectedDish.getId());
-            deleteDishCall.enqueue(new Callback<Void>(){
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        
-                        menu.getDishEntities().remove(selectedDishIndex);
-                        JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    "Dish removed successfully",
-                                    "ERROR",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        // update view
-                        clearAllFields();
-                        NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
-                        menuTableModel.removeRow(selectedDishIndex);
-                        disableButtons();
-                        
-                        // clear selected dish infos
-                        selectedDishIndex = -1;
-                        selectedDish = null;
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    jObjError.get("message"),
-                                    "ERROR",
-                                    JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    // Log error here since request failed
-                      System.out.println("failed");
-                }
-            });
+            deleteDishCall();
         });
     }
     
+    /**
+     * Attach an ActionListener to updateBtn in order to 
+     * update the selected dish containing the infos provided by the user
+     * through the text fields and text areas.
+     */
     private void attachListenerOnUpdateBtn(){
         updateBtn.addActionListener(event -> {
             
@@ -348,121 +539,37 @@ public class MenuManagerController {
             // send update request to server
             DishEntity updatedDish = new DishEntity(selectedDish.getId(), 
                     dishName, description, ingredientsList, priceDouble);
-            Call<DishEntity> updateDishCall = serviceApi.updateDish(providerId, updatedDish);
-            updateDishCall.enqueue(new Callback<DishEntity>(){
-                @Override
-                public void onResponse(Call<DishEntity> call, Response<DishEntity> response) {
-                    
-                    if(response.isSuccessful()){ // status code tra 200-299
-                        
-                        selectedDish.setName(updatedDish.getName());
-                        selectedDish.setDescription(updatedDish.getDescription());
-                        selectedDish.setIngredients(updatedDish.getIngredients());
-                        selectedDish.setPrice(updatedDish.getPrice());
-                        JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    "Dish updated successfully",
-                                    "ERROR",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        // update view
-                        clearAllFields();
-                        updateDishOnTable(selectedDishIndex, selectedDish);
-                        disableButtons();
-                        
-                        // clear selectedDish infos
-                        selectedDishIndex = -1;
-                        selectedDish = null;
-                    }
-                    else{ // in caso di errori
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JOptionPane.showMessageDialog(
-                                    menuManagerView,
-                                    jObjError.get("message"),
-                                    "ERROR",
-                                    JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<DishEntity> call, Throwable t) {
-                    // Log error here since request failed
-                      System.out.println("failed");
-                }
-            });
+            updateDishCall(updatedDish);
         });
     }
     
+    /**
+     * Attach an ActionListener to homeButton in order to switch to
+     * the "home" window, when the button is pressed.
+     */
     private void attachListenerOnHomeBtn(){
         homeBtn.addActionListener(event -> {
             navigator.fromMenuManagerToHome(MenuManagerController.this);
         });
     }
     
+    /**
+     * Attach an ActionListener to updateAccountButton in order to switch to
+     * the "update account" window, when the button is pressed.
+     */
     private void attachListenerOnUpdateAccountBtn(){
         updateAccountBtn.addActionListener(event -> {
             navigator.fromMenuManagerToUpdateAccount(MenuManagerController.this);
         });
     }
     
+    /**
+     * Attach an ActionListener to logOutButton in order to switch to
+     * the "log in" window, when the button is pressed.
+     */
     private void attachListenerOnLogOutBtn(){
         logOutBtn.addActionListener(event -> {
             navigator.fromMenuManagerToLogIn(MenuManagerController.this);
         });
     }
-    
-    private void addDishOnTable(DishEntity dish){
-        NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
-        Object[] dishRow = new Object[4];
-        dishRow[0] = dish.getName();
-        dishRow[1] = dish.getDescription();
-        dishRow[2] = dish.getIngredients();
-        dishRow[3] = dish.getPrice();
-        menuTableModel.addRow(dishRow);
-    }
-    
-    private void updateDishOnTable(int rowIndex, DishEntity dish){
-        NoEditableTableModel menuTableModel = (NoEditableTableModel) menuTable.getModel();
-        menuTableModel.removeRow(selectedDishIndex);
-        Object[] dishRow = new Object[4];
-        dishRow[0] = dish.getName();
-        dishRow[1] = dish.getDescription();
-        dishRow[2] = dish.getIngredients();
-        dishRow[3] = dish.getPrice();
-        menuTableModel.insertRow(rowIndex, dishRow);
-    }
-    
-    //Shows a pop up to inform the user that the informations that is typing are not correct
-    private void fieldErrorPane(String errorMessage){
-        JOptionPane.showMessageDialog(menuManagerView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void clearAllFields(){
-        dishNameTextField.clear();
-        priceTextField.clear();
-        descriptionTextArea.setText("");
-        ingredientsTextArea.setText("");
-    }
-    
-    private void disableButtons(){
-        deleteBtn.setEnabled(false);
-        updateBtn.setEnabled(false);
-    }
-    
-    private void enableButtons(){
-        deleteBtn.setEnabled(true);
-        updateBtn.setEnabled(true);
-    }
-    
-    public void disposeView(){
-        menuManagerView.dispose();
-    }
-    
-    public Long getProviderId(){
-        return providerId;
-    }
-    
 }
