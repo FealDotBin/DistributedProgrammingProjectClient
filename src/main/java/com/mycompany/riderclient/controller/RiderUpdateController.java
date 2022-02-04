@@ -4,6 +4,7 @@
  */
 package com.mycompany.riderclient.controller;
 
+import com.google.common.hash.Hashing;
 import com.mycompany.common.api.RetrofitBuilder;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.riderclient.api.ServiceApi;
@@ -16,6 +17,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +34,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * This class represents the controller of the view RiderUpdateView. 
+ * Allows to control and manage all the GUI components.
+ * It also manages the logic needed to call the APIs asynchronously, based on the user request on the GUI.
+ * 
+ * The controller, given the rider ID, allows you to perform the following operations:
+ * - update your profile, by entering all the necessary personal information
+ *  
  * @author Amos
  */
 public class RiderUpdateController {
@@ -56,18 +64,15 @@ public class RiderUpdateController {
     private Navigator navigator;
     
     private Long riderId;
-//
-//     public synchronized static RiderUpdateController getInstance(Long riderId) {
-//            if (updateView == null) {
-//
-//                instance = new RiderUpdateController(riderId);
-//   
-//            }
-//            
-//            return instance;
-//        }
-    
-    
+    /**
+      * Initialize:
+      * - the view and its components;
+      * - the retrofitBuilder and the serviceApi in order to invoke the API calls.
+      * - the Navigator to switch between views
+      * - attach listeners to buttons in order to manage events
+      * 
+     * @param riderId is the rider ID that uniquely identifies the rider 
+     */
     public RiderUpdateController(Long riderId){
         
       
@@ -93,17 +98,21 @@ public class RiderUpdateController {
         retroBuild = new RetrofitBuilder();
         apiService = retroBuild.getRetrofit().create(ServiceApi.class);
         
-        
-        updateBtn.addMouseListener(signUpAction);
+         // add listeners to button
+        updateBtn.addMouseListener(updateAction);
         
         fillField();
         
     }
     
-    
+    /**
+     * This method allows to fill text fields;
+     * The method calls an asynchronous api in order to get the rider info
+     */
     private void fillField(){
         
-                //Fill fields with customer actual information saved on server
+        //API CALL
+        //Fill fields with customer current information saved on server
         Call<RiderEntity> call = apiService.getMyInfo(this.riderId);
         call.enqueue(new Callback<RiderEntity>() {
             @Override
@@ -157,22 +166,30 @@ public class RiderUpdateController {
 
     
     
-    
-    private MouseAdapter signUpAction = new MouseAdapter() {
+    /**
+     * It's a mouse listener that allows you to update the rider profile, given all 
+     * the necessary personal information.
+     * 
+     * The method calls an asynchronous API to update. 
+     */
+    private MouseAdapter updateAction = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             
+                // Getting all the info
+                
                String username = usernameField.getText().trim();
                 if (username.isBlank()) {
                     fieldErrorPane("Username cannot be blank");
                     return;
                 }
-
+                
+                
                 String password = passwordField.getText().trim();
-//                if (password.isBlank()) {
-//                    fieldErrorPane("Password cannot be blank");
-//                    return;
-//                }
+                if(!password.isBlank()){
+                    password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+                }
+
 
                 String name = nameField.getText().trim();
                 if (name.isBlank()) {
@@ -224,7 +241,7 @@ public class RiderUpdateController {
                     return;
                 }
                 
-                //Request to server for creating a new Customer
+                //API CALL
                 
                 RiderEntity rider = new RiderEntity(riderId,username, password, name, surname, formattedBirthDate , iban, telephoneNumber, vehicle);
                 Call<RiderEntity> call2 = apiService.updateRider(rider);
@@ -236,12 +253,7 @@ public class RiderUpdateController {
 
                         if (response.isSuccessful()) { // status code tra 200-299
                            JOptionPane.showMessageDialog(updateView, "ACCOUNT INFORMATIONS ARE BEEN UPTATED", "Sign up success", JOptionPane.INFORMATION_MESSAGE);
-                           
-                           System.out.println("Gestire navigator");
-                           // GESTIRE NAVIGATOR 
-                           //If sign up procedure is correct change current view with log in one
-                           //   navigator.fromSignUpToLogIn(RiderUpdateController.this); 
-                
+                                           
                 
                         } else { // if server error occurs
                             try {
@@ -276,38 +288,12 @@ public class RiderUpdateController {
         return updateView;
     }
             
-
-
-
-    
- 
-    
-      //Shows a pop up to inform the user that the informations that is typing are not correct
-    
-//       private MouseAdapter loginAction = new MouseAdapter() {
-//        @Override
-//        public void mouseClicked(MouseEvent mouseEvent) {
-//            
-//              navigator.fromSignUpToLogIn(RiderUpdateController.this);
-//        }
-//           
-//    };
         
     public void disposeView(){
         updateView.dispose();
     }
     
-    
-     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                RiderUpdateController c = new RiderUpdateController(30L);
-            }
-        });
-    }
-    
-               
+   
                
 }
 
