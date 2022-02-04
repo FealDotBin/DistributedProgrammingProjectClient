@@ -32,7 +32,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *
+ * Represents the controller associated to UpdateView class.
+ * It is responsible of taking the user's input to update the provider's infos.
+ * Whenever it's necessary to send or retrieve datas to/from server, the
+ * API endpoint (ServiceApi class) is being used.
  * @author aferr
  */
 public class UpdateController {
@@ -61,6 +64,11 @@ public class UpdateController {
     private RetrofitBuilder retroBuild;
     private ServiceApi serviceApi;
     
+    /**
+     * Initialize both the view and the controller by filling all the input fields
+     * (except the password) with the provider's infos and attaching all 
+     * necessary listeners to the buttons.
+     */
     public UpdateController(Long providerId){
         this.providerId = providerId;
         
@@ -104,6 +112,59 @@ public class UpdateController {
         attachListenerToLogOutBtn();
     }
     
+    /**
+     * Getter for providerId
+     * @return the provider's id
+     */
+    public Long getProviderId(){
+        return providerId;
+    }
+    
+    /**
+     * Destroy the homeView instance and all its components.
+     */
+    public void disposeView(){
+        updateView.dispose();
+    }
+    
+    /**
+     * Shows a pop up to inform the user that the informations that is typing are not correct
+     */ 
+    private void fieldErrorPane(String errorMessage) {
+        JOptionPane.showMessageDialog(updateView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    /**
+     * Fill all the input fields with the provider's infos
+     */
+    private void setMyInfoOnView(){
+        usernameTextField.setText(provider.getUsername());
+        ibanTextField.setText(provider.getIban());
+        nameTextField.setText(provider.getName());
+        surnameTextField.setText(provider.getSurname());
+        telephoneNumberTextField.setText(provider.getTelephoneNumber());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date birthDate = null;
+        try {
+            birthDate = formatter.parse(provider.getBirthDate());
+        } catch (ParseException ex) {
+            Logger.getLogger(CustomerUpdateController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        birthDateChooser.setDate(birthDate);
+        addressTextField.setText(provider.getAddress());
+        providerNameTextField.setText(provider.getProviderName());
+        cuisineTextField.setText(provider.getCuisine());
+        takeAwayCheckBox.setSelected(provider.getDoTakeAway());
+        ownRidersCheckBox.setSelected(provider.getHasOwnRiders());
+        deliveringCheckBox.setSelected(provider.getDoDelivering());
+    }
+    
+    /**
+     * Send a GET request to the server to get the provider's account.
+     * If the response is successful, the provider's account is successfully 
+     * retrieved and his infos are displayed on the input fields;
+     * otherwise, an error message is shown to the user.
+     */
     private void getMyInfoCall(){
         Call<ProviderEntity> getMyInfoCall = serviceApi.getMyInfo(providerId);
         getMyInfoCall.enqueue(new Callback<ProviderEntity>(){
@@ -136,28 +197,53 @@ public class UpdateController {
         });
     }
     
-    private void setMyInfoOnView(){
-        usernameTextField.setText(provider.getUsername());
-        ibanTextField.setText(provider.getIban());
-        nameTextField.setText(provider.getName());
-        surnameTextField.setText(provider.getSurname());
-        telephoneNumberTextField.setText(provider.getTelephoneNumber());
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date birthDate = null;
-        try {
-            birthDate = formatter.parse(provider.getBirthDate());
-        } catch (ParseException ex) {
-            Logger.getLogger(CustomerUpdateController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        birthDateChooser.setDate(birthDate);
-        addressTextField.setText(provider.getAddress());
-        providerNameTextField.setText(provider.getProviderName());
-        cuisineTextField.setText(provider.getCuisine());
-        takeAwayCheckBox.setSelected(provider.getDoTakeAway());
-        ownRidersCheckBox.setSelected(provider.getHasOwnRiders());
-        deliveringCheckBox.setSelected(provider.getDoDelivering());
+    /**
+     * Send a PUT request to the server to update the provider's account.
+     * If the response is successful, the provider's account has been updated
+     * successfully;
+     * otherwise, an error message is shown to the user.
+     */
+    private void putProviderCall(ProviderEntity updatedProvider){
+        Call<ProviderEntity> putProviderCall = serviceApi.putProvider(updatedProvider);
+        putProviderCall.enqueue(new Callback<ProviderEntity>(){
+            @Override
+            public void onResponse(Call<ProviderEntity> call, Response<ProviderEntity> response) {
+
+                if (response.isSuccessful()) { // status code tra 200-299
+                    JOptionPane.showMessageDialog(updateView,
+                            "ACCOUNT INFORMATIONS ARE BEEN UPTATED",
+                            "Update success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    provider = updatedProvider;
+                    passwordTextField.setText("");
+                } 
+                else { // if server error occurs
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        JOptionPane.showMessageDialog(updateView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        Logger.getLogger(UpdateController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProviderEntity> call, Throwable t) {
+                // Log error here since request failed
+                JOptionPane.showMessageDialog(updateView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
+        });
     }
     
+    /**
+     * Attach an ActionListener to updateButton in order to update the Provider
+     * account using the infos provided by the user through the input fields, 
+     * whenever the button is pressed.
+     */
     private void attachListenerToUpdateBtn(){
         updateBtn.addActionListener(event -> {
             String username = usernameTextField.getText().trim();
@@ -247,70 +333,33 @@ public class UpdateController {
         });
     }
     
-    private void putProviderCall(ProviderEntity updatedProvider){
-        Call<ProviderEntity> putProviderCall = serviceApi.putProvider(updatedProvider);
-        putProviderCall.enqueue(new Callback<ProviderEntity>(){
-            @Override
-            public void onResponse(Call<ProviderEntity> call, Response<ProviderEntity> response) {
-
-                if (response.isSuccessful()) { // status code tra 200-299
-                    JOptionPane.showMessageDialog(updateView,
-                            "ACCOUNT INFORMATIONS ARE BEEN UPTATED",
-                            "Update success",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    provider = updatedProvider;
-                    passwordTextField.setText("");
-                } 
-                else { // if server error occurs
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        JOptionPane.showMessageDialog(updateView, jObjError.get("message"), "Server error", JOptionPane.ERROR_MESSAGE);
-                    } catch (IOException ex) {
-                        Logger.getLogger(UpdateController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProviderEntity> call, Throwable t) {
-                // Log error here since request failed
-                JOptionPane.showMessageDialog(updateView,
-                        "Contact you system administrator",
-                        "CRITICAL ERROR",
-                        JOptionPane.ERROR_MESSAGE);
-
-            }
-        });
-    }
-    
+    /**
+     * Attach an ActionListener to manageMenuButton in order to switch to
+     * the "manage menu" window, when the button is pressed.
+     */
     private void attachListenerToManageMenuBtn(){
         manageMenuBtn.addActionListener(event -> {
             nav.fromUpdateToMenuManager(UpdateController.this);
         });
     }
     
+    /**
+     * Attach an ActionListener to homeButton in order to switch to
+     * the "home" window, when the button is pressed.
+     */
     private void attachListenerToHomeBtn(){
         homeBtn.addActionListener(event -> {
             nav.fromUpdateToHome(UpdateController.this);
         });
     }
     
+    /**
+     * Attach an ActionListener to logOutButton in order to switch to
+     * the "login" window, when the button is pressed.
+     */
     private void attachListenerToLogOutBtn(){
         logOutBtn.addActionListener(event -> {
             nav.fromUpdateToLogIn(UpdateController.this);
         });
     }
-    
-    private void fieldErrorPane(String errorMessage) {
-        JOptionPane.showMessageDialog(updateView, errorMessage, "Field error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    public Long getProviderId(){
-        return providerId;
-    }
-    
-    public void disposeView(){
-        updateView.dispose();
-    }
-
 }

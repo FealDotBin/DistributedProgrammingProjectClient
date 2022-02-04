@@ -13,15 +13,25 @@ import com.mycompany.providerclient.view.HomeView;
 import javax.swing.JButton;
 
 /**
- *
+ * Represents the state of a shipped order.
  * @author aferr
  */
 public class SelectedOrderStateShipped extends SelectedOrderState {
     
+    /**
+     * Initialize the SelectedOrderStateShipped
+     * @param homeView an instance of HomeView
+     * @param selectedOrder the order currently selected by the user from the table
+     * @param selectedOrderIndex the row of the order currently selected by the user
+     */
     public SelectedOrderStateShipped(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
+    /**
+     * Enable and disable the "accept", "ship", "complete" and "refuse" buttons
+     * according to the order's type.
+     */
     @Override
     public void updateButton(){
         OrderType orderType = selectedOrder.getOrderType();
@@ -40,6 +50,18 @@ public class SelectedOrderStateShipped extends SelectedOrderState {
         }
     }
     
+    /**
+     * Change the selected order's state to "COMPLETED" if the order's type is 
+     * "DELIVERY_NORIDER".
+     * Moreover, update the view by:
+     * <ol>
+     *   <li> Deleting the row associated to the selected order, 
+     *   because the table is actually displaying the "shipped" order but 
+     *   the order state has been changed to "completed" </li>
+     *   <li> Disabling all buttons </li>
+     *   <li> Clearing the selected order </li>
+     * </ol>
+     */
     @Override
     public void complete(){
         OrderType orderType = selectedOrder.getOrderType();

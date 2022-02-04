@@ -13,7 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 
 /**
- *
+ * Represents the state of the order currently selected by the user.
+ * It has to be extended by a subclass to specify a concrete order's state
+ * and some of its methods have to be overridden in order to 
+ * reflect the right behaviour of the latter according to the former.
  * @author aferr
  */
 public abstract class SelectedOrderState {
@@ -26,10 +29,20 @@ public abstract class SelectedOrderState {
     protected JButton completeBtn;
     protected JButton refuseBtn;
     
+    /**
+     * Initialize the SelectedOrderState
+     * @param homeView an instance of HomeView
+     */
     public SelectedOrderState(HomeView homeView){
         this.homeView = homeView;
     }
     
+    /**
+     * Initialize the SelectedOrderState
+     * @param homeView an instance of HomeView
+     * @param selectedOrder the order currently selected by the user from the table
+     * @param selectedOrderIndex the row of the order currently selected by the user
+     */
     public SelectedOrderState(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         this.homeView = homeView;
         this.selectedOrder = selectedOrder;
@@ -40,6 +53,10 @@ public abstract class SelectedOrderState {
         refuseBtn = homeView.getRefuseBtn();
     }
     
+    /**
+     * Remove the selected order from the table, disable all the buttons
+     * and clear the selectedOrderTable
+     */
     protected void updateView(){
         // update allOrdersTable
         JTable allOrdersTable = homeView.getAllOrdersTable();
@@ -58,15 +75,33 @@ public abstract class SelectedOrderState {
         selectedOrderTableModel.setRowCount(0);
     }
     
+    /**
+     * This method does nothing.
+     * Subclasses have to @Override it if they want to provide an implementation.
+     */
     public void updateButton(){ }
     
+    /**
+     * This method does nothing.
+     * Subclasses have to @Override it if they want to provide an implementation.
+     */
     public void accept() { }
     
+    /**
+     * This method does nothing.
+     * Subclasses have to @Override it if they want to provide an implementation.
+     */
     public void refuse() { }
     
+    /**
+     * This method does nothing.
+     * Subclasses have to @Override it if they want to provide an implementation.
+     */
     public void ship() { }
     
+    /**
+     * This method does nothing.
+     * Subclasses have to @Override it if they want to provide an implementation.
+     */
     public void complete() { }
-    
-    
 }

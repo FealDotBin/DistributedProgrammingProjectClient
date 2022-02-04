@@ -39,6 +39,10 @@ import retrofit2.Response;
 /**
  *
  * @author CATELLO
+ * This class represents MoreOrderInformation GUI controller.
+ * This class is responsible for capturing input from the user and updating the view.
+ * It also makes calls to the restfull server when needed:
+ *  -To decide which controller to invoke after the home button has been pressed
  */
 public class OrderMoreInformationController {
 
@@ -67,13 +71,19 @@ public class OrderMoreInformationController {
     private OrderDto selectedOrder;
     private OrderDto currentOrder;
 
+    /**
+     * Initialize view's obtaing customer past selected order information.
+     * Initialize dish table with dishes selected in the past by the customer
+     * Add listeners to other buttons to navigate from this controller to the next
+     * @param customerId represents the logged customer's id
+     * @param selectedOrder represents the order which you want to view more information
+     */
     public OrderMoreInformationController(Long customerId, OrderDto selectedOrder) {
         this.customerId = customerId;
         this.selectedOrder = selectedOrder;
         //View creation
         moreInformationView = new MoreOrderInformation();
         //Component getter
-
         updateButton = moreInformationView.getAccountBtn();
         logOutButton = moreInformationView.getLogOutBtn();
         balanceButton = moreInformationView.getBalanceBtn();
@@ -129,38 +139,8 @@ public class OrderMoreInformationController {
         });
 
         //Set home button text and his action listener based on the presence of current order
-        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
-        currentOrderCall.enqueue(new Callback<OrderDto>() {
-            @Override
-            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                if (response.isSuccessful()) {
-
-                    currentOrder = response.body();
-                    homeButton.setText("Current Order");
-                    homeButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            changeToHome();
-                        }
-
-                    });
-                } else {
-                    homeButton.setText("Create Order");
-                    nav.fromMoreInfoToProviderSelection(OrderMoreInformationController.this);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
-                JOptionPane.showMessageDialog(moreInformationView,
-                        "Contact you system administrator",
-                        "CRITICAL ERROR",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-
-        });
-
+        addHomeButtonLogic();
+        
         //Fill dish table
         List<DishOrderAssociation> associations = selectedOrder.getDishOrderAssociations();
         DefaultTableModel dishTableModel = (DefaultTableModel) dishTable.getModel();
@@ -174,6 +154,7 @@ public class OrderMoreInformationController {
             row[2] = ass.getQuantity();
             dishTableModel.addRow(row);
         }
+        
         //fill information field about selected order
         Double orderPrice = selectedOrder.getPrice();
         totalField.setText(orderPrice.toString());
@@ -193,25 +174,92 @@ public class OrderMoreInformationController {
         //When a dish in the table are clicked more informations are showd in below text areas
         dishTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    int selectedRow = dishTable.getSelectedRow();
-                    if (selectedRow >= 0) {
-                        DishEntity selectOrder = associations.get(selectedRow).getDish();
-                        dishDescriptionTextArea.setText(selectOrder.getDescription());
-                        dishIngredientTextArea.setText(selectOrder.getIngredients().toString());
-
-                    } else {
-                        dishDescriptionTextArea.setText("");
-                        dishIngredientTextArea.setText("");
-                    }
-                }
+                dishTableRowClicked(event, associations);
             }
         });
 
         moreInformationView.setVisible(true);
 
     }
+    
+    /**
+     * The method shows in the appropriate text area the description and the list of ingredients corresponding to the dish selected in the table.
+     * @param event represents the event fired when the selected row on the table changes.
+     * @param associations list of associations between order and dishes
+     */
+    private void dishTableRowClicked(ListSelectionEvent event, List<DishOrderAssociation> associations){
+        if (!event.getValueIsAdjusting()) {
+            int selectedRow = dishTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                DishEntity selectOrder = associations.get(selectedRow).getDish();
+                dishDescriptionTextArea.setText(selectOrder.getDescription());
+                dishIngredientTextArea.setText(selectOrder.getIngredients().toString());
 
+            } else {
+                dishDescriptionTextArea.setText("");
+                dishIngredientTextArea.setText("");
+            }
+        }
+}
+    
+    /**
+     * This method sends three calls to the server: the first requires the current order of the costumer to set the appropriate text to be displayed on the home button. 
+     * If the current order is not present, a listener is added to the button that allows you to view the GUI relating to the choice of providers.
+     * If, on the other hand, the current order is present at the moment of the construction of the button this could have been refused or completed at the moment of its pressure. 
+     * So when this event occurs, a new call is made to get the current order again. 
+     * If this is present, the interface that allows you to view information about it will be shown. 
+     * Instead, if not present, a third call is made this time to retrieve the last status of the order. Which is notified to the user together with any refund for a rejected order. 
+     * After that the GUI for the choice of providers will be shown.
+     * Furthermore case of a communication error with the server, messages are displayed to inform the customer.
+     */
+    private void addHomeButtonLogic(){
+        Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(this.customerId);
+        currentOrderCall.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+
+                    currentOrder = response.body();
+                    homeButton.setText("Current Order");
+                    homeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            changeToHome();
+                        }
+
+                    });
+                } else {
+                    homeButton.setText("Create Order");
+                    homeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            nav.fromMoreInfoToProviderSelection(OrderMoreInformationController.this);
+                        }
+
+                    });
+                    
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable thrwbl) {
+                JOptionPane.showMessageDialog(moreInformationView,
+                        "Contact you system administrator",
+                        "CRITICAL ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+
+    }
+    
+    /**
+     * The method sends a GET to the server to get the current order. If present, the GUI for its visualization will be shown.
+     * Otherwise a new GET is performed. This time the status of the order is obtained (which has been completed or rejected), which is communicated to the costumer through a specific notification.
+     * Finally the GUI for the choice of providers will be shown
+     * In case of a communication error with the server, messages are displayed to inform the customer.
+     */
     private void changeToHome() {
         Call<OrderDto> currentOrderCall = apiService.getCurrentOrderDTO(OrderMoreInformationController.this.customerId);
         currentOrderCall.enqueue(new Callback<OrderDto>() {
@@ -236,7 +284,12 @@ public class OrderMoreInformationController {
 
         });
     }
-
+    /**
+     *The method sends a GET to get the status of the last current order.
+     *If this is completed or refused, the user is notified together with any refund for the order placed by him.
+     *Finally the GUI for the provide interface will be displayed.
+     *Furthermore in case of a communication error with the server, messages are displayed to inform the customer.
+     */
     private void getOrderById() {
         Call<OrderDto> getOrderById = apiService.getOrderDTO(OrderMoreInformationController.this.currentOrder.getId());
         getOrderById.enqueue(new Callback<OrderDto>() {
@@ -279,10 +332,17 @@ public class OrderMoreInformationController {
         });
     }
 
+    /**
+     * Remove the updateBalance view from the visualization
+     */
     public void disposeView() {
         moreInformationView.dispose();
     }
 
+    /**
+     * Return the logged customer's id
+     * @return String that represent the logged customer's id 
+     */
     public Long getCustomerId() {
         return customerId;
     }
