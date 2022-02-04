@@ -16,15 +16,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
- *
+ * Represents the state of a pending order.
  * @author aferr
  */
 public class SelectedOrderStatePending extends SelectedOrderState {
     
+    /**
+     * Initialize the SelectedOrderStatePending
+     * @param homeView an instance of HomeView
+     * @param selectedOrder the order currently selected by the user from the table
+     * @param selectedOrderIndex the row of the order currently selected by the user
+     */
     public SelectedOrderStatePending(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
+    /**
+     * Enable the "accept" and "refuse" buttons and disable the "ship" and
+     * "complete" buttons.
+     */
     @Override
     public void updateButton(){
         acceptBtn.setEnabled(true);
@@ -33,7 +43,18 @@ public class SelectedOrderStatePending extends SelectedOrderState {
         refuseBtn.setEnabled(true);
     }
     
-    
+    /**
+     * Change the selected order's state to "SEMI_ACCEPTED" if the order's type is 
+     * "DELIVERY_RIDERS", otherwise change the former into "ACCEPTED".
+     * Moreover, update the view by:
+     * <ol>
+     *   <li> Deleting the row associated to the selected order, 
+     *   because the table is actually displaying the "pending" order but 
+     *   the order state has been changed to "accepted" or "semi_accepted" </li>
+     *   <li> Disabling all buttons </li>
+     *   <li> Clearing the selected order </li>
+     * </ol>
+     */
     @Override
     public void accept(){
         // update order's state according to order's type
@@ -49,6 +70,17 @@ public class SelectedOrderStatePending extends SelectedOrderState {
         updateView();
     }
     
+    /**
+     * Change the selected order's state to "REFUSED".
+     * Moreover, update the view by:
+     * <ol>
+     *   <li> Deleting the row associated to the selected order, 
+     *   because the table is actually displaying the "pending" order but 
+     *   the order state has been changed to "refused" </li>
+     *   <li> Disabling all buttons </li>
+     *   <li> Clearing the selected order </li>
+     * </ol>
+     */
     @Override
     public void refuse(){
         selectedOrder.setOrderState(OrderState.REFUSED);

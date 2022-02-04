@@ -48,8 +48,9 @@ import retrofit2.Response;
 
 /**
  * Represents the controller associated to HomeView class.
- * It is responsible of taking the user's input to execute the appropriate
- * actions and updating the view.
+ * It is responsible of taking the user's input to update order's states.
+ * It is also responsible of showing the various orders and their associated
+ * dishes on the view.
  * Whenever it's necessary to send or retrieve datas to/from server, the
  * API endpoint (ServiceApi class) is being used.
  * @author aferr

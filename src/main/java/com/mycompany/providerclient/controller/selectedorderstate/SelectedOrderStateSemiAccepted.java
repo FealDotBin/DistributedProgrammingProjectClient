@@ -11,15 +11,24 @@ import com.mycompany.providerclient.view.HomeView;
 import javax.swing.JButton;
 
 /**
- *
+ * Represents the state of a semi-accepted order.
  * @author aferr
  */
 public class SelectedOrderStateSemiAccepted extends SelectedOrderState{
     
+    /**
+     * Initialize the SelectedOrderStateSemiAccepted
+     * @param homeView an instance of HomeView
+     * @param selectedOrder the order currently selected by the user from the table
+     * @param selectedOrderIndex the row of the order currently selected by the user
+     */
     public SelectedOrderStateSemiAccepted(HomeView homeView, OrderDto selectedOrder, int selectedOrderIndex){
         super(homeView, selectedOrder, selectedOrderIndex);
     }
     
+    /**
+     * Disable all buttons
+     */
     @Override
     public void updateButton(){
         acceptBtn.setEnabled(false);
