@@ -31,7 +31,7 @@ public class UpdateView extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
     }
