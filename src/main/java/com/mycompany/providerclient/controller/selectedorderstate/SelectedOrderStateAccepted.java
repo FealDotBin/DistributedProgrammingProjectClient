@@ -82,7 +82,7 @@ public class SelectedOrderStateAccepted extends SelectedOrderState {
      * <ol>
      *   <li> Deleting the row associated to the selected order, 
      *   because the table is actually displaying the "accepted" order but 
-     *   the order state has been changed to "shipped" </li>
+     *   the order state has been changed to "completed" </li>
      *   <li> Disabling all buttons </li>
      *   <li> Clearing the selected order </li>
      * </ol>
