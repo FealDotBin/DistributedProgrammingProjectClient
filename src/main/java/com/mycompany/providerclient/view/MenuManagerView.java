@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,6 +38,9 @@ public class MenuManagerView extends javax.swing.JFrame {
             Logger.getLogger(MenuManagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     

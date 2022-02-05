@@ -32,7 +32,7 @@ public class RiderUpdateView extends javax.swing.JFrame {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RiderUpdateView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
           setResizable(false);
