@@ -27,7 +27,7 @@ public class RiderLoginView extends javax.swing.JFrame {
             //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.customerclient.view.MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(com.mycompany.riderclient.view.RiderLoginView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
           setResizable(false);
