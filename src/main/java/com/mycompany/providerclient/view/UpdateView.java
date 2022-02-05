@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -34,6 +35,9 @@ public class UpdateView extends javax.swing.JFrame {
             Logger.getLogger(UpdateView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JLabel getAddressLabel() {
