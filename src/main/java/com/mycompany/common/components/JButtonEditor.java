@@ -21,9 +21,9 @@ import javax.swing.table.TableCellEditor;
 /**
  *
  * @author Catello
- * Editor di una JTable che contiene nella sua quinta colonna dei JButton
- * in particolare questo editor fa si che il bottone sia cliccabile e
- * posso produrre l'evento relativo al click del muose
+  * Editor of a JTable that contains JButtons in one of his columns
+  * in particular this editor makes the button clickable and
+  * can produce the event related to the click of the mouse
  */
 
 public class JButtonEditor extends AbstractCellEditor implements TableCellEditor{
@@ -31,13 +31,22 @@ public class JButtonEditor extends AbstractCellEditor implements TableCellEditor
     private Object editorValue;
     private JTable table;
 
+    /**
+     * Create a table editor that displays the buttons with the 
+     * text contained in the button text and adds the listener passed in the listener to each of them.
+     * @param buttonText Text that will be displayed on buttons
+     * @param listener Action listener for the action perfomed after that the button is clicked
+     */
     public JButtonEditor(String buttonText, ActionListener listener) {
         this.button = new JButton(buttonText);
         button.addActionListener(listener);
         button.setActionCommand("edit");
         button.setBorderPainted(true);
     }
-    
+    /**
+     * Create a table editor that displays the buttons with fixed text and no listener 
+     * 
+     */
     public JButtonEditor() {
         this.button = new JButton("Select");
         button.setActionCommand("edit");
@@ -55,23 +64,5 @@ public class JButtonEditor extends AbstractCellEditor implements TableCellEditor
     public Object getCellEditorValue() {
         return editorValue;
     }
-    /**
-     * Gestisce l'evento generato dalla pressione della cella.
-     * Evidenzia la cella selezionata per poi recuperare la prima cella della riga selezionata
-     * per poi istanziare le finestra successiva.
-     * @param ae evento che rappresenta la pressione del bottone 
-     */
-
-      
-        /*String site= table.getModel().getValueAt(row, 1).toString();
-        String typology = table.getModel().getValueAt(row, 2).toString();
-        int time=parseInt(table.getModel().getValueAt(row, 3).toString().trim());
-        /*VerifyActivityGUI verify= new VerifyActivityGUI(planner, id.trim(), time, site,typology);
-        verify.setVisible(true);
-        verify.pack();
-        verify.setLocationRelativeTo(null);
-        verify.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.dispose();*/
-    
     
 }

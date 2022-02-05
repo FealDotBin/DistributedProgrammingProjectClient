@@ -14,15 +14,24 @@ import javax.swing.JTextField;
 /**
  *
  * @author CATELLO
+ * This class represent a graphic components. This is a text field with placeholder
  */
 public class JTextFieldPlaceholder extends JTextField{
     
     private String placeholder;
-    
+    /**
+     * Create a text label with no placeholder
+     */
     public JTextFieldPlaceholder(){
         
     }
     
+    /**
+     * Set the appearance of the text field.
+     * After that it adds a foscus listener that allows when the label takes the focus to eliminate the placeholder
+     * while when it loses the focus to put it back if the text field is empty.
+     * @param placeholder Text to show as placeholder in text field 
+     */
     public JTextFieldPlaceholder(String placeholder){
         super();
         this.placeholder = placeholder;
@@ -56,7 +65,13 @@ public class JTextFieldPlaceholder extends JTextField{
         });
         
     }
-    
+    /**
+     * If ignorePlaceholder is true it returns the text contained in the text field.
+     * If ignorePlaceholder is false it returns the text contained in the text field 
+     * if it is different from the placeholder otherwise it returns an empty string
+     * @param ignorePlaceholder true for ignoring placeholer, false otherwise
+     * @return  Text contained in the text field. 
+     */
     public String getText(Boolean ignorePlaceholder) {
         if(ignorePlaceholder)
             if(super.getText().equals(this.placeholder))
@@ -67,6 +82,9 @@ public class JTextFieldPlaceholder extends JTextField{
             return super.getText();
     }
     
+    /**
+     * Forces the text field to show the placeholder even without the focus event occurring
+     */
     public void clear(){
         JTextFieldPlaceholder.this.setForeground(new Color(255,255,255,70));
         JTextFieldPlaceholder.this.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 12));

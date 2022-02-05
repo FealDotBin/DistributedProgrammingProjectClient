@@ -26,17 +26,23 @@ import javax.swing.table.DefaultTableCellRenderer;
 /**
  * 
  * @author Catello
- * Classe che permette di renderizza le celle della quinta colonna come un bottone di sfondo grigio e testo bianco
+ * This class allows to render a certain table cell as a JButton
  */
 public class JButtonRenderer extends DefaultTableCellRenderer{ 
     private int buttonColumn;
     private String buttonText;
     
+    /**
+     * Create a renderer that allows to render JButton in table column number button color with text buttonText
+     * @param buttonColumn Table column number that will be render as a button
+     * @param buttonText Text to display on rendered buttons
+     */
     public JButtonRenderer(int buttonColumn, String buttonText){
         super();
         this.buttonColumn = buttonColumn;
         this.buttonText = buttonText;
     }
+
     @Override
     public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
         JButton button= new JButton(buttonText);
