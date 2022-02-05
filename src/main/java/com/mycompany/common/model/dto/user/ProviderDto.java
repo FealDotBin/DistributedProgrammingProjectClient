@@ -9,7 +9,8 @@ import com.mycompany.common.model.dao.order.MenuEntity;
 import java.io.Serializable;
 
 /**
- *
+ *This is a utility class used to store provider information that must be sent or received by the server.
+ *This class should be used by someone who is not a provider given that there is no sensitive information on it such as username and password
  * @author aferr
  */
 public class ProviderDto implements Serializable{

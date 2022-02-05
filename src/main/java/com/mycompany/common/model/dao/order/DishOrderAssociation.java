@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
+ * This is a utility class used to store association between dished and order that must be sent or received by the server.
  * @author aferr
  */
 public class DishOrderAssociation implements Serializable{

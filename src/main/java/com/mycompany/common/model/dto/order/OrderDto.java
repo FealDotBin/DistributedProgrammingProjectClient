@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- *
+ *This is a utility class used to store order information that must be sent or received by the server.
+ *This class should be used by those who do not create the order and therefore do not have to specify all the information necessary for its creation on the server 
  * @author aferr
  */
 public class OrderDto implements Serializable{

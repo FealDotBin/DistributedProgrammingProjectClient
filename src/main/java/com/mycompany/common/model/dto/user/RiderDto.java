@@ -8,7 +8,8 @@ package com.mycompany.common.model.dto.user;
 import java.io.Serializable;
 
 /**
- *
+ *This is a utility class used to store rider information that must be sent or received by the server.
+ *This class should be used by someone who is not a rider given that there is no sensitive information on it such as username and password
  * @author aferr
  */
 public class RiderDto implements Serializable{

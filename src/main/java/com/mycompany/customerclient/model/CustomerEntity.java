@@ -10,7 +10,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDate;
 
 /**
- *
+ *This is a utility class used to store costumer information that must be sent or received by the server.
+ *This class should be used by someone who is a costumer given that there is sensitive information on it such as username and password
  * @author Amos
  */
 public class CustomerEntity {

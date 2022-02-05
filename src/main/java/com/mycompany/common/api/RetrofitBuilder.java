@@ -13,15 +13,23 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- *
+ * This class adapts a Java interface to a REST API.
  * @author aferr
  */
 public class RetrofitBuilder {
-    
+    /**
+     * Base URL of the server to which HTTP requests are sent
+     */
     public static final String BASE_URL = "http://localhost:8080/api/";
     private Retrofit retrofit;
     private Gson gson;
-   
+    
+    /**
+     * Create an http client also setting read and write timeouts
+     * HttpClient can be used to send requests and retrieve their responses.
+     * It also sets a converter that transforms an object into json format 
+     * in requests while in a response it does the opposite
+     */
     public RetrofitBuilder(){
         
         OkHttpClient client = new OkHttpClient.Builder()

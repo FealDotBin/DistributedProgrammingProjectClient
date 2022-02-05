@@ -8,7 +8,8 @@ package com.mycompany.providerclient.model;
 import java.time.LocalDate;
 
 /**
- *
+ *This is a utility class used to store provider information that must be sent or received by the server.
+ *This class should be used by someone who is a provider given that there is sensitive information on it such as username and password
  * @author aferr
  */
 public class ProviderEntity {

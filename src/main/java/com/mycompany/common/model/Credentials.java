@@ -6,7 +6,7 @@
 package com.mycompany.common.model;
 
 /**
- *
+ * This is a utility class used by any user of the application to store ausername and password that must be sent to the server.
  * @author aferr
  */
 public class Credentials {

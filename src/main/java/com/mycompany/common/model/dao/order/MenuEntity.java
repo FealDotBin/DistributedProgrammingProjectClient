@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
+ * This is a utility class used to store provider menù that must be sent or received by the server.
  * @author aferr
  */
 public class MenuEntity implements Serializable{

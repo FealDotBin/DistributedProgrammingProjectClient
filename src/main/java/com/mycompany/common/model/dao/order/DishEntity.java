@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * This is a utility class used to store provider'dishs that must be sent or received by the server.
  * @author aferr
  */
 public class DishEntity implements Serializable{

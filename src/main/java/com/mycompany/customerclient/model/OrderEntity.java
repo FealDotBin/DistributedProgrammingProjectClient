@@ -9,7 +9,11 @@ import com.mycompany.providerclient.model.ProviderEntity;
 import java.io.Serializable;
 import java.util.List;
 
-
+/**
+ *This is a utility class used to store order information that must be sent or received by the server.
+ *This class should be used by those who create the order and therefore have to specify all the information necessary for its creation on the server 
+ * @author CATELLO
+ */
 public class OrderEntity implements Serializable {
 
     private Long id;

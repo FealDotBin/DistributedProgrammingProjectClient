@@ -16,8 +16,8 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 /**
- *
- * @author Amos
+ * This interface define all the REST APIs that a costumer can call 
+ * @author Catello
  */
 public interface ServiceApi {
     /**

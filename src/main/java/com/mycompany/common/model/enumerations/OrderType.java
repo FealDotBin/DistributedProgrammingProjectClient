@@ -6,7 +6,7 @@
 package com.mycompany.common.model.enumerations;
 
 /**
- *
+ * List of all possible order that the application manges
  * @author aferr
  */
 public enum OrderType {
