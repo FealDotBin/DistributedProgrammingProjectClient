@@ -38,6 +38,9 @@ import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -388,6 +391,11 @@ public class OrderCreationController {
             return;
         }
         Date deliveryDate = deliveryDateChooser.getDate();
+        LocalDateTime date = deliveryDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        if(date.minusMinutes((OrderEntity.minuteOffsetDeliveryTime)).isBefore(LocalDateTime.now())){
+            fieldErrorPane("Delivery time must be at least ten minutes before the current time");
+            return;
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDeliveryDate = df.format(deliveryDate);
         if (formattedDeliveryDate.isBlank()) {
