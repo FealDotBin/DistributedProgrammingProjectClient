@@ -37,6 +37,8 @@ public class RiderHomeView extends javax.swing.JFrame {
             Logger.getLogger(com.mycompany.riderclient.view.RiderHomeView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        this.pack();
+this.setLocationRelativeTo(null);
           setResizable(false);
     }
 

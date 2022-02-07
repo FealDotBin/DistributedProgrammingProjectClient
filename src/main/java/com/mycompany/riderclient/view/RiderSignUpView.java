@@ -5,7 +5,6 @@
  */
 package com.mycompany.riderclient.view;
 
-import com.mycompany.providerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.toedter.calendar.JDateChooser;
@@ -33,6 +32,8 @@ public class RiderSignUpView extends javax.swing.JFrame {
             Logger.getLogger(com.mycompany.riderclient.view.RiderSignUpView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        this.pack();
+    this.setLocationRelativeTo(null);
           setResizable(false);
     }
 

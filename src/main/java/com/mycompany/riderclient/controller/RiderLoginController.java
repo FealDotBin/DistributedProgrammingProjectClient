@@ -10,7 +10,7 @@ import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.mycompany.common.model.Credentials;
 
 
-import com.mycompany.providerclient.view.LogInView;
+
 import com.mycompany.riderclient.api.ServiceApi;
 import com.mycompany.riderclient.navigator.Navigator;
 import com.mycompany.riderclient.view.RiderLoginView;
