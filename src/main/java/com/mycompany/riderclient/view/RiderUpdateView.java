@@ -34,6 +34,8 @@ public class RiderUpdateView extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(RiderUpdateView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.pack();
+this.setLocationRelativeTo(null);
         initComponents();
           setResizable(false);
     }
