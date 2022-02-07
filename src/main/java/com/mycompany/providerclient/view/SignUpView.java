@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.riderclient.view;
+package com.mycompany.providerclient.view;
 
-import com.mycompany.providerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import com.toedter.calendar.JDateChooser;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -20,20 +23,25 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author CATELLO
  */
-public class RiderSignUpView extends javax.swing.JFrame {
+public class SignUpView extends javax.swing.JFrame {
 
     /**
      * Creates new form ProviderSignIn
      */
-    public RiderSignUpView() {
+    public SignUpView() {
         try {
-            //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.riderclient.view.RiderSignUpView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUpView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
-          setResizable(false);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public JTextFieldPlaceholder getAddressTextField() {
+        return addressTextField;
     }
 
     public JDateChooser getBirthDateChooser() {
@@ -44,16 +52,48 @@ public class RiderSignUpView extends javax.swing.JFrame {
         return birthDateLabel;
     }
 
+    public JTextFieldPlaceholder getCuisineTextField() {
+        return cuisineTextField;
+    }
+
+    public JCheckBox getDeliveringCheckBox() {
+        return deliveringCheckBox;
+    }
+
     public JTextFieldPlaceholder getIbanTextField() {
         return ibanTextField;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+
+    public JSeparator getjSeparator1() {
+        return jSeparator1;
+    }
+
+    public JButton getLogInBtn() {
+        return logInBtn;
     }
 
     public JTextFieldPlaceholder getNameTextField() {
         return nameTextField;
     }
 
+    public JPanel getNewSingup() {
+        return newSingup;
+    }
+
+    public JCheckBox getOwnRiderCheckBox() {
+        return ownRiderCheckBox;
+    }
+
     public JTextFieldPlaceholder getPasswordTextField() {
         return passwordTextField;
+    }
+
+    public JTextFieldPlaceholder getProviderNameTextField() {
+        return providerNameTextField;
     }
 
     public JButton getSignUpBtn() {
@@ -64,25 +104,21 @@ public class RiderSignUpView extends javax.swing.JFrame {
         return surnameTextField;
     }
 
+    public JCheckBox getTakeAwayCheckBox() {
+        return takeAwayCheckBox;
+    }
+
     public JTextFieldPlaceholder getTelephoneTextField() {
         return telephoneTextField;
     }
 
-
-    public JTextFieldPlaceholder getVehicleTextField() {
-        return vehicleTextField;
+    public JLabel getTitleLabel() {
+        return titleLabel;
     }
 
     public JTextFieldPlaceholder getUsernameTextField() {
         return usernameTextField;
     }
-
-    public JButton getLogInBtn() {
-        return logInBtn;
-    }
-    
-    
-    
     
     
 
@@ -98,19 +134,26 @@ public class RiderSignUpView extends javax.swing.JFrame {
         newSingup = new javax.swing.JPanel();
         signUpBtn = new javax.swing.JButton();
         logInBtn = new javax.swing.JButton();
+        titleLabel = new javax.swing.JLabel();
         birthDateLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        titleLabel = new javax.swing.JLabel();
-        usernameTextField = new JTextFieldPlaceholder("Username");
+        usernameTextField = new JTextFieldPlaceholder("Username (required)");
         birthDateChooser = new com.toedter.calendar.JDateChooser();
-        nameTextField = new JTextFieldPlaceholder("Name");
-        passwordTextField = new JTextFieldPlaceholder("Password");
-        ibanTextField = new JTextFieldPlaceholder("IBAN");
-        vehicleTextField = new JTextFieldPlaceholder("Vehicle Type");
-        surnameTextField = new JTextFieldPlaceholder("Surname");
-        telephoneTextField = new JTextFieldPlaceholder("Telephone Number");
+        nameTextField = new JTextFieldPlaceholder("Name (required)");
+        passwordTextField = new JTextFieldPlaceholder("Password (required)");
+        ibanTextField = new JTextFieldPlaceholder("IBAN (required)");
+        addressTextField = new JTextFieldPlaceholder("Address (required)");
+        surnameTextField = new JTextFieldPlaceholder("Surname (required)");
+        telephoneTextField = new JTextFieldPlaceholder("Telephone Number (required)");
+        providerNameTextField = new JTextFieldPlaceholder("Provider Name (required)");
+        cuisineTextField = new JTextFieldPlaceholder("Cuisine (required)");
+        deliveringCheckBox = new javax.swing.JCheckBox();
+        takeAwayCheckBox = new javax.swing.JCheckBox();
+        ownRiderCheckBox = new javax.swing.JCheckBox();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         signUpBtn.setBackground(new java.awt.Color(44, 73, 129));
         signUpBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -123,63 +166,86 @@ public class RiderSignUpView extends javax.swing.JFrame {
 
         logInBtn.setText("Log In");
 
+        titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
+        titleLabel.setText("SIGN UP");
+
         birthDateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         birthDateLabel.setText("Birthdate");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel3.setText("Already have an account?");
 
-        titleLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 36)); // NOI18N
-        titleLabel.setText("SIGN UP");
-
-        usernameTextField.setText("Username");
+        usernameTextField.setText("Username (required)");
         usernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameTextFieldActionPerformed(evt);
             }
         });
 
-        nameTextField.setText("Name");
+        nameTextField.setText("Name (required)");
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameTextFieldActionPerformed(evt);
             }
         });
 
-        passwordTextField.setText("Password");
+        passwordTextField.setText("Password (required)");
         passwordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordTextFieldActionPerformed(evt);
             }
         });
 
-        ibanTextField.setText("IBAN");
+        ibanTextField.setText("IBAN (required)");
         ibanTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ibanTextFieldActionPerformed(evt);
             }
         });
 
-        vehicleTextField.setText("Vehicle Type");
-        vehicleTextField.addActionListener(new java.awt.event.ActionListener() {
+        addressTextField.setText("Address (required)");
+        addressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vehicleTextFieldActionPerformed(evt);
+                addressTextFieldActionPerformed(evt);
             }
         });
 
-        surnameTextField.setText("Surname");
+        surnameTextField.setText("Surname (required)");
         surnameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 surnameTextFieldActionPerformed(evt);
             }
         });
 
-        telephoneTextField.setText("Telephone Number");
+        telephoneTextField.setText("Telephone Number (required)");
         telephoneTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 telephoneTextFieldActionPerformed(evt);
             }
         });
+
+        providerNameTextField.setText("Provider Name (required)");
+        providerNameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                providerNameTextFieldActionPerformed(evt);
+            }
+        });
+
+        cuisineTextField.setText("Cuisine (required)");
+        cuisineTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cuisineTextFieldActionPerformed(evt);
+            }
+        });
+
+        deliveringCheckBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        deliveringCheckBox.setText("Delivering");
+
+        takeAwayCheckBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        takeAwayCheckBox.setText("Take Away");
+
+        ownRiderCheckBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ownRiderCheckBox.setText("Own Riders");
 
         javax.swing.GroupLayout newSingupLayout = new javax.swing.GroupLayout(newSingup);
         newSingup.setLayout(newSingupLayout);
@@ -187,30 +253,44 @@ public class RiderSignUpView extends javax.swing.JFrame {
             newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(newSingupLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(vehicleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(birthDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(birthDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(newSingupLayout.createSequentialGroup()
-                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(addressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(birthDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(birthDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(newSingupLayout.createSequentialGroup()
+                                .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(newSingupLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(newSingupLayout.createSequentialGroup()
+                                        .addGap(104, 104, 104)
+                                        .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ibanTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(telephoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(newSingupLayout.createSequentialGroup()
+                                .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(newSingupLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(surnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ibanTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(telephoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cuisineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newSingupLayout.createSequentialGroup()
+                                .addComponent(deliveringCheckBox)
+                                .addGap(71, 71, 71)
+                                .addComponent(takeAwayCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(ownRiderCheckBox)))
+                        .addGap(0, 58, Short.MAX_VALUE))
                     .addGroup(newSingupLayout.createSequentialGroup()
                         .addComponent(signUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(logInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         newSingupLayout.setVerticalGroup(
             newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,15 +315,26 @@ public class RiderSignUpView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(ibanTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(vehicleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(telephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cuisineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deliveringCheckBox)
+                    .addComponent(takeAwayCheckBox)
+                    .addComponent(ownRiderCheckBox))
                 .addGap(18, 18, 18)
                 .addGroup(newSingupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(signUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(logInBtn)
                     .addComponent(jLabel3))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -280,9 +371,9 @@ public class RiderSignUpView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_signUpBtnActionPerformed
 
-    private void vehicleTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicleTextFieldActionPerformed
+    private void addressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_vehicleTextFieldActionPerformed
+    }//GEN-LAST:event_addressTextFieldActionPerformed
 
     private void surnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_surnameTextFieldActionPerformed
         // TODO add your handling code here:
@@ -292,22 +383,35 @@ public class RiderSignUpView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_telephoneTextFieldActionPerformed
 
+    private void providerNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerNameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_providerNameTextFieldActionPerformed
+
+    private void cuisineTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuisineTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cuisineTextFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.mycompany.common.components.JTextFieldPlaceholder addressTextField;
     private com.toedter.calendar.JDateChooser birthDateChooser;
     private javax.swing.JLabel birthDateLabel;
+    private com.mycompany.common.components.JTextFieldPlaceholder cuisineTextField;
+    private javax.swing.JCheckBox deliveringCheckBox;
     private com.mycompany.common.components.JTextFieldPlaceholder ibanTextField;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton logInBtn;
     private com.mycompany.common.components.JTextFieldPlaceholder nameTextField;
     private javax.swing.JPanel newSingup;
+    private javax.swing.JCheckBox ownRiderCheckBox;
     private com.mycompany.common.components.JTextFieldPlaceholder passwordTextField;
+    private com.mycompany.common.components.JTextFieldPlaceholder providerNameTextField;
     private javax.swing.JButton signUpBtn;
     private com.mycompany.common.components.JTextFieldPlaceholder surnameTextField;
+    private javax.swing.JCheckBox takeAwayCheckBox;
     private com.mycompany.common.components.JTextFieldPlaceholder telephoneTextField;
     private javax.swing.JLabel titleLabel;
     private com.mycompany.common.components.JTextFieldPlaceholder usernameTextField;
-    private com.mycompany.common.components.JTextFieldPlaceholder vehicleTextField;
     // End of variables declaration//GEN-END:variables
 }

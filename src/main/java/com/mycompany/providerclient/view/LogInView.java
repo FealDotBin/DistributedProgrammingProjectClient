@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.riderclient.view;
+package com.mycompany.providerclient.view;
 
-import com.mycompany.providerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.mycompany.common.components.JTextFieldPlaceholder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -17,24 +19,33 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author Marco
  */
-public class RiderLoginView extends javax.swing.JFrame {
+public class LogInView extends javax.swing.JFrame {
 
     /**
      * Creates new form ProviderLogIn
      */
-    public RiderLoginView() {
+    public LogInView() {
         try {
-            //   UIManager.
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(com.mycompany.riderclient.view.RiderLoginView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogInView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
-          setResizable(false);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public JLabel getjLabel4() {
+        return jLabel4;
     }
 
     public JButton getLogInBtn() {
         return logInBtn;
+    }
+
+    public JPanel getNewLogin() {
+        return newLogin;
     }
 
     public JTextFieldPlaceholder getPasswordTextField() {
@@ -45,10 +56,13 @@ public class RiderLoginView extends javax.swing.JFrame {
         return signUpBtn;
     }
 
+    public JLabel getTitleLabel() {
+        return titleLabel;
+    }
+
     public JTextFieldPlaceholder getUsernameTextField() {
         return usernameTextField;
     }
-    
     
     
 
@@ -70,6 +84,7 @@ public class RiderLoginView extends javax.swing.JFrame {
         passwordTextField = new JTextFieldPlaceholder("Password");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         logInBtn.setBackground(new java.awt.Color(44, 73, 129));
         logInBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -124,7 +139,7 @@ public class RiderLoginView extends javax.swing.JFrame {
                         .addGroup(newLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(120, 120, 120))))
+                        .addGap(122, 122, 122))))
         );
         newLoginLayout.setVerticalGroup(
             newLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

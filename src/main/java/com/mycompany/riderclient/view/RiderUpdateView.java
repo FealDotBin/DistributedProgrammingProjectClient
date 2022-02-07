@@ -5,6 +5,7 @@
  */
 package com.mycompany.riderclient.view;
 
+import com.mycompany.customerclient.view.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -34,8 +35,6 @@ public class RiderUpdateView extends javax.swing.JFrame {
             Logger.getLogger(RiderUpdateView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
-        this.pack();
-        this.setLocationRelativeTo(null);
           setResizable(false);
     }
 

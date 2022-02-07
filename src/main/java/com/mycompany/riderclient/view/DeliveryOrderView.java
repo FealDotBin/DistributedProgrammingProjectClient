@@ -35,8 +35,6 @@ public class DeliveryOrderView extends javax.swing.JFrame {
             Logger.getLogger(com.mycompany.riderclient.view.DeliveryOrderView.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
-        this.pack();
-this.setLocationRelativeTo(null);
         setResizable(false);
     }
 
